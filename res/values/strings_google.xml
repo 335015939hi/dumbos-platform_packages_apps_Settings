@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- SettingsGoogle -->
+    <string name="touch_sensitivity_title"/>
+    <string name="touch_sensitivity_summary"/>
+</resources>
