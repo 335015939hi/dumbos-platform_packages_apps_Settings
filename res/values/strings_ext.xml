@@ -128,4 +128,7 @@ There are HTTP, HTTPS, DNS, DNS-over-TLS and DNS-over-HTTPS connectivity checks.
 
     <string name="allow_access_to_obb_directory_title">Allow access to Android/obb folder</string>
     <string name="allow_access_to_obb_directory_summary">Required for installation of some large apps (mostly games) that use OBB expansion files</string>
+
+    <string name="battery_share_description">Charge other devices by placing them on the back of your phone</string>
+    <string name="battery_share">Battery share</string>
 </resources>
