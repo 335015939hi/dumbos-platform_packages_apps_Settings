@@ -46,6 +46,7 @@ import android.app.admin.DevicePolicyManager.PasswordComplexity;
 import android.app.settings.SettingsEnums;
 import android.content.Context;
 import android.content.Intent;
+import android.ext.settings.ExtSettings;
 import android.hardware.face.FaceManager;
 import android.hardware.fingerprint.FingerprintManager;
 import android.os.Bundle;
@@ -89,6 +90,7 @@ import com.android.settings.biometrics.BiometricUtils;
 import com.android.settings.biometrics.IdentityCheckBiometricErrorDialog;
 import com.android.settings.core.SubSettingLauncher;
 import com.android.settings.core.instrumentation.InstrumentedDialogFragment;
+import com.android.settings.ext.BoolSettingPrefController;
 import com.android.settings.flags.Flags;
 import com.android.settings.safetycenter.LockScreenSafetySource;
 import com.android.settings.search.SearchFeatureProvider;
@@ -718,6 +720,8 @@ public class ChooseLockGeneric extends SettingsActivity {
             mAutoPinConfirmPreferenceController = new AutoPinConfirmPreferenceController(
                     getContext(), mUserId, mLockPatternUtils, this);
             mUnlockSettingsControllers.add(mAutoPinConfirmPreferenceController);
+
+            mUnlockSettingsControllers.add(new BoolSettingPrefController(requireContext(), "allow_keyguard_camera", ExtSettings.ALLOW_KEYGUARD_CAMERA, UserHandle.of(mUserId)));
         }
 
         private void setUpUnlockSettingsPreference() {
