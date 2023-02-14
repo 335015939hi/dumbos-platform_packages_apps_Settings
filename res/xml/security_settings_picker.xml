@@ -88,6 +88,10 @@
             android:title="@string/lockpattern_settings_enhanced_pin_privacy_title"
             android:summary="@string/lockpattern_settings_enhanced_pin_privacy_summary" />
 
+        <SwitchPreferenceCompat
+            android:key="allow_keyguard_camera"
+            android:title="@string/keyguard_camera_title"
+            settings:boolSettingField="android.ext.settings.ExtSettings ALLOW_KEYGUARD_CAMERA" />
 
         <!-- available in pin/pattern/password -->
         <com.android.settings.security.screenlock.ProtectedTimeoutListPreference
