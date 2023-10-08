@@ -224,12 +224,11 @@ public class FingerprintSettings extends SubSettings {
             if (manager == null || !manager.isHardwareDetected()) {
                 return null;
             }
+
+            controllers.add(new FingerprintUnlockCategoryController(context,
+                    KEY_FINGERPRINT_UNLOCK_CATEGORY));
+
             if (manager.isPowerbuttonFps()) {
-                controllers.add(
-                        new FingerprintUnlockCategoryController(
-                                context,
-                                KEY_FINGERPRINT_UNLOCK_CATEGORY
-                        ));
                 controllers.add(
                         new FingerprintSettingsRequireScreenOnToAuthPreferenceController(
                                 context,
@@ -237,24 +236,15 @@ public class FingerprintSettings extends SubSettings {
                         ));
             } else if (screenOffUnlockUdfps()) {
                 controllers.add(
-                        new FingerprintUnlockCategoryController(
-                                context,
-                                KEY_FINGERPRINT_UNLOCK_CATEGORY
-                        ));
-                controllers.add(
                         new FingerprintSettingsScreenOffUnlockUdfpsPreferenceController(
                                 context,
                                 KEY_SCREEN_OFF_FINGERPRINT_UNLOCK
                         ));
-            } else if (getExtPreferenceProvider(context).getSize() > 0) {
-                controllers.add(
-                        new FingerprintUnlockCategoryController(
-                                context,
-                                KEY_FINGERPRINT_UNLOCK_CATEGORY
-                        ));
             }
             controllers.add(new FingerprintsEnrolledCategoryPreferenceController(context,
                     KEY_FINGERPRINTS_ENROLLED_CATEGORY));
+            controllers.add(new FingerprintSettingsKeyguardPreferenceController(context,
+                    KEY_FINGERPRINT_ENABLE_KEYGUARD_TOGGLE));
             return controllers;
         }
 
@@ -790,16 +780,19 @@ public class FingerprintSettings extends SubSettings {
                     ((FingerprintSettingsPreferenceController) controller).setUserId(mUserId);
                 } else if (controller instanceof FingerprintUnlockCategoryController) {
                     ((FingerprintUnlockCategoryController) controller).setUserId(mUserId);
+                } else if (controller instanceof FingerprintSettingsKeyguardPreferenceController c) {
+                    c.setUserId(mUserId);
                 }
             }
 
             // This needs to be after setting ids, otherwise
             // |mRequireScreenOnToAuthPreferenceController.isChecked| is always checking the primary
             // user instead of the user with |mUserId|.
-            if (isSfps() || (screenOffUnlockUdfps() && isScreenOffUnlcokSupported())
-                    || getExtPreferenceProvider(requireContext()).getSize() > 0) {
-                addFingerprintUnlockCategory();
-            }
+
+            // GRAPHENE REBASE - REVISIT THIS
+            scrollToPreference(fpPrefKey);
+            addFingerprintUnlockCategory();
+
             final int descriptionRes = FeatureFactory.getFeatureFactory()
                     .getFingerprintFeatureProvider().getFingerprintSettingsFeatureProvider()
                     .getSettingPageDescription();
@@ -916,6 +909,7 @@ public class FingerprintSettings extends SubSettings {
             } else if (screenOffUnlockUdfps() && isScreenOffUnlcokSupported()) {
                 setupFingerprintUnlockCategoryPreferencesForScreenOffUnlock();
             }
+            setupFingerprintUnlockCategoryPreferencesExt();
             setupExtFingerprintPreferences();
             updateFingerprintUnlockCategoryVisibility();
         }
@@ -955,6 +949,19 @@ public class FingerprintSettings extends SubSettings {
             } else {
                 preference.setVisible(false);
             }
+        }
+
+        private FingerprintSettingsKeyguardPreferenceController mFingerprintKeyguardController;
+
+        private void setupFingerprintUnlockCategoryPreferencesExt() {
+            RestrictedSwitchPreference keyguardFingerprintPref = findPreference(KEY_FINGERPRINT_ENABLE_KEYGUARD_TOGGLE);
+            keyguardFingerprintPref.setChecked(mFingerprintKeyguardController.isChecked());
+            keyguardFingerprintPref.setOnPreferenceChangeListener((p, value) -> {
+                mFingerprintKeyguardController.setChecked((boolean) value);
+                return true;
+            });
+            // Without this, the preference will display even when it is not available.
+            keyguardFingerprintPref.setVisible(mFingerprintKeyguardController.isAvailable());
         }
 
         private void setupFingerprintUnlockCategoryPreferencesForScreenOnToAuth() {
@@ -1292,6 +1299,23 @@ public class FingerprintSettings extends SubSettings {
         private List<AbstractPreferenceController> buildPreferenceControllers(Context context) {
             final List<AbstractPreferenceController> controllers =
                     createThePreferenceControllers(context);
+            if (controllers == null) {
+                return controllers;
+            }
+
+            for (AbstractPreferenceController controller : controllers) {
+                switch (controller.getPreferenceKey()) {
+                    case KEY_FINGERPRINT_UNLOCK_CATEGORY:
+                        mFingerprintUnlockCategoryPreferenceController =
+                                (FingerprintUnlockCategoryController) controller;
+                        continue;
+                    case KEY_FINGERPRINT_ENABLE_KEYGUARD_TOGGLE:
+                        mFingerprintKeyguardController =
+                                (FingerprintSettingsKeyguardPreferenceController) controller;
+                        continue;
+                }
+            }
+
             if (isSfps()) {
                 for (AbstractPreferenceController controller : controllers) {
                     if (controller.getPreferenceKey() == KEY_FINGERPRINT_UNLOCK_CATEGORY) {
