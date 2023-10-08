@@ -58,8 +58,7 @@ public class FingerprintUnlockCategoryController extends BasePreferenceControlle
         }
 
         if (mFingerprintManager != null
-                && mFingerprintManager.isHardwareDetected()
-                && hasChild) {
+                && mFingerprintManager.isHardwareDetected()) {
             return mFingerprintManager.hasEnrolledTemplates(getUserId())
                     ? AVAILABLE : CONDITIONALLY_UNAVAILABLE;
         } else {
