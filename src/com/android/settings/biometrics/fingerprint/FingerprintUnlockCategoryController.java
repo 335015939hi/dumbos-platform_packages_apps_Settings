@@ -51,15 +51,14 @@ public class FingerprintUnlockCategoryController extends BasePreferenceControlle
 
     @Override
     public int getAvailabilityStatus() {
-        Supplier<Boolean> categoryHasChildSupplier = mCategoryHasChildSupplier;
-        boolean hasChild = false;
-        if (categoryHasChildSupplier != null) {
-            hasChild = categoryHasChildSupplier.get();
-        }
+//        Supplier<Boolean> categoryHasChildSupplier = mCategoryHasChildSupplier;
+//        boolean hasChild = false;
+//        if (categoryHasChildSupplier != null) {
+//            hasChild = categoryHasChildSupplier.get();
+//        }
 
         if (mFingerprintManager != null
-                && mFingerprintManager.isHardwareDetected()
-                && hasChild) {
+                && mFingerprintManager.isHardwareDetected()) {
             return mFingerprintManager.hasEnrolledTemplates(getUserId())
                     ? AVAILABLE : CONDITIONALLY_UNAVAILABLE;
         } else {
