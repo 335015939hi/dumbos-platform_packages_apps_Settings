@@ -584,5 +584,7 @@ public class Settings extends SettingsActivity {
     public static class FlashNotificationsActivity extends SettingsActivity { /* empty */ }
     public static class NotificationBundlesActivity extends SettingsActivity { /* empty */ }
 
+    public static class AppHardenedMallocActivity extends SettingsActivity {}
+
     public static class ExploitProtectionActivity extends SettingsActivity {}
 }
