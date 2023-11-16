@@ -101,6 +101,7 @@ open class SettingsSpaEnvironment(context: Context) : SpaEnvironment(context) {
         listOf(
             HomePageProvider,
             AppsMainPageProvider,
+            com.android.settings.applications.AswAdapterUseHardenedMalloc.makeAppListPageProvider(),
             AllAppListPageProvider,
             AppInfoSettingsProvider,
             SpecialAppAccessPageProvider,
