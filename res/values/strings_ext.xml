@@ -138,4 +138,7 @@ There are HTTP, HTTPS, DNS, DNS-over-TLS and DNS-over-HTTPS connectivity checks.
 "Allow automatically disabling exploit protections for apps that are known to need it"
     </string>
 
+    <string name="show_system_process_crash_notifs_title">Notify about system process crashes</string>
+    <string name="show_system_process_crash_notifs_summary">Such crashes may indicate exploitation attempts</string>
+
 </resources>
