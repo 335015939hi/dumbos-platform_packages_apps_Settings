@@ -155,6 +155,12 @@
         android:order="-350"
         settings:controller="com.android.settings.widget.SystemAdvancedCategoryController">
 
+        <Preference
+            android:key="view_logs"
+            android:title="@string/view_logs"
+            android:icon="@drawable/ic_settings_development"
+            settings:controller="com.android.settings.system.LogcatLinkPrefController"/>
+
         <com.android.settings.spa.preference.ComposePreference
             android:key="developer_options"
             settings:controller="com.android.settings.system.DeveloperOptionsController"/>
