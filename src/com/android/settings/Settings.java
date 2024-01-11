@@ -542,5 +542,6 @@ public class Settings extends SettingsActivity {
     public static class AppHardenedMallocActivity extends SettingsActivity {}
     public static class AppMemoryDynCodeLoadingActivity extends SettingsActivity {}
     public static class AppNativeDebuggingActivity extends SettingsActivity {}
+    public static class AppStorageDynCodeLoadingActivity extends SettingsActivity {}
     public static class ExploitProtectionActivity extends SettingsActivity {}
 }
