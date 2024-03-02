@@ -148,6 +148,7 @@ private fun AppInfoSettings(packageInfoPresenter: PackageInfoPresenter) {
             AppNotificationPreference(app)
             AppPermissionPreference(app)
             AppStorageScopesPreference(app)
+            AppContactScopesPreference(app)
             ManageTargetAppFunctionAccessPreference(app)
             ManageAgentAppFunctionAccessPreference(app)
             AppStoragePreference(app)
