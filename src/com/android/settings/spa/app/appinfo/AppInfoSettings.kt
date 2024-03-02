@@ -176,6 +176,7 @@ private fun AppInfoSettings(packageInfoPresenter: PackageInfoPresenter) {
             AppLocalePreference(app)
             AppOpenByDefaultPreference(app)
             DefaultAppShortcuts(app)
+            AppLogcatPreference(app)
         }
 
         if (com.android.window.flags.Flags.virtualGamepadOverride()) {
