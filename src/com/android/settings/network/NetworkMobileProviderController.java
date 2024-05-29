@@ -28,9 +28,8 @@ import com.android.settings.wifi.WifiPickerTrackerHelper;
 import com.android.settingslib.core.lifecycle.Lifecycle;
 
 /**
- * This controls mobile network display of the internet page that only appears when there
- * are active mobile subscriptions. It shows an overview of available mobile network
- * connections with an entry for each subscription.
+ * This controls mobile network display of the internet page. It shows an overview of
+ * available mobile network connections with an entry for each subscription.
  *
  * {@link NetworkMobileProviderController} is used to show subscription status on internet
  * page for provider model.
@@ -94,10 +93,7 @@ public class NetworkMobileProviderController extends BasePreferenceController im
 
     @Override
     public int getAvailabilityStatus() {
-        if (mHide || mSubscriptionsController == null) {
-            return CONDITIONALLY_UNAVAILABLE;
-        }
-        return mSubscriptionsController.isAvailable() ? AVAILABLE : CONDITIONALLY_UNAVAILABLE;
+        return mHide ? CONDITIONALLY_UNAVAILABLE : AVAILABLE;
     }
 
     @Override
