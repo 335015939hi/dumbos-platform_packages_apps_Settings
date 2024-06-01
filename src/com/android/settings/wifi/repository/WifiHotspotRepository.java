@@ -391,9 +391,7 @@ public class WifiHotspotRepository {
         if (mIs5gAvailable == null) {
             // If Settings is unable to get available 5GHz SAP information, Wi-Fi Framework's
             // proposal is to assume that 5GHz is available. (See b/272450463#comment16)
-            mIs5gAvailable = is5GHzBandSupported()
-                    && isChannelAvailable(WifiScanner.WIFI_BAND_5_GHZ_WITH_DFS,
-                    true /* defaultValue */);
+            mIs5gAvailable = is5GHzBandSupported();
             log("is5gAvailable():" + mIs5gAvailable);
         }
         return mIs5gAvailable;
@@ -436,8 +434,7 @@ public class WifiHotspotRepository {
      */
     public boolean is6gAvailable() {
         if (mIs6gAvailable == null) {
-            mIs6gAvailable = is6GHzBandSupported()
-                    && isChannelAvailable(WifiScanner.WIFI_BAND_6_GHZ, false /* defaultValue */);
+            mIs6gAvailable = is6GHzBandSupported();
             log("is6gAvailable():" + mIs6gAvailable);
         }
         return mIs6gAvailable;
