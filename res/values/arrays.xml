@@ -1660,4 +1660,6 @@
         <item>Notifications</item>
         <item>Quick settings</item>
     </string-array>
+    <string-array name="fingerprint_acquired_vendor" />
+
 </resources>
