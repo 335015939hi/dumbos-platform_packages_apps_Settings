@@ -22,14 +22,6 @@ class AswAdapterUseMemoryTagging(ctx: Context) : AswAdapter<AswUseMemoryTagging>
 
 private val isMemoryTaggingSupported = Zygote.nativeSupportsMemoryTagging()
 
-class AppMemtagPrefController(ctx: Context, key: String) :
-        AswPrefController<AswUseMemoryTagging>(ctx, key, AswAdapterUseMemoryTagging(ctx)) {
-
-    override fun getDetailFragmentClass() = AppMemtagFragment::class.java
-
-    override fun getAvailabilityStatus() = if (isMemoryTaggingSupported) AVAILABLE else UNSUPPORTED_ON_DEVICE
-}
-
 @Composable
 fun AppMemtagPreference(app: ApplicationInfo) {
     if (!isMemoryTaggingSupported) {
