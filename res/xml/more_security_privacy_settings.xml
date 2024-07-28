@@ -194,6 +194,12 @@
             android:title="@string/scramble_pin_title"
             settings:boolSettingField="android.ext.settings.ExtSettings SCRAMBLE_PIN_LAYOUT" />
 
+        <SwitchPreferenceCompat
+            android:key="keyguard_camera"
+            android:title="@string/keyguard_camera_title"
+            settings:boolSettingField=
+                "android.ext.settings.ExtSettings ALLOW_KEYGUARD_CAMERA" />
+
     </PreferenceCategory>
 
     <Preference
