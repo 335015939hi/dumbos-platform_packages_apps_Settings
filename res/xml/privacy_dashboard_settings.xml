@@ -85,13 +85,6 @@
         android:summary="@string/mic_toggle_description"
         settings:controller="com.android.settings.privacy.MicToggleController"/>
 
-    <!-- Screenshot timestamp EXIF toggle -->
-    <SwitchPreferenceCompat
-        android:key="privacy_screenshot_timestamp_exif"
-        android:title="@string/screenshot_timestamp_exif_title"
-        android:summary="@string/screenshot_timestamp_exif_summary"
-        settings:boolSettingField="android.ext.settings.ExtSettings SCREENSHOT_TIMESTAMP_EXIF"/>
-
     <!-- Show passwords -->
     <SwitchPreferenceCompat
         android:key="show_password"
