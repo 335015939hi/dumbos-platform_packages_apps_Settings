@@ -165,6 +165,12 @@
             android:title="@string/usbc_port_and_pogo_pins_title"
             settings:controller="com.android.settings.security.UsbPortSecurityPrefController" />
 
+        <Preference
+            android:key="exec_spawning"
+            android:title="@string/exec_spawning_title"
+            android:fragment="com.android.settings.security.ExecSpawningFragment"
+            settings:controller="com.android.settings.security.ExecSpawningPrefController" />
+
     </PreferenceCategory>
 
     <Preference
