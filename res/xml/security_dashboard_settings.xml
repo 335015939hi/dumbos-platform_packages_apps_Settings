@@ -50,11 +50,6 @@
             settings:keywords="@string/keywords_face_settings" />
 
         <Preference
-            android:key="deny_new_usb"
-            android:title="@string/deny_new_usb_title"
-            settings:controller="com.android.settings.security.DenyNewUsbPrefController" />
-
-        <Preference
             android:key="usbc_port"
             android:title="@string/usbc_port_title"
             settings:controller="com.android.settings.security.UsbPortSecurityPrefController" />
