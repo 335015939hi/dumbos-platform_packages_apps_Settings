@@ -183,6 +183,12 @@
             android:fragment="com.android.settings.security.ForceAppMemtagFragment"
             settings:controller="com.android.settings.security.ForceAppMemtagPrefController" />
 
+        <Preference
+            android:key="native_debugging"
+            android:title="@string/native_debugging_title"
+            android:fragment="com.android.settings.security.NativeDebuggingFragment"
+            settings:controller="com.android.settings.security.NativeDebuggingPrefController" />
+
     </PreferenceCategory>
 
     <Preference
