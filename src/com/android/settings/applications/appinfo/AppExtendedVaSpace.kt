@@ -21,14 +21,6 @@ class AswAdapterUseExtendedVaSpace(ctx: Context) : AswAdapter<AswUseExtendedVaSp
     override fun getDetailFragmentClass() = AppExtendedVaSpaceFragment::class
 }
 
-class AppExtendedVaSpacePrefController(ctx: Context, key: String) :
-        AswPrefController<AswUseExtendedVaSpace>(ctx, key, AswAdapterUseExtendedVaSpace(ctx)) {
-
-    override fun getDetailFragmentClass() = AppExtendedVaSpaceFragment::class.java
-
-    override fun getAvailabilityStatus() = ExtSettingControllerHelper.getDevModeSettingAvailability(mContext)
-}
-
 @Composable
 fun AppExtendedVaSpacePreference(app: ApplicationInfo) {
     val context = LocalContext.current
