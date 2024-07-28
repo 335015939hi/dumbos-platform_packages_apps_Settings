@@ -19,12 +19,6 @@ class AswAdapterUseHardenedMalloc(ctx: Context) : AswAdapter<AswUseHardenedMallo
     override fun getDetailFragmentClass() = AppHardenedMallocFragment::class
 }
 
-class AppHardenedMallocPrefController(ctx: Context, key: String) :
-        AswPrefController<AswUseHardenedMalloc>(ctx, key, AswAdapterUseHardenedMalloc(ctx)) {
-
-    override fun getDetailFragmentClass() = AppHardenedMallocFragment::class.java
-}
-
 @Composable
 fun AppHardenedMallocPreference(app: ApplicationInfo) {
     val context = LocalContext.current
