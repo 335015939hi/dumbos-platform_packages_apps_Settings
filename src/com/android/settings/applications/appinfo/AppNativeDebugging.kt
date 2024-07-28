@@ -22,12 +22,6 @@ class AswAdapterNativeDebugging(ctx: Context) : AswAdapter<AswDenyNativeDebug>(c
     override fun getDetailFragmentClass() = AppNativeDebuggingFragment::class
 }
 
-class AppNativeDebuggingPrefController(ctx: Context, key: String) :
-        AswPrefController<AswDenyNativeDebug>(ctx, key, AswAdapterNativeDebugging(ctx)) {
-
-    override fun getDetailFragmentClass() = AppNativeDebuggingFragment::class.java
-}
-
 @Composable
 fun AppNativeDebuggingPreference(app: ApplicationInfo) {
     val context = LocalContext.current
