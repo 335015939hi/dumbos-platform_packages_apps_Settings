@@ -200,6 +200,13 @@
             settings:boolSettingField=
                 "android.ext.settings.ExtSettings ALLOW_KEYGUARD_CAMERA" />
 
+        <SwitchPreferenceCompat
+            android:key="show_system_process_crash_notifs"
+            android:title="@string/show_system_process_crash_notifs_title"
+            android:summary="@string/show_system_process_crash_notifs_summary"
+            settings:boolSettingField=
+                "android.ext.settings.ExtSettings SHOW_SYSTEM_PROCESS_CRASH_NOTIFICATIONS" />
+
     </PreferenceCategory>
 
     <Preference
