@@ -49,12 +49,6 @@
             android:summary="@string/summary_placeholder"
             settings:keywords="@string/keywords_face_settings" />
 
-        <Preference
-            android:key="native_debugging"
-            android:title="@string/native_debugging_title"
-            android:fragment="com.android.settings.security.NativeDebuggingFragment"
-            settings:controller="com.android.settings.security.NativeDebuggingPrefController" />
-
         <SwitchPreferenceCompat
             android:key="scramble_pin_layout"
             android:title="@string/scramble_pin_title"
