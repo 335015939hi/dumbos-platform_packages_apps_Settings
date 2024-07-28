@@ -138,7 +138,14 @@
     <PreferenceCategory
         android:order="200"
         android:key="security_category"
-        android:title="@string/security_header" />
+        android:title="@string/security_header">
+
+        <Preference
+            android:key="auto_reboot"
+            android:title="@string/auto_reboot_title"
+            settings:controller="com.android.settings.security.AutoRebootPrefController" />
+
+    </PreferenceCategory>
 
     <Preference
         android:order="230"
