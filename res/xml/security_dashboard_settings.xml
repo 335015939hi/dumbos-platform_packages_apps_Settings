@@ -50,11 +50,6 @@
             settings:keywords="@string/keywords_face_settings" />
 
         <Preference
-            android:key="auto_reboot"
-            android:title="@string/auto_reboot_title"
-            settings:controller="com.android.settings.security.AutoRebootPrefController" />
-
-        <Preference
             android:key="duress_password"
             android:title="@string/duress_pwd_pref_title"
             settings:controller="com.android.settings.security.DuressPasswordPrefController" />
