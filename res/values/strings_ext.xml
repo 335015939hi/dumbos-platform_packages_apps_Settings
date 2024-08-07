@@ -214,4 +214,8 @@ Duress PIN works the same way duress password does."</string>
     <string name="alt_touchscreen_mode_confirm_message">Confirm that the touchscreen is working. Without confirmation, alternative touchscreen mode will be disabled after several seconds.</string>
     <string name="alt_touchscreen_mode_confirm_button">Confirm</string>
 
+    <string name="app_copy_package_not_installed_in_user">Not installed in %1$s user</string>
+    <string name="app_copy_package_installed_or_updated_by_primary_user">Installed or updated by: %1$s</string>
+    <string name="app_copy_package_installed_or_updated_by_secondary_user">Installed or updated by: %1$s (Secondary user)</string>
+    <string name="app_copy_package_installed_or_updated_by_user_unknown">Last installed or updated user information is unknown</string>
 </resources>
