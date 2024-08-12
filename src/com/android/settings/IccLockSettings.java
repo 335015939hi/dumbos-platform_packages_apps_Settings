@@ -25,6 +25,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.res.Configuration;
 import android.content.res.Resources;
+import android.ext.settings.ExtSettings;
 import android.graphics.PixelFormat;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -127,6 +128,7 @@ public class IccLockSettings extends SettingsPreferenceFragment
 
     private EditPinPreference mPinDialog;
     private TwoStatePreference mPinToggle;
+    private TwoStatePreference mPinScramblingToggle;
 
     private Resources mRes;
 
@@ -199,6 +201,10 @@ public class IccLockSettings extends SettingsPreferenceFragment
 
         mPinDialog = (EditPinPreference) findPreference(PIN_DIALOG);
         mPinToggle = (TwoStatePreference) findPreference(PIN_TOGGLE);
+        mPinScramblingToggle = (TwoStatePreference) findPreference("sim_scramble_pin_layout");
+        mPinScramblingToggle.setOnPreferenceChangeListener((preference, newValue) -> {
+            return ExtSettings.SCRAMBLE_SIM_PIN_LAYOUT.put(requireContext(), (boolean) newValue);
+        });
         if (savedInstanceState != null) {
             if (savedInstanceState.containsKey(DIALOG_STATE)
                     && restoreDialogStates(savedInstanceState)) {
@@ -376,6 +382,8 @@ public class IccLockSettings extends SettingsPreferenceFragment
                         isIccLockEnabled() || isAutoPinManagementFeatureEnabledForSubscription());
             }
         }
+
+        mPinScramblingToggle.setChecked(ExtSettings.SCRAMBLE_SIM_PIN_LAYOUT.get(requireContext()));
     }
 
     @Override
