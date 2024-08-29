@@ -210,6 +210,7 @@ public class SettingsGateway {
             com.android.settings.applications.appinfo.AppNativeDebuggingFragment.class.getName(),
             com.android.settings.applications.appinfo.AppMemtagFragment.class.getName(),
             com.android.settings.applications.appinfo.AppHardenedMallocFragment.class.getName(),
+            com.android.settings.applications.appinfo.AppClipboardFragment.class.getName(),
             com.android.settings.safetycenter.ExploitProtectionFragment.class.getName(),
             AdvancedConnectedDeviceDashboardFragment.class.getName(),
             CreateShortcut.class.getName(),

@@ -10,12 +10,16 @@ import androidx.annotation.Nullable;
 
 import com.android.settings.R;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public abstract class AswAppInfoFragment<T extends AppSwitch>
         extends RadioButtonAppInfoFragment {
 
     protected static final int ID_DEFAULT = 0;
     protected static final int ID_ON = 1;
     protected static final int ID_OFF = 2;
+    protected static final int ID_ONE_TIME = 3;
 
     public abstract AswAdapter<T> createAswAdapter(Context ctx);
 
@@ -32,6 +36,10 @@ public abstract class AswAppInfoFragment<T extends AppSwitch>
         return adapter.getAswTitle();
     }
 
+    protected boolean isOneTimeChecked(@Nullable GosPackageState ps) {
+        return false;
+    }
+
     @Override
     public Entry[] getEntries() {
         Context ctx = adapter.getContext();
@@ -45,11 +53,16 @@ public abstract class AswAppInfoFragment<T extends AppSwitch>
 
         boolean isDefault = si.isUsingDefaultValue();
         boolean isImmutable = si.isImmutable();
+        boolean isOneTimeSupported = adapter.isOneTimeSupported();
+        boolean isOneTimeChecked = isOneTimeSupported && isOneTimeChecked(ps);
 
         var defaultSi = new AppSwitch.StateInfo();
         boolean defaultValue = asw.getDefaultValue(ctx, userId, appInfo, ps, defaultSi);
 
-        var def = createEntry(ID_DEFAULT, adapter.getDefaultTitle(defaultValue));
+        List<Entry> entries = new ArrayList<>();
+
+        var def = createEntry(ID_DEFAULT, adapter.getDefaultTitle(defaultValue, isOneTimeChecked));
+        entries.add(def);
         def.isChecked = isDefault;
         def.isEnabled = !isImmutable;
         if (def.isEnabled) {
@@ -70,11 +83,21 @@ public abstract class AswAppInfoFragment<T extends AppSwitch>
         }
 
         var enabled = createEntry(ID_ON, adapter.getOnTitle());
+        entries.add(enabled);
         enabled.isChecked = !isDefault && state;
         enabled.isEnabled = enabled.isChecked || !isImmutable;
 
+        Entry oneTime = null;
+        if (isOneTimeSupported) {
+            oneTime = createEntry(ID_ONE_TIME, adapter.getOneTimeTitle());
+            entries.add(oneTime);
+            oneTime.isChecked = !isDefault && !state && isOneTimeChecked;
+            oneTime.isEnabled = oneTime.isChecked || !isImmutable;
+        }
+
         var disabled = createEntry(ID_OFF, adapter.getOffTitle());
-        disabled.isChecked = !isDefault && !state;
+        entries.add(disabled);
+        disabled.isChecked = !isDefault && !state && !isOneTimeChecked;
         disabled.isEnabled = disabled.isChecked || !isImmutable;
 
         if (isImmutable) {
@@ -89,12 +112,15 @@ public abstract class AswAppInfoFragment<T extends AppSwitch>
             if (enabled.isChecked) {
                 enabled.summary = summary;
             }
+            if (oneTime != null && oneTime.isChecked) {
+                oneTime.summary = summary;
+            }
             if (disabled.isChecked) {
                 disabled.summary = summary;
             }
         }
 
-        return new Entry[] { def, enabled, disabled };
+        return entries.toArray(Entry[]::new);
     }
 
     @Nullable
@@ -125,11 +151,7 @@ public abstract class AswAppInfoFragment<T extends AppSwitch>
         Runnable r = () -> {
             GosPackageState.Editor ed = GosPackageState.edit(pkgName, userId);
 
-            switch (id) {
-                case ID_DEFAULT -> asw.setUseDefaultValue(ed);
-                case ID_ON, ID_OFF -> asw.set(ed, id == ID_ON);
-                default -> throw new IllegalStateException();
-            }
+            onEntrySelectedInner(id, asw, ed);
 
             ed.setKillUidAfterApply(shouldKillUidAfterChange());
 
@@ -143,6 +165,14 @@ public abstract class AswAppInfoFragment<T extends AppSwitch>
         };
 
         completeStateChange(id, asw.get(ctx, userId, appInfo, ps), r);
+    }
+
+    protected void onEntrySelectedInner(int id, AppSwitch asw, GosPackageState.Editor ed) {
+        switch (id) {
+            case ID_DEFAULT -> asw.setUseDefaultValue(ed);
+            case ID_ON, ID_OFF -> asw.set(ed, id == ID_ON);
+            default -> throw new IllegalStateException();
+        }
     }
 
     protected void completeStateChange(int newEntryId, boolean curValue, Runnable stateChangeAction) {

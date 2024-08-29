@@ -12,6 +12,8 @@ import kotlin.reflect.KClass
 abstract class AswAdapter<T : AppSwitch>(val context: Context, val userId: Int = context.userId) {
     abstract fun getAppSwitch(): T
 
+    open fun isOneTimeSupported(): Boolean = false
+
     fun getPreferenceSummary(appInfo: ApplicationInfo): CharSequence {
         val asw = getAppSwitch()
         val si = AppSwitch.StateInfo()
@@ -25,12 +27,20 @@ abstract class AswAdapter<T : AppSwitch>(val context: Context, val userId: Int =
 
     abstract fun getAswTitle(): CharSequence
 
-    fun getDefaultTitle(isOn: Boolean): CharSequence {
-        return context.getString(R.string.aep_default,
-            if (isOn) getOnTitle() else getOffTitle())
+    fun getDefaultTitle(isOn: Boolean, isOneTime: Boolean = false): CharSequence {
+        val subtext = if (isOneTime && isOneTimeSupported()) {
+            getOneTimeTitle()
+        } else if (isOn) {
+            getOnTitle()
+        } else {
+            getOffTitle()
+        }
+        return context.getString(R.string.aep_default, subtext)
     }
 
     open fun getOnTitle(): CharSequence = getText(R.string.aep_enabled)
+
+    open fun getOneTimeTitle(): CharSequence? = null
 
     open fun getOffTitle(): CharSequence = getText(R.string.aep_disabled)
 

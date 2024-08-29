@@ -496,5 +496,7 @@ public class Settings extends SettingsActivity {
 
     public static class AppNativeDebuggingActivity extends SettingsActivity {}
 
+    public static class AppClipboardActivity extends SettingsActivity {}
+
     public static class ExploitProtectionActivity extends SettingsActivity {}
 }

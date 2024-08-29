@@ -218,4 +218,16 @@ Duress PIN works the same way duress password does."</string>
     <string name="alt_touchscreen_mode_confirm_message">Confirm that the touchscreen is working. Without confirmation, alternative touchscreen mode will be disabled after several seconds.</string>
     <string name="alt_touchscreen_mode_confirm_button">Confirm</string>
 
+    <string name="dvr_default_privacy_setting">Default value can be changed in the Privacy section</string>
+
+    <string name="clipboard_read_pref_title">Clipboard read access for third-party apps</string>
+    <string name="clipboard_read_pref_footer">PLACEHOLDER</string>
+    <string name="clipboard_read_allowed">Allow only while using the app</string>
+    <string name="clipboard_read_ask_every_time">Ask every time</string>
+    <string name="clipboard_read_blocked">Don\'t allow</string>
+
+    <string name="app_clipboard_pref_title">Clipboard read access</string>
+    <string name="app_clipboard_pref_footer">"Manage this app\'s access to clipboard content. If this is set to Blocked, the app cannot access clipboard content set by other apps."</string>
+    <string name="app_clipboard_ir_preinstalled_app">Clipboard setting is not supported for a preinstalled app</string>
+
 </resources>
