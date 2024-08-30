@@ -523,6 +523,8 @@ public class Settings extends SettingsActivity {
     public static class HearingDevicesPairingActivity extends SettingsActivity { /* empty */ }
     public static class ContactsStorageSettingsActivity extends SettingsActivity { /* empty */ }
 
+    public static class AppMemtagActivity extends SettingsActivity {}
+
     public static class AppHardenedMallocActivity extends SettingsActivity {}
 
     public static class AppNativeDebuggingActivity extends SettingsActivity {}
