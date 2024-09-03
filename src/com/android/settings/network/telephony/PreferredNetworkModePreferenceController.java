@@ -158,7 +158,7 @@ public class PreferredNetworkModePreferenceController extends BasePreferenceCont
             case TelephonyManagerConstants.NETWORK_MODE_NR_ONLY:
                 return R.string.preferred_network_mode_nr_only_summary;
             case TelephonyManagerConstants.NETWORK_MODE_NR_LTE:
-                return R.string.preferred_network_mode_nr_lte_summary;
+                return R.string.preferred_network_mode_nr_lte_only_summary;
             case TelephonyManagerConstants.NETWORK_MODE_NR_LTE_CDMA_EVDO:
                 return R.string.preferred_network_mode_nr_lte_cdma_evdo_summary;
             case TelephonyManagerConstants.NETWORK_MODE_NR_LTE_GSM_WCDMA:

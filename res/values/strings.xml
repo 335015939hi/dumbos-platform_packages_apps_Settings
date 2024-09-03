@@ -11949,6 +11949,8 @@
     <string name="preferred_network_mode_nr_only_summary">Preferred network mode: NR only</string>
     <!-- NR / LTE [CHAR LIMIT=NONE] -->
     <string name="preferred_network_mode_nr_lte_summary">Preferred network mode: NR / LTE</string>
+    <!-- NR / LTE only [CHAR LIMIT=NONE] -->
+    <string name="preferred_network_mode_nr_lte_only_summary">Preferred network mode: NR/LTE only</string>
     <!-- NR/LTE/CDMA/EvDo [CHAR LIMIT=NONE] -->
     <string name="preferred_network_mode_nr_lte_cdma_evdo_summary">Preferred network mode: NR/LTE/CDMA/EvDo</string>
     <!-- NR/LTE/GSM/WCDMA [CHAR LIMIT=NONE] -->
@@ -11970,6 +11972,10 @@
 
     <!-- Text for Network mode 5g recommended [CHAR LIMIT=NONE] -->
     <string name="network_5G_recommended">5G (recommended)</string>
+    <!-- Text for Network 5g/lte only [CHAR LIMIT=NONE] -->
+    <string name="network_5G_lte_only">5G/LTE only</string>
+    <!-- Text for Network 5g/4g only [CHAR LIMIT=NONE] -->
+    <string name="network_5G_4G_only">5G/4G only</string>
     <!-- Text for Network lte [CHAR LIMIT=NONE] -->
     <string name="network_lte_pure" translatable="false">LTE</string>
     <!-- Text for Network 4g [CHAR LIMIT=NONE] -->
