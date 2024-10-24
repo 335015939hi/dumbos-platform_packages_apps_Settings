@@ -361,7 +361,7 @@ public class UserDetailsSettings extends SettingsPreferenceFragment
         boolean isNewUser =
                 arguments.getBoolean(AppRestrictionsFragment.EXTRA_NEW_USER, false);
         mUserInfo = mUserManager.getUserInfo(userId);
-        userRestrictions = new UserRestrictions(mUserManager, mUserInfo);
+        userRestrictions = UserRestrictions.createInstance(mUserManager, mUserInfo);
 
         mSwitchUserPref = findPreference(KEY_SWITCH_USER);
         mPhonePref = findPreference(KEY_ENABLE_TELEPHONY);
