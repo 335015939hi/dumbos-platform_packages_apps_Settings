@@ -8,6 +8,7 @@ import android.content.pm.UserInfo;
 import android.os.Bundle;
 import android.os.UserHandle;
 import android.os.UserManager;
+import android.util.Log;
 
 import androidx.preference.Preference;
 import androidx.preference.PreferenceScreen;
@@ -27,6 +28,7 @@ import java.util.stream.Collectors;
 
 public class UserAppsInstallSettings extends RadioButtonPickerFragment {
 
+    private static final String TAG = "UserAppsInstallSettings";
     private static final String INSTALL_ENABLED = "install_apps_enabled";
     private static final String INSTALL_FIRST_PARTY_ENABLED = "install_apps_first_party_enabled";
     private static final String INSTALL_DISABLED = "install_apps_disabled";
@@ -75,11 +77,13 @@ public class UserAppsInstallSettings extends RadioButtonPickerFragment {
     public void onCreate(Bundle savedInstanceState) {
         Bundle args = requireArguments();
         int userId = args.getInt(EXTRA_USER_ID, UserHandle.USER_NULL);
-
         Context ctx = requireContext();
-        UserManager userManager = ctx.getSystemService(UserManager.class);
-        UserInfo userInfo = userManager.getUserInfo(userId);
-        userRestrictions = new UserRestrictions(userManager, userInfo);
+        userRestrictions = UserRestrictions.createInstance(ctx, userId);
+        if (userRestrictions == null) {
+            Log.w(TAG, "Unable to fetch user info for provided userId");
+            finishFragment();
+            return;
+        }
 
         super.onCreate(savedInstanceState);
     }
