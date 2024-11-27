@@ -255,14 +255,21 @@ public class BluetoothPairingDialogFragment extends InstrumentedDialogFragment i
                 (CheckBox) view.findViewById(R.id.phonebook_sharing_message_entry_pin);
         if (contactSharing != null) {
             contactSharing.setText(getString(R.string.bluetooth_pairing_shares_phonebook));
-            contactSharing.setVisibility(
-                    mPairingController.isContactSharingVisible() ? View.VISIBLE : View.GONE);
-            mPairingController.setContactSharingState();
             contactSharing.setOnCheckedChangeListener(mPairingController);
             contactSharing.setChecked(mPairingController.getContactSharingState());
+            contactSharing.setVisibility(
+                    mPairingController.isContactSharingVisible() ? View.VISIBLE : View.GONE);
+            // OnCheckedChangeListener has to be registered before the initial setChecked()
         }
 
         EditText pairingView = (EditText) view.findViewById(R.id.text);
+
+        contactSharing.setVisibility(
+                mPairingController.isContactSharingVisible() ? View.VISIBLE : View.GONE);
+        // OnCheckedChangeListener has to be registered before the initial setChecked()
+        contactSharing.setOnCheckedChangeListener(mPairingController);
+        contactSharing.setChecked(mPairingController.getContactSharingState());
+
         mPairingView = pairingView;
 
         pairingView.setInputType(InputType.TYPE_CLASS_NUMBER);
@@ -349,9 +356,9 @@ public class BluetoothPairingDialogFragment extends InstrumentedDialogFragment i
                 view.findViewById(R.id.phonebook_sharing_message_confirm_pin);
         view.findViewById(R.id.phonebook_sharing).setVisibility(
                 mPairingController.isContactSharingVisible() ? View.VISIBLE : View.GONE);
-        mPairingController.setContactSharingState();
-        contactSharing.setChecked(mPairingController.getContactSharingState());
+        // OnCheckedChangeListener has to be registered before the initial setChecked()
         contactSharing.setOnCheckedChangeListener(mPairingController);
+        contactSharing.setChecked(mPairingController.getContactSharingState());
 
         messagePairing.setVisibility(mPairingController.isDisplayPairingKeyVariant()
                 ? View.VISIBLE : View.GONE);
