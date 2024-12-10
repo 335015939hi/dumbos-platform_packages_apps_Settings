@@ -103,7 +103,12 @@ public class FlashlightSlice implements CustomSliceable {
                 final boolean state = intent.getBooleanExtra(
                         EXTRA_TOGGLE_STATE, isFlashlightEnabled(mContext));
                 final CameraManager cameraManager = mContext.getSystemService(CameraManager.class);
-                cameraManager.setTorchMode(cameraId, state);
+                if (state) {
+                    CameraCharacteristics c = cameraManager.getCameraCharacteristics(cameraId);
+                    cameraManager.turnOnTorchWithStrengthLevel(cameraId, c.get(CameraCharacteristics.FLASH_TORCH_STRENGTH_MAX_LEVEL));
+                } else {
+                    cameraManager.setTorchMode(cameraId, false);
+                }
             }
         } catch (CameraAccessException e) {
             Log.e(TAG, "Camera couldn't set torch mode.", e);
