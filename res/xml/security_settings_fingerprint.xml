@@ -86,6 +86,11 @@
             android:title="@string/keyguard_fingerprint_title"
             android:summary="@string/keyguard_fingerprint_summary"
             settings:controller="com.android.settings.biometrics.fingerprint.FingerprintSettingsKeyguardPreferenceController" />
+
+        <androidx.preference.Preference
+            android:key="biometric_second_factor_pin"
+            android:title="@string/biometric_second_factor_pin_title" />
+
     </PreferenceCategory>
 
     <PreferenceCategory
