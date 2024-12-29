@@ -1,6 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- SettingsGoogle -->
+    <string name="charging_optimization_charge_label"/>
+    <string name="charging_optimization_reach_limit_charge_label"/>
+    <string name="charging_optimization_reach_limit_remaining_time_label"/>
+    <string name="charging_optimization_remaining_time_label"/>
     <string name="touch_sensitivity_title"/>
     <string name="touch_sensitivity_summary"/>
+
+    <!-- SettingsIntelligenceGoogle -->
+    <string name="charge_limit_indexing_keywords"/>
+    <string name="charging_optimization_footer_message_charge_limit"/>
+    <string name="charging_optimization_entry_summary_charge_limit"/>
+    <string name="charging_optimization_summary_off"/>
+    <string name="charging_optimization_title"/>
 </resources>
