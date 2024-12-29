@@ -52,6 +52,13 @@
         settings:controller="com.android.settings.fuelgauge.BatterySaverController" />
 
     <Preference
+        android:fragment="com.android.settings.fuelgauge.BatteryChargingOptimizationFragment"
+        android:key="charging_optimization"
+        android:title="@string/charging_optimization_title"
+        settings:keywords="@string/charge_limit_indexing_keywords"
+        settings:controller="com.android.settings.fuelgauge.BatteryChargingOptimizationPrefController" />
+
+    <Preference
         android:fragment="com.android.settings.fuelgauge.SmartBatterySettings"
         android:key="smart_battery_manager"
         android:title="@string/smart_battery_manager_title"
