@@ -42,6 +42,7 @@ import com.android.settings.metrics.SettingsMetricsLogger;
 import com.android.settings.msds.MSDLPlayerWrapper;
 import com.android.settings.overlay.FeatureFactory;
 import com.android.settings.overlay.FeatureFactoryImpl;
+import com.google.android.settings.overlay.FeatureFactoryGoogleImpl;
 import com.android.settings.spa.SettingsSpaEnvironment;
 import com.android.settingslib.applications.AppIconCacheManager;
 import com.android.settingslib.datastore.BackupRestoreStorageManager;
@@ -144,6 +145,9 @@ public class SettingsApplication extends Application {
 
     @NonNull
     protected FeatureFactory getFeatureFactory() {
+        if ("Google".equals(android.os.Build.MANUFACTURER)) {
+            return new FeatureFactoryGoogleImpl();
+        }
         return new FeatureFactoryImpl();
     }
 
