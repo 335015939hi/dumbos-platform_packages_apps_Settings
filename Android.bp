@@ -91,6 +91,7 @@ android_library {
         "WindowManager-Shell-shared-desktopMode",
 
         // Settings dependencies
+        "google_battery",
         "FingerprintManagerInteractor",
         "MediaDrmSettingsFlagsLib",
         "ReverseWirelessCharging",
