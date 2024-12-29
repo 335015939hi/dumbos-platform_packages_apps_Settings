@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- SettingsGoogle -->
+    <string name="charging_optimization_charge_label"/>
+    <string name="charging_optimization_reach_limit_charge_label"/>
+    <string name="charging_optimization_reach_limit_remaining_time_label"/>
+    <string name="charging_optimization_remaining_time_label"/>
+    <string name="charging_optimization_wireless_reach_limit_remaining_time_label"/>
+    <string name="charging_optimization_wireless_remaining_time_label"/>
+
+    <!-- SettingsIntelligenceGoogle -->
+    <string name="charge_limit_indexing_keywords"/>
+    <string name="charge_limit_mode_key"/>
+    <string name="charge_limit_mode_summary"/>
+    <string name="charge_limit_mode_title"/>
+    <string name="charging_optimization_category_key"/>
+    <string name="charging_optimization_footer_adaptive"/>
+    <string name="charging_optimization_footer_charge_limit"/>
+    <string name="charging_optimization_footer_key"/>
+    <string name="charging_optimization_footer_learn_more_adaptive_charging"/>
+    <string name="charging_optimization_footer_learn_more_charge_limit"/>
+    <string name="charging_optimization_footer_learn_more_default"/>
+    <string name="charging_optimization_footer_off"/>
+    <string name="charging_optimization_illustration_key"/>
+    <string name="charging_optimization_main_switch_title"/>
+    <string name="charging_optimization_main_switch_title_charge_limit_only"/>
+    <string name="charging_optimization_summary_adaptive"/>
+    <string name="charging_optimization_summary_charge_limit"/>
+    <string name="charging_optimization_summary_off"/>
+    <string name="charging_optimization_switch_key"/>
+    <string name="charging_optimization_title"/>
+    <string name="url_help_article_charging_optimization"/>
+</resources>
