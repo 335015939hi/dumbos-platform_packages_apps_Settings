@@ -58,7 +58,13 @@ class AppStorageDynCodeLoadingFragment : AswExploitProtectionFragment<AswRestric
 class AppDefaultStorageDynCodeLoadingPrefController(ctx: Context, key: String) :
         BoolSettingFragmentPrefController(ctx, key, ExtSettings.RESTRICT_STORAGE_DYN_CODE_LOADING_BY_DEFAULT) {
 
-    override fun getSummaryOn() = resText(R.string.aep_default_summary_restricted)
+    override fun getSummaryOn() = run {
+        val id = if (AswRestrictStorageDynCodeLoading.isGmsCoreInstalled(mContext, mContext.userId))
+            R.string.aep_default_summary_restricted_except_for_gmscore_clients
+            else R.string.aep_default_summary_restricted
+        resText(id)
+    }
+
     override fun getSummaryOff() = resText(R.string.aep_default_summary_allowed_for_3p_apps)
 }
 
