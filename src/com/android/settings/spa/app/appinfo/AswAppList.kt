@@ -41,7 +41,7 @@ fun AswAppListPage(adapter: AswAdapter<*>) {
     )
 }
 
-class AppRecordImpl(override val app: ApplicationInfo, val gosPackageState: GosPackageState?) : AppRecord
+class AppRecordImpl(override val app: ApplicationInfo, val gosPackageState: GosPackageState) : AppRecord
 
 class AswAppListModel(val ctx: Context, val adapter: AswAdapter<*>) : AppListModel<AppRecordImpl> {
     companion object {
