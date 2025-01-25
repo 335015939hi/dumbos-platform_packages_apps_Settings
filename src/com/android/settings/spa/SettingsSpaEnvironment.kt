@@ -154,6 +154,7 @@ open class SettingsSpaEnvironment(context: Context) : SpaEnvironment(context) {
                     com.android.settings.applications.AswAdapterWebViewDynCodeLoading.makeAppListPageProvider(),
                     com.android.settings.applications.AswAdapterMemoryDynCodeLoading.makeAppListPageProvider(),
                     com.android.settings.applications.AswAdapterStorageDynCodeLoading.makeAppListPageProvider(),
+                    com.android.settings.applications.AswAdapterManagePlayIntegrityApi.makeAppListPageProvider(),
                 )
             )
 
