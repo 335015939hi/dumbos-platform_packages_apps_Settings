@@ -110,8 +110,8 @@ import java.util.Map;
 public class ChooseLockPassword extends SettingsActivity {
     private static final String TAG = "ChooseLockPassword";
 
-    static final String EXTRA_KEY_MIN_METRICS = "min_metrics";
-    static final String EXTRA_KEY_MIN_COMPLEXITY = "min_complexity";
+    public static final String EXTRA_KEY_MIN_METRICS = "min_metrics";
+    public static final String EXTRA_KEY_MIN_COMPLEXITY = "min_complexity";
 
     @Override
     public Intent getIntent() {
@@ -271,6 +271,9 @@ public class ChooseLockPassword extends SettingsActivity {
         protected boolean mForFace;
         protected boolean mForBiometrics;
 
+        // PIN/passphrase generation will delegate to this Fragment for the last confirmation step
+        private boolean mFromPasswordGeneration;
+
         private LockscreenCredential mFirstPassword;
         private RecyclerView mPasswordRestrictionView;
         protected boolean mIsAlphaMode;
@@ -284,11 +287,11 @@ public class ChooseLockPassword extends SettingsActivity {
         private TextChangedHandler mTextChangedHandler;
 
         private static final int CONFIRM_EXISTING_REQUEST = 58;
-        static final int RESULT_FINISHED = RESULT_FIRST_USER;
+        public static final int RESULT_FINISHED = RESULT_FIRST_USER;
         private boolean mIsErrorTooShort = true;
 
         /** Used to store the profile type for which pin/password is being set */
-        protected enum ProfileType {
+        public enum ProfileType {
             None,
             Managed,
             Private,
@@ -299,7 +302,7 @@ public class ChooseLockPassword extends SettingsActivity {
         /**
          * Keep track internally of where the user is in choosing a pattern.
          */
-        protected enum Stage {
+        public enum Stage {
 
             Introduction(
                     R.string.lockpassword_choose_your_password_header, // password
@@ -498,7 +501,7 @@ public class ChooseLockPassword extends SettingsActivity {
             }
             // Only take this argument into account if it belongs to the current profile.
             mUserId = Utils.getUserIdFromBundle(getActivity(), intent.getExtras());
-            mProfileType = getProfileType();
+            mProfileType = getProfileType(getContext(), mUserId);
             mForFingerprint = intent.getBooleanExtra(
                     ChooseLockSettingsHelper.EXTRA_KEY_FOR_FINGERPRINT, false);
             mForFace = intent.getBooleanExtra(ChooseLockSettingsHelper.EXTRA_KEY_FOR_FACE, false);
@@ -515,6 +518,9 @@ public class ChooseLockPassword extends SettingsActivity {
             if (mMinMetrics == null) mMinMetrics = new PasswordMetrics(CREDENTIAL_TYPE_NONE);
 
             mTextChangedHandler = new TextChangedHandler();
+
+            mFromPasswordGeneration = intent.getBooleanExtra(
+                    ChooseLockSettingsHelper.EXTRA_KEY_FROM_PASSWORD_GENERATION, false);
         }
 
         @Override
@@ -624,6 +630,21 @@ public class ChooseLockPassword extends SettingsActivity {
                             .setRequestWriteRepairModePassword(mRequestWriteRepairModePassword)
                             .setUserId(mUserId)
                             .show();
+                }
+
+                if (mFromPasswordGeneration) {
+                    final LockscreenCredential generatedPassword = intent.getParcelableExtra(
+                            ChooseLockSettingsHelper.EXTRA_KEY_FROM_PASSWORD_GENERATION_GENERATED_PASSWORD, LockscreenCredential.class);
+                    if (generatedPassword != null) {
+                        final var isAutoPinConfirm = intent.getBooleanExtra(
+                                ChooseLockSettingsHelper.EXTRA_KEY_FROM_PASSWORD_GENERATION_AUTO_PIN_CONFIRM, false);
+                        mIsAutoPinConfirmOptionSetManually = true;
+                        mAutoPinConfirmOption.setChecked(isAutoPinConfirm);
+                        // simulate the user inputting this generated password so that it's
+                        // validated against existing AOSP validation code
+                        handleNext(generatedPassword);
+                        // do not zeroize generatedPassword; it might be stored in mChosenPassword
+                    }
                 }
             } else {
 
@@ -815,14 +836,23 @@ public class ChooseLockPassword extends SettingsActivity {
         }
 
         public void handleNext() {
+            handleNext(null);
+        }
+
+        public void handleNext(@Nullable LockscreenCredential chosenPasswordOverride) {
             if (mSaveAndFinishWorker != null) return;
             // TODO(b/120484642): This is a point of entry for passwords from the UI
-            final Editable passwordText = mPasswordEntry.getText();
-            if (TextUtils.isEmpty(passwordText)) {
-                return;
+            if (chosenPasswordOverride != null && mUiStage == Stage.Introduction) {
+                // simulate generated password being used as user input
+                mChosenPassword = chosenPasswordOverride;
+            } else {
+                final Editable passwordText = mPasswordEntry.getText();
+                if (TextUtils.isEmpty(passwordText)) {
+                    return;
+                }
+                mChosenPassword = mIsAlphaMode ? LockscreenCredential.createPassword(passwordText)
+                        : LockscreenCredential.createPin(passwordText);
             }
-            mChosenPassword = mIsAlphaMode ? LockscreenCredential.createPassword(passwordText)
-                    : LockscreenCredential.createPin(passwordText);
             if (mUiStage == Stage.Introduction) {
                 if (validatePassword(mChosenPassword)) {
                     mFirstPassword = mChosenPassword;
@@ -1031,7 +1061,14 @@ public class ChooseLockPassword extends SettingsActivity {
                 mAutoConfirmSecurityMessage.setVisibility(View.GONE);
             }
             final int stage = getStageType();
-            if (getStageType() != Stage.TYPE_NONE) {
+            if (mFromPasswordGeneration) {
+                // this is the third confirmation; let the user know that they're done after this
+                mMessage.setVisibility(View.VISIBLE);
+                final var msg = mIsAlphaMode
+                        ? R.string.lock_screen_generate_confirm_last_desc_passphrase
+                        : R.string.lock_screen_generate_confirm_last_desc_pin;
+                mMessage.setText(getString(msg));
+            } else if (getStageType() != Stage.TYPE_NONE) {
                 int message = mUiStage.getMessage(mIsAlphaMode, stage);
                 if (message != 0) {
                     mMessage.setVisibility(View.VISIBLE);
@@ -1067,7 +1104,7 @@ public class ChooseLockPassword extends SettingsActivity {
             }
         }
 
-        private boolean isAutoPinConfirmPossible(int currentPinLength) {
+        public static boolean isAutoPinConfirmPossible(int currentPinLength) {
             return currentPinLength >= MIN_AUTO_PIN_REQUIREMENT_LENGTH;
         }
 
@@ -1085,7 +1122,16 @@ public class ChooseLockPassword extends SettingsActivity {
                     && mLayout.getHeaderText().toString().equals(text)) {
                 return;
             }
-            mLayout.setHeaderText(text);
+
+            String headerText = text;
+            if (mFromPasswordGeneration && mIsAlphaMode) {
+                var defaultHeader = getString(R.string.lockpassword_confirm_your_password_header);
+                if (defaultHeader.equals(text)) {
+                    headerText = getString(R.string.lock_screen_generate_confirm_again_title_passphrase);
+                }
+            }
+
+            mLayout.setHeaderText(headerText);
         }
 
         public void afterTextChanged(Editable s) {
@@ -1199,8 +1245,8 @@ public class ChooseLockPassword extends SettingsActivity {
             }
         }
 
-        private ProfileType getProfileType() {
-            UserManager userManager = getContext().createContextAsUser(UserHandle.of(mUserId),
+        public static ProfileType getProfileType(Context context, int userId) {
+            UserManager userManager = context.createContextAsUser(UserHandle.of(userId),
                     /*flags=*/0).getSystemService(UserManager.class);
             if (userManager.isManagedProfile()) {
                 return ProfileType.Managed;

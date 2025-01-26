@@ -34,6 +34,7 @@ import androidx.fragment.app.Fragment;
 import com.android.settings.R;
 import com.android.settings.SetupRedactionInterstitial;
 import com.android.settings.password.ChooseLockTypeDialogFragment.OnLockTypeSelectedListener;
+import com.android.settings.password.generate.GenerateLockPasswordActivity;
 
 import com.google.android.setupcompat.util.WizardManagerHelper;
 
@@ -51,7 +52,10 @@ public class SetupChooseLockPassword extends ChooseLockPassword {
     public static Intent modifyIntentForSetup(
             Context context,
             Intent chooseLockPasswordIntent) {
-        chooseLockPasswordIntent.setClass(context, SetupChooseLockPassword.class);
+        // GrapheneOS change: This new activity for password generation will handle SetupWizard.
+        // Usually this setClass result isn't used anyway, since a new intent is created in
+        // ChooseLockGeneric and the extras are passed into there.
+        chooseLockPasswordIntent.setClass(context, GenerateLockPasswordActivity.class);
         chooseLockPasswordIntent.putExtra(EXTRA_PREFS_SHOW_BUTTON_BAR, false);
         return chooseLockPasswordIntent;
     }
@@ -75,7 +79,7 @@ public class SetupChooseLockPassword extends ChooseLockPassword {
     public static class SetupChooseLockPasswordFragment extends ChooseLockPasswordFragment
             implements OnLockTypeSelectedListener {
 
-        private static final String TAG_SKIP_SCREEN_LOCK_DIALOG = "skip_screen_lock_dialog";
+        public static final String TAG_SKIP_SCREEN_LOCK_DIALOG = "skip_screen_lock_dialog";
 
         @Nullable
         private Button mOptionsButton;

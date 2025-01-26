@@ -128,6 +128,19 @@ public final class ChooseLockSettingsHelper {
     public static final String EXTRA_KEY_CHOOSE_LOCK_SCREEN_DESCRIPTION =
             "choose_lock_setup_screen_description";
 
+    /**
+     * Indicate whether it's being launched from PIN/passphrase password generation activity,
+     * since that will defer verification and saving of the PIN/passphrase to the base AOSP
+     * activity.
+     **/
+    public static final String EXTRA_KEY_FROM_PASSWORD_GENERATION = "from_password_generation";
+
+    public static final String EXTRA_KEY_FROM_PASSWORD_GENERATION_GENERATED_PASSWORD =
+            "password_generation__generated_password";
+
+    public static final String EXTRA_KEY_FROM_PASSWORD_GENERATION_AUTO_PIN_CONFIRM =
+            "password_generation__auto_pin_confirm";
+
     @VisibleForTesting @NonNull LockPatternUtils mLockPatternUtils;
     @NonNull private final Activity mActivity;
     @Nullable private final Fragment mFragment;

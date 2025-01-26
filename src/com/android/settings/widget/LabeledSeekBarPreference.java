@@ -63,6 +63,9 @@ public class LabeledSeekBarPreference extends SeekBarPreference {
     private OnPreferenceChangeListener mStopListener;
     private SeekBar.OnSeekBarChangeListener mSeekBarChangeListener;
 
+    // GrapheneOS: false by default to preserve semantics elsewhere in Settings app
+    private boolean mTriggerUserChangeOnIconPress = false;
+
     private SeekBar mSeekBar;
 
     public LabeledSeekBarPreference(Context context, AttributeSet attrs, int defStyleAttr,
@@ -228,6 +231,10 @@ public class LabeledSeekBarPreference extends SeekBarPreference {
         mSeekBarChangeListener = seekBarChangeListener;
     }
 
+    public void setTriggerUserChangeOnIconPress(boolean triggerUserChangeOnIconPress) {
+        mTriggerUserChangeOnIconPress = triggerUserChangeOnIconPress;
+    }
+
     private void updateIconStartIfNeeded(ViewGroup iconFrame, ImageView iconStart,
             SeekBar seekBar) {
         if (mIconStartId == 0) {
@@ -248,6 +255,10 @@ public class LabeledSeekBarPreference extends SeekBarPreference {
             final int progress = getProgress();
             if (progress > 0) {
                 setProgress(progress - 1);
+                if (mTriggerUserChangeOnIconPress && getProgress() == progress - 1 &&
+                        mSeekBarChangeListener != null) {
+                    mSeekBarChangeListener.onProgressChanged(seekBar, progress - 1, true);
+                }
             }
         });
 
@@ -274,6 +285,10 @@ public class LabeledSeekBarPreference extends SeekBarPreference {
             final int progress = getProgress();
             if (progress < getMax()) {
                 setProgress(progress + 1);
+                if (mTriggerUserChangeOnIconPress && getProgress() == progress + 1 &&
+                        mSeekBarChangeListener != null) {
+                    mSeekBarChangeListener.onProgressChanged(seekBar, progress + 1, true);
+                }
             }
         });
 
