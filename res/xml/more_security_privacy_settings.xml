@@ -239,6 +239,13 @@
 
     <SwitchPreferenceCompat
         android:order="281"
+        android:key="expiry_warning_disable"
+        android:title="@string/patch_level_expiry_warning_disable_title"
+        settings:controller="com.android.settings.security.ExpiryWarningDisablePreferenceController"
+        />
+
+    <SwitchPreferenceCompat
+        android:order="281"
         android:key="show_system_process_crash_notifs"
         android:title="@string/show_system_process_crash_notifs_title"
         android:summary="@string/show_system_process_crash_notifs_summary"
