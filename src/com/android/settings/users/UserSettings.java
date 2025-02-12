@@ -74,6 +74,7 @@ import com.android.settings.SettingsPreferenceFragment;
 import com.android.settings.Utils;
 import com.android.settings.core.SubSettingLauncher;
 import com.android.settings.password.ChooseLockGeneric;
+import com.android.settings.privatespace.PrivateSpaceMaintainer;
 import com.android.settings.search.BaseSearchIndexProvider;
 import com.android.settings.widget.MainSwitchBarController;
 import com.android.settings.widget.SettingsMainSwitchBar;
@@ -243,6 +244,9 @@ public class UserSettings extends SettingsPreferenceFragment
     // A place to cache the generated default avatar
     private Drawable mDefaultIconDrawable;
 
+    private Preference privateSpaceLabel;
+    private RestrictedPreference privateSpaceAppCopy;
+
     // TODO:   Replace current Handler solution to something that doesn't leak memory and works
     // TODO:   during a configuration change
     private Handler mHandler = new Handler() {
@@ -369,6 +373,11 @@ public class UserSettings extends SettingsPreferenceFragment
 
         mUserCaps = UserCapabilities.create(activity);
         mUserManager = (UserManager) activity.getSystemService(Context.USER_SERVICE);
+
+        privateSpaceLabel = screen.findPreference("private_profile_label");
+        privateSpaceAppCopy = screen.findPreference("app_copying_private_profile");
+        handlePrivateSpaceInstallExistingAppsPreference();
+
         if (!mUserCaps.mEnabled) {
             return;
         }
@@ -1372,6 +1381,37 @@ public class UserSettings extends SettingsPreferenceFragment
             mUserListCategory.addPreference(userPreference);
         }
 
+    }
+
+    private void handlePrivateSpaceInstallExistingAppsPreference() {
+        if (!mUserManager.isAdminUser()) {
+            return;
+        }
+
+        var privateSpaceMgr  = PrivateSpaceMaintainer.getInstance(getContext());
+        var privateSpaceHandle = privateSpaceMgr.getPrivateProfileHandle();
+        if (!privateSpaceMgr.doesPrivateSpaceExist() || privateSpaceHandle == null) {
+            return;
+        }
+
+        privateSpaceLabel.setVisible(true);
+        privateSpaceAppCopy.setVisible(true);
+
+        privateSpaceAppCopy.setOnPreferenceClickListener(
+                preference -> {
+
+                    final Bundle extras = new Bundle();
+                    extras.putInt(AppRestrictionsFragment.EXTRA_USER_ID, privateSpaceHandle.getIdentifier());
+                    new SubSettingLauncher(getContext())
+                            .setDestination(AppCopyFragment.class.getName())
+                            .setArguments(extras)
+                            .setTitleRes(R.string.user_copy_apps_menu_title)
+                            .setSourceMetricsCategory(getMetricsCategory())
+                            .launch();
+
+                    return false;
+                }
+        );
     }
 
     @VisibleForTesting

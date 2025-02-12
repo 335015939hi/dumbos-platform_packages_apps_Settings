@@ -55,6 +55,19 @@
         android:icon="@drawable/ic_add_40dp"
         android:order="20"/>
 
+    <PreferenceCategory
+        android:key="private_profile_label"
+        android:title="@string/private_space_title"
+        settings:isPreferenceVisible="false"
+        android:order="21"/>
+
+    <com.android.settingslib.RestrictedPreference
+        android:key="app_copying_private_profile"
+        android:icon="@drawable/ic_apps"
+        settings:isPreferenceVisible="false"
+        android:title="@string/user_copy_apps_menu_title"
+        android:order="22"/>
+
     <com.android.settingslib.RestrictedPreference
         android:key="supervised_user_add"
         android:title="@*android:string/supervised_user_creation_label"
