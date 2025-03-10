@@ -315,4 +315,5 @@ In order to retrieve the Weaver token, the secure element requires the correct W
     <string name="lock_screen_generate_confirm_again_desc_passphrase">Enter your passphrase again to ensure you\'ve memorized it.</string>
     <string name="lock_screen_generate_confirm_last_desc_passphrase">Enter your passphrase one more time to confirm it as your screen lock.</string>
     <string name="lock_screen_generate_confirm_passphrases_dont_match">Passphrases don\'t match</string>
+    <string name="lock_screen_generate_untested_class_toast">Unable to use generation PIN / passphrase flow. Check logs for details</string>
 </resources>

@@ -1,13 +1,18 @@
 package com.android.settings.password.generate
 
+import android.app.Activity
 import android.app.admin.DevicePolicyManager
 import android.app.admin.PasswordMetrics
+import android.content.ComponentName
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
+import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
@@ -26,7 +31,105 @@ import com.google.android.setupcompat.util.WizardManagerHelper
 import com.google.android.setupdesign.util.ThemeHelper
 import kotlinx.coroutines.flow.filterNotNull
 
+private const val TAG = "GenerateLockPassActivity"
+
 class GenerateLockPasswordActivity : SettingsActivity() {
+    companion object {
+        /**
+         * The original AOSP component to launch for the PIN/password input activity. Will be
+         * used for final validation and also if the user wants to select their own password / PIN.
+         */
+        const val EXTRA_ORIGINAL_CLASS_COMPONENT = "original_class_component"
+
+        /**
+         * Gets the original AOSP intent to launch the activity that we intercepted the extras for.
+         */
+        fun getAospPasswordIntent(activity: Activity): Intent {
+            val originalComponent: ComponentName? = activity.intent?.getParcelableExtra(
+                EXTRA_ORIGINAL_CLASS_COMPONENT,
+                ComponentName::class.java
+            ).also { Log.d(TAG, "originalComponent: $it") }
+
+            val intent = originalComponent?.let { Intent().setComponent(it) }
+                ?: ChooseLockPassword.IntentBuilder(activity).build()
+                    .also {
+                        if (WizardManagerHelper.isAnySetupWizard(activity.intent)) {
+                            // SetupChooseLockPassword will show Skip and Screen lock options
+                            // buttons, but the Screen lock options button will take users back to
+                            // this generate password flow
+                            it.setClass(activity, SetupChooseLockPassword::class.java)
+                        }
+                    }
+
+            // Allow ChooseLockPassword to get the original extras, since these extras were
+            // originally meant for ChooseLockPassword. This will let ChooseLockPassword do
+            // validation properly
+            intent.putExtras(activity.intent)
+
+            return intent
+        }
+
+        @JvmStatic
+        fun maybeGetLaunchIntent(context: Context, originalLockPasswordIntent: Intent): Intent? {
+            val originalLaunchComponent: ComponentName = originalLockPasswordIntent.component
+                ?: return null
+
+            // Only launch GenerateLockPasswordActivity if the intent we're intercepting
+            // is a subclass of ChooseLockPassword that is known to work. This is because we needed
+            // to modify ChooseLockPassword to do validation, so we should only work with
+            // ChooseLockPasswords.
+            //
+            // Strictly speaking, any subclass of ChooseLockPassword could override onCreate and
+            // other methods that we modified. See isTestedChooseLockPasswordComponent for details
+            if (!isTestedChooseLockPasswordComponent(context, originalLaunchComponent)) {
+                return null
+            }
+
+            val generateLockPassIntent = Intent(context, GenerateLockPasswordActivity::class.java)
+            // Take the extras meant for the original ChooseLockPassword activity
+            // and forward it. Will be used to detect if it's for password or PIN, and
+            // will also be forwarded to original lock password activity if user wants
+            // to use their own password.
+            return generateLockPassIntent.putExtras(originalLockPasswordIntent)
+                .putExtra(EXTRA_ORIGINAL_CLASS_COMPONENT, originalLaunchComponent)
+        }
+
+        private fun isTestedChooseLockPasswordComponent(
+            context: Context, originalLaunchComponent: ComponentName
+        ): Boolean {
+            val verified = sequence {
+                yield(ChooseLockPassword::class.java)
+                // calls super methods correctly; is tested to be compatible
+                yield(SetupChooseLockPassword::class.java)
+            }
+
+            if (
+                originalLaunchComponent.packageName == context.packageName &&
+                verified.any { testedClass -> testedClass.name == originalLaunchComponent.className }
+            ) {
+                return true
+            }
+
+            // will always return false after this point; now just logging info for reference
+            val originalLaunchClass: Class<*> = try {
+                Class.forName(
+                    originalLaunchComponent.className, true,
+                    context.getClassLoader()
+                )
+            } catch (e: ClassNotFoundException) {
+                Log.w(TAG, "class $originalLaunchComponent can't be found", e)
+                return false
+            }
+
+            if (ChooseLockPassword::class.java.isAssignableFrom(originalLaunchClass)) {
+                Log.w(TAG, "class $originalLaunchComponent extends ChooseLockPassword; needs to be tested")
+            } else {
+                Log.w(TAG, "class $originalLaunchComponent doesn't extend ChooseLockPassword")
+            }
+
+            return false
+        }
+    }
 
     private val viewModel: GenerateLockPasswordViewModel by viewModels(
         factoryProducer = { GenerateLockPasswordViewModel.Factory }
@@ -99,6 +202,8 @@ class GenerateLockPasswordActivity : SettingsActivity() {
                 requireActivity().setResult(result.resultCode, result.data)
                 requireActivity().finish()
             } else {
+                // don't show confirmation stages to the user again if they fail final confirmation
+                // and decide to go back
                 viewModel.onBackPressed()
             }
         }
@@ -173,15 +278,7 @@ class GenerateLockPasswordActivity : SettingsActivity() {
                     as? GenerateLockPasswordViewModel.Selection.ForConfirmation)
                 ?.credential ?: return
             val autoPinConfirm = viewModel.isAutoPinConfirm.value
-            // Launch the original PIN/password input activity
-            val intent = ChooseLockPassword.IntentBuilder(context).build()
-            if (WizardManagerHelper.isAnySetupWizard(activity?.intent)) {
-                intent.setClass(context!!, SetupChooseLockPassword::class.java)
-            }
-            // Allow ChooseLockPassword to get the original extras, since these extras were
-            // originally meant for ChooseLockPassword. This will let ChooseLockPassword do
-            // validation properly
-            intent.putExtras(requireActivity().intent)
+            val intent = getAospPasswordIntent(requireActivity())
                 .putExtra(ChooseLockSettingsHelper.EXTRA_KEY_FROM_PASSWORD_GENERATION, true)
                 // Note: We're giving ChooseLockPassword the generated password credential, so
                 // it cannot be zeroized explicitly as the byte array contents will sit in the

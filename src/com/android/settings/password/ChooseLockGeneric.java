@@ -62,6 +62,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -909,14 +910,15 @@ public class ChooseLockGeneric extends SettingsActivity {
                 intent = getLockManagedPasswordIntent(mUserPassword);
             } else if (quality >= DevicePolicyManager.PASSWORD_QUALITY_NUMERIC) {
                 intent = getLockPasswordIntent(quality);
-                // Take the extras meant for the original ChooseLockPassword activity
-                // and forward it. Will be used to detect if it's for password or PIN, and will also
-                // be forwarded to original lock password activity if user wants to use their own
-                // password.
-                final Intent generateLockPassIntent =
-                        new Intent(getContext(), GenerateLockPasswordActivity.class);
-                generateLockPassIntent.putExtras(intent);
-                intent = generateLockPassIntent;
+                // A subclass can override getLockPasswordIntent. Before intercepting with
+                // password generation activity, need to check
+                final Intent possibleLockPasswordGenIntent =
+                        GenerateLockPasswordActivity.maybeGetLaunchIntent(requireContext(), intent);
+                if (possibleLockPasswordGenIntent != null) {
+                    intent = possibleLockPasswordGenIntent;
+                } else {
+                    Toast.makeText(requireContext(), R.string.lock_screen_generate_untested_class_toast, Toast.LENGTH_LONG).show();
+                }
             } else if (quality == DevicePolicyManager.PASSWORD_QUALITY_SOMETHING) {
                 intent = getLockPatternIntent();
             }

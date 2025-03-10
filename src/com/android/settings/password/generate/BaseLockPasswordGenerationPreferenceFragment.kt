@@ -1,6 +1,8 @@
 package com.android.settings.password.generate
 
 import android.app.settings.SettingsEnums
+import android.content.ComponentName
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -10,6 +12,9 @@ import androidx.annotation.XmlRes
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.RecyclerView
 import com.android.settings.SettingsPreferenceFragment
+import com.android.settings.password.ChooseLockPassword
+import com.android.settings.password.SetupChooseLockPassword
+import com.google.android.setupcompat.util.WizardManagerHelper
 import com.google.android.setupdesign.GlifPreferenceLayout
 
 private const val TAG = "BaseLockPasswordGenerationPreferenceFragment"

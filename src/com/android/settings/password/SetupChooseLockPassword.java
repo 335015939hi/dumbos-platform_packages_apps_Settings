@@ -34,7 +34,6 @@ import androidx.fragment.app.Fragment;
 import com.android.settings.R;
 import com.android.settings.SetupRedactionInterstitial;
 import com.android.settings.password.ChooseLockTypeDialogFragment.OnLockTypeSelectedListener;
-import com.android.settings.password.generate.GenerateLockPasswordActivity;
 
 import com.google.android.setupcompat.util.WizardManagerHelper;
 
@@ -52,10 +51,7 @@ public class SetupChooseLockPassword extends ChooseLockPassword {
     public static Intent modifyIntentForSetup(
             Context context,
             Intent chooseLockPasswordIntent) {
-        // GrapheneOS change: This new activity for password generation will handle SetupWizard.
-        // Usually this setClass result isn't used anyway, since a new intent is created in
-        // ChooseLockGeneric and the extras are passed into there.
-        chooseLockPasswordIntent.setClass(context, GenerateLockPasswordActivity.class);
+        chooseLockPasswordIntent.setClass(context, SetupChooseLockPassword.class);
         chooseLockPasswordIntent.putExtra(EXTRA_PREFS_SHOW_BUTTON_BAR, false);
         return chooseLockPasswordIntent;
     }

@@ -1,6 +1,7 @@
 package com.android.settings.password.generate
 
 import android.app.Dialog
+import android.content.ComponentName
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
@@ -127,7 +128,7 @@ class GeneratedOrManualLockPasswordFragment : BaseLockPasswordGenerationPreferen
                     useOwn = useOwn,
                     introInfoTextId = R.string.lock_screen_generate_pin_info,
                     footerTextId = R.string.lock_screen_generate_choice_footer_pin,
-                    useGeneratedDrawableId = GenerateLockPasswordViewModel.PassType.Pin.iconRes,
+                    useGeneratedDrawableId = R.drawable.ic_shuffle,
                     useGeneratedTitleTextId = R.string.lock_screen_choice_generate_pref_pin_title,
                     useGeneratedSummaryTextId = R.string.lock_screen_choice_generate_pref_pin_summary_d_to_d_digits,
                     minMetricsTooRestrictive = minMetricsRestrictive,
@@ -222,22 +223,12 @@ class GeneratedOrManualLockPasswordFragment : BaseLockPasswordGenerationPreferen
                 true
             }
             KEY_USE_OWN_CREDENTIAL -> {
-                // Launch the original PIN/password input activity
-                val intent = ChooseLockPassword.IntentBuilder(context).build()
-                if (WizardManagerHelper.isAnySetupWizard(activity?.intent)) {
-                    // SetupChooseLockPassword will show Skip and Screen lock options buttons,
-                    // but the Screen lock options button will take users back to this generate
-                    // password flow
-                    intent.setClass(context!!, SetupChooseLockPassword::class.java)
-                }
-                // Allow ChooseLockPassword to get the original extras
-                intent.putExtras(activity!!.intent)
+                val intent = GenerateLockPasswordActivity.getAospPasswordIntent(requireActivity())
                 // ChooseLockPassword was the original activity and has its own result codes that it
                 // wants to send back to ChooseLockGeneric (SetupChooseLockGeneric for SetupWizard)
                 intent.addFlags(Intent.FLAG_ACTIVITY_FORWARD_RESULT)
-
-                activity!!.startActivity(intent)
-                activity!!.finish()
+                requireActivity().startActivity(intent)
+                requireActivity().finish()
                 true
             }
             else -> false
