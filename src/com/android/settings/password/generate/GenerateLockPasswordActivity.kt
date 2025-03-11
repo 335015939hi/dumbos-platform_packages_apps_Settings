@@ -197,6 +197,7 @@ class GenerateLockPasswordActivity : SettingsActivity() {
         private val aospConfirmPasswordLauncher = registerForActivityResult(
             ActivityResultContracts.StartActivityForResult()
         ) { result ->
+            Log.d(TAG, "aospConfirmPasswordLauncher result: $result")
             ConfirmDeviceCredentialUtils.hideImeImmediately(requireActivity().window.decorView)
             if (result.resultCode == ChooseLockPassword.ChooseLockPasswordFragment.RESULT_FINISHED) {
                 requireActivity().setResult(result.resultCode, result.data)
@@ -204,6 +205,14 @@ class GenerateLockPasswordActivity : SettingsActivity() {
             } else {
                 viewModel.onAospConfirmationFailOrBackButton(result.data)
             }
+        }
+
+        private val aospEarlyValidatePasswordLauncher = registerForActivityResult(
+            ActivityResultContracts.StartActivityForResult()
+        ) { result ->
+            Log.d(TAG, "aospEarlyValidatePasswordLauncher result: $result")
+            ConfirmDeviceCredentialUtils.hideImeImmediately(requireActivity().window.decorView)
+            viewModel.onAospValidation(result.data)
         }
 
         override fun onCreate(savedInstanceState: Bundle?) {
@@ -224,6 +233,12 @@ class GenerateLockPasswordActivity : SettingsActivity() {
 
         override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
             super.onViewCreated(view, savedInstanceState)
+
+            lifecycleScope.launchAndCollect(viewModel.aospEarlyValidationRequested) { requested ->
+                if (requested) {
+                    launchAospActivityForEarlyValidation()
+                }
+            }
 
             lifecycleScope.launchAndCollect(viewModel.stage.filterNotNull()) { newStage ->
                 if (
@@ -269,6 +284,21 @@ class GenerateLockPasswordActivity : SettingsActivity() {
                     .setReorderingAllowed(true)
                     .commit()
             }
+        }
+
+        private fun launchAospActivityForEarlyValidation() {
+            val credential = (viewModel.selectedPassword.value
+                    as? GenerateLockPasswordViewModel.Selection.ForConfirmation)
+                ?.credential ?: return
+            val intent = getAospPasswordIntent(requireActivity())
+                .putExtra(ChooseLockSettingsHelper.EXTRA_KEY_FROM_PASSWORD_GENERATION, true)
+                // Note: We're giving ChooseLockPassword the generated password credential, so
+                // it cannot be zeroized explicitly as the byte array contents will sit in the
+                // intent. Just have to rely on garbage collection.
+                .putExtra(ChooseLockSettingsHelper.EXTRA_KEY_FROM_PASSWORD_GENERATION_GENERATED_PASSWORD, credential)
+                .putExtra(ChooseLockSettingsHelper.EXTRA_KEY_FROM_PASSWORD_GENERATION_VALIDATE_ONLY, true)
+
+            aospEarlyValidatePasswordLauncher.launch(intent)
         }
 
         private fun launchAospActivityForConfirmAndSave() {

@@ -77,6 +77,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 import androidx.fragment.app.Fragment;
@@ -274,6 +275,7 @@ public class ChooseLockPassword extends SettingsActivity {
 
         // PIN/passphrase generation will delegate to this Fragment for the last confirmation step
         private boolean mFromPasswordGeneration;
+        private boolean mFromPasswordGenerationValidateOnly;
 
         private LockscreenCredential mFirstPassword;
         private RecyclerView mPasswordRestrictionView;
@@ -522,6 +524,8 @@ public class ChooseLockPassword extends SettingsActivity {
 
             mFromPasswordGeneration = intent.getBooleanExtra(
                     ChooseLockSettingsHelper.EXTRA_KEY_FROM_PASSWORD_GENERATION, false);
+            mFromPasswordGenerationValidateOnly = intent.getBooleanExtra(
+                    ChooseLockSettingsHelper.EXTRA_KEY_FROM_PASSWORD_GENERATION_VALIDATE_ONLY, false);
         }
 
         @Override
@@ -636,16 +640,39 @@ public class ChooseLockPassword extends SettingsActivity {
                 if (mFromPasswordGeneration) {
                     final LockscreenCredential generatedPassword = intent.getParcelableExtra(
                             ChooseLockSettingsHelper.EXTRA_KEY_FROM_PASSWORD_GENERATION_GENERATED_PASSWORD, LockscreenCredential.class);
-                    if (generatedPassword != null) {
-                        final var isAutoPinConfirm = intent.getBooleanExtra(
-                                ChooseLockSettingsHelper.EXTRA_KEY_FROM_PASSWORD_GENERATION_AUTO_PIN_CONFIRM, false);
-                        mIsAutoPinConfirmOptionSetManually = true;
-                        mAutoPinConfirmOption.setChecked(isAutoPinConfirm);
-                        // simulate the user inputting this generated password so that it's
-                        // validated against existing AOSP validation code
-                        handleNext(generatedPassword);
-                        // do not zeroize generatedPassword; it might be stored in mChosenPassword
+                    if (generatedPassword == null) {
+                        Log.e(TAG, "missing generatedPassword despite mFromPasswordGeneration");
+                        requireActivity().finish();
+                        return;
                     }
+
+                    if (mFromPasswordGenerationValidateOnly) {
+                        try {
+                            validatePassword(generatedPassword);
+                        } finally {
+                            generatedPassword.zeroize();
+                        }
+
+                        final var data = new Intent();
+                        data.putExtra(ChooseLockSettingsHelper.EXTRA_KEY_FROM_PASSWORD_GENERATION_VALIDATE_ONLY, true);
+                        if (mValidationErrors.isEmpty()) {
+                            // no-op
+                        } else {
+                            putErrorResultDataForGenerationActivity(data);
+                        }
+                        requireActivity().setResult(Activity.RESULT_CANCELED, data);
+                        requireActivity().finish();
+                        return;
+                    }
+
+                    final var isAutoPinConfirm = intent.getBooleanExtra(
+                            ChooseLockSettingsHelper.EXTRA_KEY_FROM_PASSWORD_GENERATION_AUTO_PIN_CONFIRM, false);
+                    mIsAutoPinConfirmOptionSetManually = true;
+                    mAutoPinConfirmOption.setChecked(isAutoPinConfirm);
+                    // simulate the user inputting this generated password so that it's
+                    // validated against existing AOSP validation code
+                    handleNext(generatedPassword);
+                    // do not zeroize generatedPassword; it might be stored in mChosenPassword
                 }
             } else {
 
@@ -862,11 +889,7 @@ public class ChooseLockPassword extends SettingsActivity {
                 } else {
                     mChosenPassword.zeroize();
                     if (mFromPasswordGeneration && chosenPasswordOverride != null) {
-                        Log.w(TAG, "unable to use generated password due to validation error");
-                        final var errorsData = new Intent();
-                        final var errors = AOSPPasswordValidationError.fromList(mValidationErrors);
-                        errorsData.putExtra(
-                                ChooseLockSettingsHelper.EXTRA_KEY_FROM_PASSWORD_GENERATION_PASSWORD_ERRORS, errors);
+                        final var errorsData = putErrorResultDataForGenerationActivity(new Intent());
                         requireActivity().setResult(Activity.RESULT_CANCELED, errorsData);
                         requireActivity().finish();
                     }
@@ -883,6 +906,15 @@ public class ChooseLockPassword extends SettingsActivity {
                     mChosenPassword.zeroize();
                 }
             }
+        }
+
+        @NonNull
+        private Intent putErrorResultDataForGenerationActivity(Intent errorsData) {
+            Log.w(TAG, "unable to use generated password due to validation error");
+            final var errors = AOSPPasswordValidationError.fromList(mValidationErrors);
+            errorsData.putExtra(
+                    ChooseLockSettingsHelper.EXTRA_KEY_FROM_PASSWORD_GENERATION_PASSWORD_ERRORS, errors);
+            return errorsData;
         }
 
         protected void setNextEnabled(boolean enabled) {

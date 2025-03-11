@@ -39,6 +39,7 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.flow.updateAndGet
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -457,15 +458,57 @@ class GenerateLockPasswordViewModel(
     }
 
     /**
-     * If the AOSP Activity for password confirmation fails to validate one of our generated
-     * PINs/passwords, record the error. This should be rare, because the generated passwords
+     * If the AOSP Activity for password confirmation / early validation fails to validate the
+     * selected password, record the error. This should be rare, because the generated passwords
      * are already validated with the same metrics / complexity requirements, but there could be
      * an upstream change.
      */
     private val _aospErrors = MutableStateFlow<List<PasswordValidationError>?>(null)
     val aospErrors: StateFlow<List<PasswordValidationError>?> = _aospErrors
 
-    fun onAospConfirmationFailOrBackButton(resultData: Intent?) {
+    /**
+     * Request the activity to launch the AOSP Activity only for validating the generated password
+     * against AOSP's validation logic. This is done so that we can validate early instead of only
+     * failing at the last confirmation step if AOSP's password Activity would report an error at
+     * that point.
+     */
+    private val _aospEarlyValidationRequested = MutableStateFlow(false)
+    val aospEarlyValidationRequested: StateFlow<Boolean> = _aospEarlyValidationRequested
+
+    fun hasAospErrors(): Boolean = !_aospErrors.value.isNullOrEmpty()
+
+    fun onAospValidation(resultData: Intent?) {
+        _aospEarlyValidationRequested.update { false }
+        if (resultData == null) {
+            Log.e(TAG, "missing result data")
+            return
+        }
+
+        val isForValidationOnly = resultData
+            .getBooleanExtra(
+                ChooseLockSettingsHelper.EXTRA_KEY_FROM_PASSWORD_GENERATION_VALIDATE_ONLY,
+                false
+            )
+        if (!isForValidationOnly) {
+            Log.e(TAG, "wasn't launched for validation!")
+            return
+        }
+
+        saveAOSPValidationErrors(resultData)
+        if (hasAospErrors()) {
+            Log.d(TAG, "failed early AOSP activity password validation")
+            if (_stage.value is PassGenStage.Confirmation) {
+                onBackPressed()
+            }
+        } else {
+            Log.d(TAG, "passed early AOSP activity password validation")
+        }
+    }
+
+    /**
+     * Returns whether we have errors
+     */
+    private fun saveAOSPValidationErrors(resultData: Intent?) {
         val errors: Array<AOSPPasswordValidationError>? = resultData?.getParcelableArrayExtra(
             ChooseLockSettingsHelper.EXTRA_KEY_FROM_PASSWORD_GENERATION_PASSWORD_ERRORS,
             AOSPPasswordValidationError::class.java
@@ -474,12 +517,18 @@ class GenerateLockPasswordViewModel(
             _aospErrors.update {
                 errors.asSequence().map(AOSPPasswordValidationError::toError).toList()
             }
-            Log.w(TAG, "received validation errors ${_aospErrors.value}")
+            Log.w(TAG, "received ${errors.size} validation errors")
         }
+    }
+
+    fun onAospConfirmationFailOrBackButton(resultData: Intent?) {
+        saveAOSPValidationErrors(resultData)
 
         // don't show confirmation stages to the user again if they fail final confirmation
         // and decide to go back
-        onBackPressed()
+        if (_stage.value is PassGenStage.Confirmation) {
+            onBackPressed()
+        }
     }
 
     fun onBackPressed() {
@@ -530,7 +579,9 @@ class GenerateLockPasswordViewModel(
     private var regenerateOnNav = false
 
     private fun advanceStage(inputPassword: CharSequence?) {
-        _stage.update { curStage ->
+        var prevStage = _stage.value
+        val newStage: PassGenStage = _stage.updateAndGet { curStage ->
+            prevStage = curStage
             when (curStage) {
                 is PassGenStage.ChooseGeneratedOrManual -> {
                     if (passType.value == PassType.Passphrase) {
@@ -591,11 +642,15 @@ class GenerateLockPasswordViewModel(
                                 aospActivityLaunched = false
                             )
                         }
-                        is PassGenStage.Confirmation.ConfirmWithAOSPActivity -> curStage // no-op
+                        is PassGenStage.Confirmation.ConfirmWithAOSPActivity -> return // no-op
                     }
                 }
-                PassGenStage.Quit -> curStage // no-op
+                PassGenStage.Quit -> return // no-op
             }
+        }
+
+        if (newStage != prevStage && newStage is PassGenStage.Confirmation.ConfirmWithVisible) {
+            _aospEarlyValidationRequested.update { true }
         }
     }
 

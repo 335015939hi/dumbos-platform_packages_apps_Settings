@@ -135,6 +135,9 @@ public final class ChooseLockSettingsHelper {
      **/
     public static final String EXTRA_KEY_FROM_PASSWORD_GENERATION = "from_password_generation";
 
+    public static final String EXTRA_KEY_FROM_PASSWORD_GENERATION_VALIDATE_ONLY =
+            "from_password_generation_validate_only";
+
     public static final String EXTRA_KEY_FROM_PASSWORD_GENERATION_GENERATED_PASSWORD =
             "password_generation__generated_password";
 
