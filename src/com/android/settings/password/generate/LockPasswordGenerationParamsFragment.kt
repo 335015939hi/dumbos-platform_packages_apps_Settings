@@ -1,9 +1,9 @@
 package com.android.settings.password.generate
 
-import com.android.settings.R
 import android.os.Bundle
 import android.view.View
 import android.widget.SeekBar
+import com.android.settings.R
 import com.android.settings.widget.LabeledSeekBarPreference
 import com.android.settingslib.widget.FooterPreference
 import com.google.android.setupcompat.template.FooterBarMixin

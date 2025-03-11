@@ -5,10 +5,6 @@ import android.content.Context
 import androidx.annotation.Keep
 import androidx.annotation.OpenForTesting
 import com.android.settings.password.generate.DicewareWordList.LoadException
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.ensureActive
-import kotlinx.coroutines.withContext
-import libcore.util.HexEncoding
 import java.io.BufferedReader
 import java.io.IOException
 import java.io.InputStream
@@ -17,8 +13,11 @@ import java.security.DigestInputStream
 import java.security.MessageDigest
 import java.security.SecureRandom
 import java.util.TreeMap
-import kotlin.jvm.Throws
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ensureActive
+import kotlinx.coroutines.withContext
+import libcore.util.HexEncoding
 
 // https://www.eff.org/files/2016/07/18/eff_large_wordlist.txt
 // remove numbers:

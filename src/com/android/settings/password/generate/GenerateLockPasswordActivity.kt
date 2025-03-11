@@ -12,7 +12,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
-import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
@@ -23,6 +22,7 @@ import com.android.internal.widget.LockPatternUtils
 import com.android.settings.R
 import com.android.settings.SettingsActivity
 import com.android.settings.SetupWizardUtils
+import com.android.settings.password.ChooseLockGeneric
 import com.android.settings.password.ChooseLockPassword
 import com.android.settings.password.ChooseLockSettingsHelper
 import com.android.settings.password.ConfirmDeviceCredentialUtils
@@ -70,7 +70,21 @@ class GenerateLockPasswordActivity : SettingsActivity() {
         }
 
         @JvmStatic
-        fun maybeGetLaunchIntent(context: Context, originalLockPasswordIntent: Intent): Intent? {
+        fun maybeInterceptLaunchAttemptForOriginalLockPassword(
+            context: Context,
+            originalLockPasswordIntent: Intent
+        ): Intent? {
+            if (
+                originalLockPasswordIntent.getBooleanExtra(
+                    ChooseLockGeneric.CONFIRM_CREDENTIALS, true
+                )
+            ) {
+                // Don't launch our generation activity if credentials need to be confirmed.
+                // The various AOSP activities assume this is true if not present, but using the
+                // ChooseLockPassword.IntentBuilder will set it to false explicitly.
+                return null
+            }
+
             val originalLaunchComponent: ComponentName = originalLockPasswordIntent.component
                 ?: return null
 
@@ -99,7 +113,8 @@ class GenerateLockPasswordActivity : SettingsActivity() {
         ): Boolean {
             val verified = sequence {
                 yield(ChooseLockPassword::class.java)
-                // calls super methods correctly; is tested to be compatible
+                // For SetupWizard. This calls super methods correctly, and is tested to be
+                // compatible.
                 yield(SetupChooseLockPassword::class.java)
             }
 

@@ -909,20 +909,26 @@ public class ChooseLockGeneric extends SettingsActivity {
             if (quality >= DevicePolicyManager.PASSWORD_QUALITY_MANAGED) {
                 intent = getLockManagedPasswordIntent(mUserPassword);
             } else if (quality >= DevicePolicyManager.PASSWORD_QUALITY_NUMERIC) {
-                intent = getLockPasswordIntent(quality);
-                // A subclass can override getLockPasswordIntent. Before intercepting with
-                // password generation activity, need to check
-                final Intent possibleLockPasswordGenIntent =
-                        GenerateLockPasswordActivity.maybeGetLaunchIntent(requireContext(), intent);
-                if (possibleLockPasswordGenIntent != null) {
-                    intent = possibleLockPasswordGenIntent;
-                } else {
-                    Toast.makeText(requireContext(), R.string.lock_screen_generate_untested_class_toast, Toast.LENGTH_LONG).show();
-                }
+                intent = maybeInterceptIntentForPasswordGeneration(getLockPasswordIntent(quality));
             } else if (quality == DevicePolicyManager.PASSWORD_QUALITY_SOMETHING) {
-                intent = getLockPatternIntent();
+                intent = maybeInterceptIntentForPasswordGeneration(getLockPatternIntent());
             }
             return intent;
+        }
+
+        @NonNull
+        private Intent maybeInterceptIntentForPasswordGeneration(final Intent intent) {
+            // A subclass can override getLockPasswordIntent. Before intercepting with
+            // password generation activity, need to check if compatible
+            final Intent possibleLockPasswordGenIntent =
+                    GenerateLockPasswordActivity.maybeInterceptLaunchAttemptForOriginalLockPassword(
+                            requireContext(), intent);
+            if (possibleLockPasswordGenIntent != null) {
+                return possibleLockPasswordGenIntent;
+            } else {
+                Toast.makeText(requireContext(), R.string.lock_screen_generate_untested_class_toast, Toast.LENGTH_LONG).show();
+                return intent;
+            }
         }
 
         @Override

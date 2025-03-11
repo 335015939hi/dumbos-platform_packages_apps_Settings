@@ -1,7 +1,6 @@
 package com.android.settings.password.generate
 
 import android.app.Dialog
-import android.content.ComponentName
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
@@ -16,13 +15,11 @@ import com.android.settings.R
 import com.android.settings.Utils
 import com.android.settings.password.ChooseLockGeneric
 import com.android.settings.password.ChooseLockGenericController
-import com.android.settings.password.ChooseLockPassword
 import com.android.settings.password.ChooseLockPassword.ChooseLockPasswordFragment
 import com.android.settings.password.ChooseLockSettingsHelper
 import com.android.settings.password.ChooseLockTypeDialogFragment
 import com.android.settings.password.ConfirmDeviceCredentialUtils
 import com.android.settings.password.ScreenLockType
-import com.android.settings.password.SetupChooseLockPassword
 import com.android.settings.password.SetupChooseLockPassword.SetupChooseLockPasswordFragment
 import com.android.settings.password.SetupSkipDialog
 import com.android.settingslib.widget.FooterPreference

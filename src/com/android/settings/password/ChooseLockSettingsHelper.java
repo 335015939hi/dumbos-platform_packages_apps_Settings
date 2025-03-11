@@ -130,8 +130,8 @@ public final class ChooseLockSettingsHelper {
 
     /**
      * Indicate whether it's being launched from PIN/passphrase password generation activity,
-     * since that will defer verification and saving of the PIN/passphrase to the base AOSP
-     * activity.
+     * since that will defer verification and final user confirmation/saving of the PIN/passphrase
+     * to the base AOSP ChooseLockPassword Activity.
      **/
     public static final String EXTRA_KEY_FROM_PASSWORD_GENERATION = "from_password_generation";
 

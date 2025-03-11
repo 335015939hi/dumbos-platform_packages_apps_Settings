@@ -5,7 +5,8 @@ import android.os.Parcelable
 import com.android.internal.widget.PasswordValidationError
 
 /**
- * A Parcelable version of [PasswordValidationError] so that errors can be passed
+ * A Parcelable version of [PasswordValidationError] so that errors can be passed from AOSP's
+ * [com.android.settings.password.ChooseLockPassword] Activity to our generate password flow.
  */
 data class AOSPPasswordValidationError(val errorCode: Int, val requirement: Int) : Parcelable {
     fun toError() = PasswordValidationError(errorCode, requirement)
