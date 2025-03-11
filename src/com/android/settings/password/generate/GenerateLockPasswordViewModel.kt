@@ -3,6 +3,7 @@ package com.android.settings.password.generate
 import android.app.Application
 import android.app.admin.DevicePolicyManager
 import android.app.admin.PasswordMetrics
+import android.content.Intent
 import android.util.Log
 import androidx.annotation.DrawableRes
 import androidx.lifecycle.ViewModel
@@ -17,6 +18,7 @@ import com.android.internal.widget.PasswordValidationError
 import com.android.settings.R
 import com.android.settings.SettingsApplication
 import com.android.settings.password.ChooseLockPassword.ChooseLockPasswordFragment
+import com.android.settings.password.ChooseLockSettingsHelper
 import java.io.Closeable
 import java.security.MessageDigest
 import java.security.SecureRandom
@@ -410,19 +412,6 @@ class GenerateLockPasswordViewModel(
         return currentLength >= LockPatternUtils.MIN_LOCK_PASSWORD_SIZE
     }
 
-    fun onAospConfirmActivityLaunch() {
-        _stage.update { currentStage ->
-            if (currentStage !is PassGenStage.Confirmation.ConfirmWithAOSPActivity) {
-                return
-            }
-            currentStage.copy(aospActivityLaunched = true)
-        }
-        // If the user goes back, they're not going to see the confirmation flow again. no point
-        // in keeping the password around in byte form.
-        // Don't just move the stage backwards, or the user might notice some jank.
-        zeroizeSelectedPassword()
-    }
-
     private val _isPrimaryButtonProcessing = MutableStateFlow(false)
 
     val isPrimaryButtonEnabled: StateFlow<Boolean> =
@@ -452,6 +441,47 @@ class GenerateLockPasswordViewModel(
             }
         }.stateIn(viewModelScope, SharingStarted.Eagerly, false)
 
+    fun onAospConfirmActivityLaunch() {
+        _stage.update { currentStage ->
+            if (currentStage !is PassGenStage.Confirmation.ConfirmWithAOSPActivity) {
+                return
+            }
+            currentStage.copy(aospActivityLaunched = true)
+        }
+        // If the user goes back, they're not going to see the confirmation flow again. No point
+        // in keeping the password around in byte form. Want to reduce the amount of places their
+        // password is kept in memory. It's still held in the generated passwords list as a String
+        // at this point in case the user wants to go back.
+        // Don't just move the stage backwards, or the user might notice some jank.
+        zeroizeSelectedPasswordAndUpdateToIndex()
+    }
+
+    /**
+     * If the AOSP Activity for password confirmation fails to validate one of our generated
+     * PINs/passwords, record the error. This should be rare, because the generated passwords
+     * are already validated with the same metrics / complexity requirements, but there could be
+     * an upstream change.
+     */
+    private val _aospErrors = MutableStateFlow<List<PasswordValidationError>?>(null)
+    val aospErrors: StateFlow<List<PasswordValidationError>?> = _aospErrors
+
+    fun onAospConfirmationFailOrBackButton(resultData: Intent?) {
+        val errors: Array<AOSPPasswordValidationError>? = resultData?.getParcelableArrayExtra(
+            ChooseLockSettingsHelper.EXTRA_KEY_FROM_PASSWORD_GENERATION_PASSWORD_ERRORS,
+            AOSPPasswordValidationError::class.java
+        )
+        if (!errors.isNullOrEmpty()) {
+            _aospErrors.update {
+                errors.asSequence().map(AOSPPasswordValidationError::toError).toList()
+            }
+            Log.w(TAG, "received validation errors ${_aospErrors.value}")
+        }
+
+        // don't show confirmation stages to the user again if they fail final confirmation
+        // and decide to go back
+        onBackPressed()
+    }
+
     fun onBackPressed() {
         _stage.update { curStage ->
             when (curStage) {
@@ -463,14 +493,14 @@ class GenerateLockPasswordViewModel(
                     PassGenStage.ChooseParams(isBackwards = true)
                 }
                 is PassGenStage.Confirmation -> {
-                    zeroizeSelectedPassword()
+                    zeroizeSelectedPasswordAndUpdateToIndex()
                     PassGenStage.ShowMultiple(isBackwards = true)
                 }
             }
         }
     }
 
-    private fun zeroizeSelectedPassword() {
+    private fun zeroizeSelectedPasswordAndUpdateToIndex() {
         _selectedPassword.update { selected ->
             if (selected !is Selection.ForConfirmation) return
             selected.close()
@@ -587,6 +617,7 @@ class GenerateLockPasswordViewModel(
                 if (isAlreadyGenerated && !request.forceRegenerate) {
                     return@consumeEach
                 }
+                _aospErrors.update { null }
                 _isGenerating.update { true }
                 _selectedPassword.update { oldSelection ->
                     oldSelection?.close()

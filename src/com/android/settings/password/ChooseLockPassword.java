@@ -94,6 +94,7 @@ import com.android.settings.SetupWizardUtils;
 import com.android.settings.Utils;
 import com.android.settings.core.InstrumentedFragment;
 import com.android.settings.notification.RedactionInterstitial;
+import com.android.settings.password.generate.AOSPPasswordValidationError;
 import com.android.settingslib.utils.StringUtil;
 
 import com.google.android.setupcompat.template.FooterBarMixin;
@@ -860,6 +861,15 @@ public class ChooseLockPassword extends SettingsActivity {
                     updateStage(Stage.NeedToConfirm);
                 } else {
                     mChosenPassword.zeroize();
+                    if (mFromPasswordGeneration && chosenPasswordOverride != null) {
+                        Log.w(TAG, "unable to use generated password due to validation error");
+                        final var errorsData = new Intent();
+                        final var errors = AOSPPasswordValidationError.fromList(mValidationErrors);
+                        errorsData.putExtra(
+                                ChooseLockSettingsHelper.EXTRA_KEY_FROM_PASSWORD_GENERATION_PASSWORD_ERRORS, errors);
+                        requireActivity().setResult(Activity.RESULT_CANCELED, errorsData);
+                        requireActivity().finish();
+                    }
                 }
             } else if (mUiStage == Stage.NeedToConfirm) {
                 if (mChosenPassword.equals(mFirstPassword)) {

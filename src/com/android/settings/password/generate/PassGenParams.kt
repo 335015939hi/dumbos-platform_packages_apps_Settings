@@ -34,7 +34,7 @@ data class DicewarePassphraseGenParams(
     val minWords: Int get() = minSize
 
     companion object {
-        const val MIN_WORDS = 4
-        const val MAX_WORDS = 8
+        const val MIN_WORDS = 6
+        const val MAX_WORDS = 10
     }
 }

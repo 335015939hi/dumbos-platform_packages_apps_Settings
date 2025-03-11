@@ -202,9 +202,7 @@ class GenerateLockPasswordActivity : SettingsActivity() {
                 requireActivity().setResult(result.resultCode, result.data)
                 requireActivity().finish()
             } else {
-                // don't show confirmation stages to the user again if they fail final confirmation
-                // and decide to go back
-                viewModel.onBackPressed()
+                viewModel.onAospConfirmationFailOrBackButton(result.data)
             }
         }
 

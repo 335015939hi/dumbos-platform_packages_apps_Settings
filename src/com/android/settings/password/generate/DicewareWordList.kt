@@ -27,7 +27,6 @@ const val WORDLIST_ASSET_FILENAME = "eff_large_wordlist.txt"
 // a digest to verify contents and sanity check any changes
 //     sha256sum eff_large_wordlist.txt
 private const val WORDLIST_DIGEST = "6d557f0693958fb5e650b68b5bee585eb82cf4da32965505c789e924743bc522"
-private const val WORDLIST_NUM_WORDS = 7776
 
 // In-memory storage of wordlist for passphrase generation
 class DicewareWordList private constructor(
@@ -41,11 +40,12 @@ class DicewareWordList private constructor(
 
     @OpenForTesting
     @Keep
-    fun wordList() = words.asList()
+    fun wordList(): List<String> = words.asList()
 
+    // these values need to be updated if the wordlist is changed, as they will let us
+    // access these properties without needing to construct and calculate it from the wordlist
     companion object {
-        // these values need to be updated if the wordlist is changed, as they will let us
-        // access these properties without needing to construct and calculate it from the wordlist
+        private const val WORDLIST_NUM_WORDS = 7776
         const val MAX_SEQUENCE_LENGTH = 4
         val WORD_LENGTH_FREQUENCIES by lazy {
             mapOf(
@@ -101,14 +101,14 @@ class DicewareWordList private constructor(
                                     "found word with non-letters [$line]"
                                 }
                             }
-                            .also {
-                                val frequencyForLength = frequencies.getOrDefault(it.length, 0)
-                                frequencies[it.length] = frequencyForLength + 1
+                            .also { trimmedLine ->
+                                val frequencyForLength = frequencies.getOrDefault(trimmedLine.length, 0)
+                                frequencies[trimmedLine.length] = frequencyForLength + 1
                                 maxSequenceLength = maxOf(
                                     maxSequenceLength,
-                                    PasswordMetrics.maxLengthSequence(it.encodeToByteArray())
+                                    PasswordMetrics.maxLengthSequence(trimmedLine.encodeToByteArray())
                                 )
-                                checkDupesSet.add(it)
+                                checkDupesSet.add(trimmedLine)
                             }
                     }.also {
                         validate(reader.readLine() == null) { "expected EOF but more text found" }

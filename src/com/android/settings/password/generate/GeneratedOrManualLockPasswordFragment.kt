@@ -109,7 +109,7 @@ class GeneratedOrManualLockPasswordFragment : BaseLockPasswordGenerationPreferen
                     footer = footer,
                     useGenerated = useGenerated,
                     useOwn = useOwn,
-                    introInfoTextId = R.string.lock_screen_generate_passphrase_info,
+                    introInfoTextId = R.string.lock_screen_generate_passphrase_info__d_to_d_words_strong,
                     footerTextId = R.string.lock_screen_generate_choice_footer_password,
                     useGeneratedDrawableId = GenerateLockPasswordViewModel.PassType.Passphrase.iconRes,
                     useGeneratedTitleTextId = R.string.lock_screen_choice_generate_pref_passphrase_title,
@@ -118,7 +118,8 @@ class GeneratedOrManualLockPasswordFragment : BaseLockPasswordGenerationPreferen
                     minSize = DicewarePassphraseGenParams.MIN_WORDS,
                     maxSize = DicewarePassphraseGenParams.MAX_WORDS,
                     useOwnDrawableId = R.drawable.ic_settings_keyboards,
-                    useOwnTitleId = R.string.lock_screen_choice_manual_pref_passphrase
+                    useOwnTitleId = R.string.lock_screen_choice_manual_pref_passphrase,
+                    useOwnSummaryId = R.string.lock_screen_choice_manual_pref_passphrase_warning,
                 )
             } else {
                 setupPrefIntroAndButtons(
@@ -126,7 +127,7 @@ class GeneratedOrManualLockPasswordFragment : BaseLockPasswordGenerationPreferen
                     footer = footer,
                     useGenerated = useGenerated,
                     useOwn = useOwn,
-                    introInfoTextId = R.string.lock_screen_generate_pin_info,
+                    introInfoTextId = R.string.lock_screen_generate_pin_info__d_to_d_digits_strong_secure_element,
                     footerTextId = R.string.lock_screen_generate_choice_footer_pin,
                     useGeneratedDrawableId = R.drawable.ic_shuffle,
                     useGeneratedTitleTextId = R.string.lock_screen_choice_generate_pref_pin_title,
@@ -135,7 +136,7 @@ class GeneratedOrManualLockPasswordFragment : BaseLockPasswordGenerationPreferen
                     minSize = PinGenParams.DEFAULT_MIN_DIGITS,
                     maxSize = PinGenParams.DEFAULT_MAX_DIGITS,
                     useOwnDrawableId = R.drawable.ic_lock_pin,
-                    useOwnTitleId = R.string.lock_screen_choice_manual_pref_pin
+                    useOwnTitleId = R.string.lock_screen_choice_manual_pref_pin,
                 )
             }
 
@@ -263,8 +264,9 @@ class GeneratedOrManualLockPasswordFragment : BaseLockPasswordGenerationPreferen
         maxSize: Int,
         @DrawableRes useOwnDrawableId: Int,
         @StringRes useOwnTitleId: Int,
+        @StringRes useOwnSummaryId: Int? = null
     ) {
-        topIntroBuilder.append(getString(introInfoTextId))
+        topIntroBuilder.append(getString(introInfoTextId, minSize, maxSize))
         footer.setTitle(footerTextId)
 
         useGenerated.setIcon(useGeneratedDrawableId)
@@ -277,6 +279,7 @@ class GeneratedOrManualLockPasswordFragment : BaseLockPasswordGenerationPreferen
 
         useOwn.setIcon(useOwnDrawableId)
         useOwn.setTitle(useOwnTitleId)
+        useOwnSummaryId?.let { useOwn.setSummary(it) }
     }
 
     private fun addHintIfNeeded(

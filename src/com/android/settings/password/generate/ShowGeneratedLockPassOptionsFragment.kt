@@ -11,6 +11,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.android.settings.R
+import com.android.settings.password.ChooseLockPassword
 import com.google.android.setupcompat.template.FooterBarMixin
 import com.google.android.setupcompat.template.FooterButton
 import com.google.android.setupdesign.GlifLayout
@@ -30,6 +31,7 @@ class ShowGeneratedLockPassOptionsFragment : BaseLockPasswordGenerationFragment(
 
         val progressBar = view.findViewById<ProgressBar>(R.id.progress_bar)
         val errorMessage = view.findViewById<TextView>(R.id.error_message)
+        val aospErrorMessage = view.findViewById<TextView>(R.id.aosp_errors_message)
         val recyclerView = view.findViewById<RecyclerView>(R.id.pass_list)
         recyclerView.layoutManager = LinearLayoutManager(view.context)
         recyclerView.adapter = PassOptionsRecyclerViewAdapter(viewModel)
@@ -67,6 +69,26 @@ class ShowGeneratedLockPassOptionsFragment : BaseLockPasswordGenerationFragment(
             // notifying individual items causes a fade effect, and there are not that
             // many items anyway
             recyclerView.adapter?.notifyDataSetChanged()
+        }
+
+        viewLifecycleOwner.repeatCollectOnLifecycle(viewModel.aospErrors) { aospErrors ->
+            if (aospErrors.isNullOrEmpty()) {
+                aospErrorMessage.visibility = View.GONE
+                aospErrorMessage.text = ""
+            } else {
+                aospErrorMessage.visibility = View.VISIBLE
+                val pvec = ChooseLockPassword
+                    .ChooseLockPasswordFragment
+                    .PasswordValidationErrorConverter(
+                        requireContext(),
+                        viewModel.passType.value == GenerateLockPasswordViewModel.PassType.Passphrase,
+                        aospErrors
+                    )
+                aospErrorMessage.text = getString(
+                    R.string.lock_screen_generate_aosp_errors_please_report__s,
+                    pvec.convertErrorCodeToMessages().joinToString(", ")
+                )
+            }
         }
 
         viewLifecycleOwner.repeatCollectOnLifecycle(viewModel.generatedPasswords) { passes ->

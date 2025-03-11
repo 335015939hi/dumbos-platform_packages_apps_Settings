@@ -249,8 +249,8 @@ This method can be particularly useful when GNSS is unavailable or unreliable, s
         where strong authentication is required to unlock the storage.
     </string>
 
-    <string name="lock_screen_generate_passphrase_info">A 4-8 word diceware passphrase provides strong protection for your device.</string>
-    <string name="lock_screen_generate_pin_info">A 6-8 digit PIN provides strong protection for your device via the secure element; however, it will not withstand a secure element compromise. If this is unacceptable, use a long diceware passphrase instead.</string>
+    <string name="lock_screen_generate_passphrase_info__d_to_d_words_strong">A %1$d-%2$d word diceware passphrase provides strong protection for your device even if the secure element is compromised</string>
+    <string name="lock_screen_generate_pin_info__d_to_d_digits_strong_secure_element">A %1$d-%2$d digit PIN provides strong protection for your device via the secure element; however, it will not withstand a secure element compromise. If this is unacceptable, use a long diceware passphrase instead.</string>
     <string name="lock_screen_choice_generate_pref_screen_lock_options_pin_summary">Can select a different screen lock type (passphrases / passwords)</string>
     <string name="lock_screen_choice_generate_pref_screen_lock_options_password_summary">Can select a different screen lock type (PIN)</string>
     <string name="lock_screen_choice_generate_pref_recommended_category_title">Recommended</string>
@@ -261,16 +261,17 @@ This method can be particularly useful when GNSS is unavailable or unreliable, s
     <string name="lock_screen_choice_generate_pref_passphrase_title">Generate diceware passphrase</string>
     <string name="lock_screen_choice_generate_pref_passphrase_summary_d_to_d_words">%1$d-%2$d words, randomly chosen from wordlist</string>
     <string name="lock_screen_choice_manual_pref_passphrase">Use your own password</string>
-    <string name="lock_screen_choice_disabled_due_to_device_policy_summary">Disabled due to device password requirements</string>
-    <string name="lock_screen_generate_choice_footer_pin">The secure element (Titan M chip) helps protect against brute-force attacks against disk encryption through hardware-based delays. This makes even randomly generated 6-digit PINs highly secure.</string>
-    <string name="lock_screen_generate_choice_footer_password">The secure element (Titan M chip) helps protect against brute-force attacks against disk encryption through hardware-based delays.</string>
+    <string name="lock_screen_choice_manual_pref_passphrase_warning">Warning: An overly complex password (with symbols, etc.) is not as secure as a long passphrase in the event of a secure element compromise</string>
+    <string name="lock_screen_choice_disabled_due_to_device_policy_summary">Disabled due to complex device password requirements</string>
+    <string name="lock_screen_generate_choice_footer_pin">The secure element helps protect against brute-force attacks against disk encryption through hardware-based delays. This makes even randomly generated 6-digit PINs highly secure.</string>
+    <string name="lock_screen_generate_choice_footer_password">The secure element helps protect against brute-force attacks against disk encryption through hardware-based delays.</string>
     <string name="lock_screen_generate_choice_learn_more_link">Learn more secure element and disk encryption</string>
     <!-- Dialog shown when user presses the Learn more link in the footer. (Reference: https://grapheneos.org/faq#encryption) -->
     <string name="lock_screen_generate_learn_more_dialog_title">Secure element</string>
     <string name="lock_screen_generate_learn_more_dialog_body">
-"The secure element (Titan M on Pixels) is a tamper-resistant discrete security chip, and it helps increases the time and cost of breaking encryption significantly via hardware-based delays for key derivation.
+"The secure element is a tamper-resistant discrete security chip, and it helps increases the time and cost of breaking encryption significantly via hardware-based delays for key derivation.
 
-It is extremely unlikely that the chip's security has been bypassed; the firmware has low attack surface, and tamper resistance makes physical tampering difficult.
+It is extremely unlikely that the chip's security has been bypassed in general; the firmware has low attack surface, and tamper resistance makes physical tampering difficult.
 
 However, if you cannot depend on these hardware-based security features (e.g. you have adversaries that have substantial resources and can gain physical possession of your device), use a strong passphrase for encryption such as a random diceware passphrase of 7 words or more. Consider also turning on auto reboot to keep data at rest when the device is unattended.
 
@@ -316,4 +317,5 @@ In order to retrieve the Weaver token, the secure element requires the correct W
     <string name="lock_screen_generate_confirm_last_desc_passphrase">Enter your passphrase one more time to confirm it as your screen lock.</string>
     <string name="lock_screen_generate_confirm_passphrases_dont_match">Passphrases don\'t match</string>
     <string name="lock_screen_generate_untested_class_toast">Unable to use generation PIN / passphrase flow. Check logs for details</string>
+    <string name="lock_screen_generate_aosp_errors_please_report__s">Ran into these errors doing final validation; please report this: %1$s</string>
 </resources>
