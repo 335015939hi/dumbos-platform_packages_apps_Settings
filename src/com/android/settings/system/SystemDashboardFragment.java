@@ -29,11 +29,14 @@ import androidx.preference.PreferenceScreen;
 
 import com.android.settings.R;
 import com.android.settings.dashboard.DashboardFragment;
+import com.android.settings.development.linuxterminal.LinuxTerminalPreferenceController;
 import com.android.settings.search.BaseSearchIndexProvider;
 import com.android.settings.utils.DesktopSettingsUtils;
+import com.android.settingslib.core.AbstractPreferenceController;
 import com.android.settingslib.search.SearchIndexable;
 
 import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
 
 // LINT.IfChange
@@ -53,6 +56,18 @@ public class SystemDashboardFragment extends DashboardFragment {
         if (getVisiblePreferenceCount(screen) == screen.getInitialExpandedChildrenCount() + 1) {
             screen.setInitialExpandedChildrenCount(Integer.MAX_VALUE);
         }
+    }
+
+    @Override
+    protected List<AbstractPreferenceController> createPreferenceControllers(Context context) {
+        List<AbstractPreferenceController> result = super.createPreferenceControllers(context);
+        if (result == null) {
+            result = new ArrayList<>();
+        }
+        var linuxTerminal = new LinuxTerminalPreferenceController(context);
+        linuxTerminal.mIsInSystemSettings = true;
+        result.add(linuxTerminal);
+        return result;
     }
 
     @Override
