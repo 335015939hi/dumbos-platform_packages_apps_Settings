@@ -30,7 +30,7 @@ public abstract class IntSettingPrefController extends AbstractListPreferenceCon
     }
 
     @Override
-    protected final int getCurrentValue() {
+    protected int getCurrentValue() {
         return setting.get(mContext);
     }
 
