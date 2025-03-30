@@ -64,6 +64,18 @@
     </PreferenceCategory>
 
     <PreferenceCategory
+        android:title="@string/apps_dashboard_title">
+
+        <Preference
+            android:key="app_copying_private_profile"
+            settings:isPreferenceVisible="false"
+            android:title="@string/user_copy_apps_menu_title"
+            settings:controller="com.android.settings.privatespace.PrivateSpaceAppCopyController"
+            settings:searchable="false" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
         android:title="@string/private_space_category_system">
 
         <Preference
