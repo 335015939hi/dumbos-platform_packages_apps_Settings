@@ -454,6 +454,12 @@ public final class Utils extends com.android.settingslib.Utils {
             if (Objects.equals(umUserType, userInfo.userType)) {
                 return profile;
             }
+            if (userType == ProfileType.PERSONAL) {
+                if (userInfo.canHaveProfile(USER_TYPE_PROFILE_PRIVATE)
+                        || userInfo.canHaveProfile(USER_TYPE_PROFILE_MANAGED)) {
+                    return profile;
+                }
+            }
         }
         return null;
     }
@@ -469,6 +475,12 @@ public final class Utils extends com.android.settingslib.Utils {
         for (UserInfo profile : userProfiles) {
             if (Objects.equals(umUserType, profile.userType)) {
                 return true;
+            }
+            if (userType == ProfileType.PERSONAL) {
+                if (profile.canHaveProfile(USER_TYPE_PROFILE_PRIVATE)
+                        || profile.canHaveProfile(USER_TYPE_PROFILE_MANAGED)) {
+                    return true;
+                }
             }
         }
         return false;
