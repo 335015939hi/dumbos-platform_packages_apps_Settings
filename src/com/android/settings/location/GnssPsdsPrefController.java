@@ -45,9 +45,6 @@ public class GnssPsdsPrefController extends IntSettingPrefController {
         entries.add(R.string.psds_enabled_grapheneos_server, GnssSettings.PSDS_SERVER_GRAPHENEOS);
         int standardServerString;
         switch (psdsType) {
-            case GnssSettings.PSDS_TYPE_QUALCOMM_XTRA:
-                standardServerString = R.string.psds_enabled_qualcomm_server;
-                break;
             default:
                 standardServerString = R.string.psds_enabled_standard_server;
                 break;
