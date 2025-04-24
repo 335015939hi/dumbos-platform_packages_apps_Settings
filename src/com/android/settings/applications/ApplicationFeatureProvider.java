@@ -98,6 +98,10 @@ public interface ApplicationFeatureProvider {
      */
     boolean isLongBackgroundTaskPermissionToggleSupported();
 
+    default Set<String> getAlwaysAllowToDisablePackages() {
+        return Set.of();
+    }
+
     /**
      * Callback that receives the number of packages installed on the device.
      */

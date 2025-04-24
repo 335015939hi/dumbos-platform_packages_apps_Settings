@@ -65,6 +65,8 @@ class AppDisableButton(
     private fun ApplicationInfo.canBeDisabled(): Boolean = when {
         !isSystemApp -> appButtonRepository.isAllowUninstallOrArchive(context, this)
 
+        packageName in applicationFeatureProvider.alwaysAllowToDisablePackages -> true
+
         // Try to prevent the user from bricking their phone by not allowing disabling of apps
         // signed with the system certificate.
         isSignedWithPlatformKey -> false

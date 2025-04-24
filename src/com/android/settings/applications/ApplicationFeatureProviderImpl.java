@@ -402,4 +402,9 @@ public class ApplicationFeatureProviderImpl implements ApplicationFeatureProvide
         // converted to a special app-op permission, this should be updated.
         return false;
     }
+
+    @Override
+    public Set<String> getAlwaysAllowToDisablePackages() {
+        return ApplicationFeatureProviderImplExt.getAlwaysAllowToDisablePackages(mContext);
+    }
 }
