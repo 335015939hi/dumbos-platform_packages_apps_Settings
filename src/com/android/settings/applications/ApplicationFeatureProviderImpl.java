@@ -229,6 +229,9 @@ public class ApplicationFeatureProviderImpl implements ApplicationFeatureProvide
                 // CameraX extensions break when it's disabled, which breaks apps that use the
                 // CameraX library
                 PackageId.PIXEL_CAMERA_SERVICES_NAME,
+
+                // Emergency calls break when it's disabled, system dialer app is required for it.
+                "com.android.dialer",
         });
 
         PackageManager pm = mContext.getPackageManager();
