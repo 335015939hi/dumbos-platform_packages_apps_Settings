@@ -43,13 +43,7 @@ public class GnssPsdsPrefController extends IntSettingPrefController {
     @Override
     protected void getEntries(Entries entries) {
         entries.add(R.string.psds_enabled_grapheneos_server, GnssSettings.PSDS_SERVER_GRAPHENEOS);
-        int standardServerString;
-        switch (psdsType) {
-            default:
-                standardServerString = R.string.psds_enabled_standard_server;
-                break;
-        }
-        entries.add(standardServerString, GnssSettings.PSDS_SERVER_STANDARD);
+        entries.add(R.string.psds_enabled_standard_server, GnssSettings.PSDS_SERVER_STANDARD);
         entries.add(R.string.psds_disabled, R.string.psds_disabled_summary, GnssSettings.PSDS_DISABLED);
     }
 }
