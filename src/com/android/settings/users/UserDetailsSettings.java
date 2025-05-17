@@ -185,7 +185,7 @@ public class UserDetailsSettings extends SettingsPreferenceFragment
             openAppCopyingScreen();
             return true;
         } else if (preference == mAppsInstallsPref) {
-            UserAppsInstallSettingsPrefController.launchSettings(requireContext(), preference, mUserInfo.id);
+            UserAppsInstallSettings.launch(preference, mUserInfo.id);
             return true;
         }
         return false;
