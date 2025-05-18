@@ -249,6 +249,4 @@ This method can be particularly useful when GNSS is unavailable or unreliable, s
         where strong authentication is required to unlock the storage.
     </string>
 
-    <string name="ps_end_session">End session</string>
-
 </resources>

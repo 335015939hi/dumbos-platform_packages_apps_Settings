@@ -87,12 +87,6 @@
             settings:searchable="false" />
 
         <Preference
-            android:key="private_space_end_session"
-            android:title="@string/ps_end_session"
-            settings:controller="com.android.settings.privatespace.users.PsEndSessionPrefController"
-            settings:searchable="false" />
-
-        <Preference
             android:key="private_space_delete"
             android:title="@string/private_space_delete_title"
             settings:controller="com.android.settings.privatespace.delete.DeletePrivateSpaceController"
