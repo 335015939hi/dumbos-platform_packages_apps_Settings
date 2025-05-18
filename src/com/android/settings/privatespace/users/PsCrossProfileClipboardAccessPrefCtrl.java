@@ -11,11 +11,10 @@ import static android.ext.settings.CrossProfileClipboardAccessSettings.*;
 
 public class PsCrossProfileClipboardAccessPrefCtrl extends IntSettingPrefController {
 
-    private final IntSetting setting;
 
     public PsCrossProfileClipboardAccessPrefCtrl(Context ctx, String key) {
-        super(ctx, key, CROSS_PROFILE_CLIPBOARD_ACCESS_SETTINGS);
-        this.setting = CROSS_PROFILE_CLIPBOARD_ACCESS_SETTINGS;
+        super(ctx, key, CROSS_PROFILE_CLIPBOARD_ACCESS_SETTINGS,
+                PrivateSpaceMaintainer.getInstance(ctx).getPrivateProfileHandle());
     }
 
     @Override
@@ -44,29 +43,5 @@ public class PsCrossProfileClipboardAccessPrefCtrl extends IntSettingPrefControl
         entries.add(R.string.cross_profile_clipboard_access_disallow_title,
                 R.string.cross_profile_clipboard_access_disallow_summary,
                 BLOCK);
-    }
-
-    @Override
-    protected int getCurrentValue() {
-        var userHandle = PrivateSpaceMaintainer.getInstance(mContext).getPrivateProfileHandle();
-        if (userHandle == null) {
-            // Return unknown value without a Private profile UserHandle value.
-            return -1;
-        }
-
-        // Needed to properly get the PER_USER ExtSetting on its appropriate user.
-        return setting.get(mContext, userHandle.getIdentifier());
-    }
-
-    @Override
-    protected boolean setValue(int val) {
-        var userHandle = PrivateSpaceMaintainer.getInstance(mContext).getPrivateProfileHandle();
-        if (userHandle == null) {
-            return false;
-        }
-
-        // Needed to properly set the PER_USER ExtSetting on its appropriate user.
-        Context ctx = mContext.createContextAsUser(userHandle, 0);
-        return setting.put(ctx, val);
     }
 }
