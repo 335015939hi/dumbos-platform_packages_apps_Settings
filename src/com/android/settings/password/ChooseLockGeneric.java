@@ -62,6 +62,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -87,6 +88,7 @@ import com.android.settings.biometrics.BiometricUtils;
 import com.android.settings.biometrics.IdentityCheckBiometricErrorDialog;
 import com.android.settings.core.SubSettingLauncher;
 import com.android.settings.core.instrumentation.InstrumentedDialogFragment;
+import com.android.settings.password.generate.GenerateLockPasswordActivity;
 import com.android.settings.safetycenter.LockScreenSafetySource;
 import com.android.settings.search.SearchFeatureProvider;
 import com.android.settingslib.RestrictedPreference;
@@ -907,11 +909,26 @@ public class ChooseLockGeneric extends SettingsActivity {
             if (quality >= DevicePolicyManager.PASSWORD_QUALITY_MANAGED) {
                 intent = getLockManagedPasswordIntent(mUserPassword);
             } else if (quality >= DevicePolicyManager.PASSWORD_QUALITY_NUMERIC) {
-                intent = getLockPasswordIntent(quality);
+                intent = maybeInterceptIntentForPasswordGeneration(getLockPasswordIntent(quality));
             } else if (quality == DevicePolicyManager.PASSWORD_QUALITY_SOMETHING) {
-                intent = getLockPatternIntent();
+                intent = maybeInterceptIntentForPasswordGeneration(getLockPatternIntent());
             }
             return intent;
+        }
+
+        @NonNull
+        private Intent maybeInterceptIntentForPasswordGeneration(final Intent intent) {
+            // A subclass can override getLockPasswordIntent. Before intercepting with
+            // password generation activity, need to check if compatible
+            final Intent possibleLockPasswordGenIntent =
+                    GenerateLockPasswordActivity.maybeInterceptLaunchAttemptForOriginalLockPassword(
+                            requireContext(), intent);
+            if (possibleLockPasswordGenIntent != null) {
+                return possibleLockPasswordGenIntent;
+            } else {
+                Toast.makeText(requireContext(), R.string.lock_screen_generate_untested_class_toast, Toast.LENGTH_LONG).show();
+                return intent;
+            }
         }
 
         @Override
