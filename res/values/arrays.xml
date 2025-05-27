@@ -1634,4 +1634,17 @@
     </string-array>
     <string-array name="fingerprint_acquired_vendor" />
 
+    <!-- Motion Lock Sensitivity Options -->
+    <string-array name="motion_lock_sensitivity_entries">
+        <item>@string/motion_lock_sensitivity_low</item>
+        <item>@string/motion_lock_sensitivity_medium</item>
+        <item>@string/motion_lock_sensitivity_high</item>
+    </string-array>
+
+    <string-array name="motion_lock_sensitivity_values" translatable="false">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+    </string-array>
+
 </resources>

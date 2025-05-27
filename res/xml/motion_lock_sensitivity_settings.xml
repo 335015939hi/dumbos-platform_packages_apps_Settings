@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:title="@string/motion_lock_title" 
+    android:key="motion_lock_sensitivity_screen">
+
+    <com.android.settingslib.widget.MainSwitchPreference
+        android:key="motion_lock_enabled"
+        android:title="@string/motion_lock_enabled_title"
+        android:summary="@string/motion_lock_enabled_summary"
+        android:defaultValue="false" />
+
+    <ListPreference
+        android:key="motion_lock_sensitivity"
+        android:title="@string/motion_lock_sensitivity_title" 
+        android:summary="%s"
+        android:entries="@array/motion_lock_sensitivity_entries"
+        android:entryValues="@array/motion_lock_sensitivity_values"
+        android:dependency="motion_lock_enabled"
+        android:defaultValue="1" /> 
+
+    <com.android.settingslib.widget.FooterPreference
+        android:key="motion_lock_footer"
+        android:title="@string/motion_lock_sensitivity_footer" />
+
+</PreferenceScreen>
