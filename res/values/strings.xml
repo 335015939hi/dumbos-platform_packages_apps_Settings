@@ -13983,4 +13983,15 @@
 
     <string name="battery_share_description">Charge other devices by placing them on the back of your phone</string>
     <string name="battery_share">Battery share</string>
+    
+    <!-- Motion Lock setting strings -->
+    <string name="motion_lock_summary">Lock your device when significant motion is detected</string>
+    <string name="motion_lock_title">Motion Lock</string>
+    <string name="motion_lock_enabled_summary">Enable or disable motion lock feature.</string>
+    <string name="motion_lock_enabled_title">Motion Lock Enabled</string>
+    <string name="motion_lock_sensitivity_low">Low</string>
+    <string name="motion_lock_sensitivity_medium">Medium</string>
+    <string name="motion_lock_sensitivity_high">High</string>
+    <string name="motion_lock_sensitivity_title">Sensitivity</string>
+    <string name="motion_lock_sensitivity_footer">Adjust the sensitivity for Motion Lock detection.\nPlease note that this feature may cause accidental screen locks.</string>
 </resources>
