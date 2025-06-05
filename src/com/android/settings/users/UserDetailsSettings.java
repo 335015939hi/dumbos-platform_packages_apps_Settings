@@ -69,6 +69,7 @@ public class UserDetailsSettings extends SettingsPreferenceFragment
 
     private static final String KEY_APP_INSTALLS = "app_installs";
     private static final String KEY_RUN_IN_BACKGROUND = "allow_run_in_background";
+    private static final String KEY_ALLOW_BLOCK_CALLS= "allow_block_calls";
 
     /** Integer extra containing the userId to manage */
     static final String EXTRA_USER_ID = "user_id";
@@ -104,6 +105,7 @@ public class UserDetailsSettings extends SettingsPreferenceFragment
     TwoStatePreference mGrantAdminPref;
     Preference mAppsInstallsPref;
     private SwitchPreferenceCompat mRunInBackgroundPref;
+    private SwitchPreferenceCompat mAllowBlockCallsPref;
 
     @VisibleForTesting
     /** The user being studied (not the user doing the studying). */
@@ -217,8 +219,11 @@ public class UserDetailsSettings extends SettingsPreferenceFragment
         } else if (preference == mRunInBackgroundPref) {
             userRestrictions.set(UserManager.DISALLOW_RUN_IN_BACKGROUND, !((boolean) newValue));
             return true;
+        } else if (preference == mAllowBlockCallsPref) {
+            userRestrictions.set(UserManager.DISALLOW_BLOCK_CALLS, !((boolean) newValue));
+            return true;
         }
-
+            
         return true;
     }
 
@@ -373,6 +378,7 @@ public class UserDetailsSettings extends SettingsPreferenceFragment
         mGrantAdminPref.setChecked(mUserInfo.isAdmin());
         mAppsInstallsPref = findPreference(KEY_APP_INSTALLS);
         mRunInBackgroundPref = findPreference(KEY_RUN_IN_BACKGROUND);
+        mAllowBlockCallsPref = findPreference(KEY_ALLOW_BLOCK_CALLS);
 
         mSwitchUserPref.setVisible(mUserCaps.mUserSwitchingUiEnabled);
 
@@ -411,15 +417,19 @@ public class UserDetailsSettings extends SettingsPreferenceFragment
             removePreference(KEY_APP_COPYING);
             removePreference(KEY_APP_INSTALLS);
             removePreference(KEY_RUN_IN_BACKGROUND);
+            removePreference(KEY_ALLOW_BLOCK_CALLS);
         } else {
             if (!Utils.isVoiceCapable(context)) { // no telephony
                 removePreference(KEY_ENABLE_TELEPHONY);
+                removePreference(KEY_ALLOW_BLOCK_CALLS);
             }
             if (mUserInfo.isMain() || UserManager.isHeadlessSystemUserMode()) {
                 removePreference(KEY_ENABLE_TELEPHONY);
+                removePreference(KEY_ALLOW_BLOCK_CALLS);
             }
             if (mUserInfo.isRestricted()) {
                 removePreference(KEY_ENABLE_TELEPHONY);
+                removePreference(KEY_ALLOW_BLOCK_CALLS);
                 if (isNewUser) {
                     // for newly created restricted users we should open the apps and content access
                     // screen to initialize the default restrictions
@@ -431,6 +441,7 @@ public class UserDetailsSettings extends SettingsPreferenceFragment
 
             if (mUserInfo.isGuest()) {
                 removePreference(KEY_ENABLE_TELEPHONY);
+                removePreference(KEY_ALLOW_BLOCK_CALLS);
                 mRemoveUserPref.setTitle(mGuestUserAutoCreated
                         ? com.android.settingslib.R.string.guest_reset_guest
                         : com.android.settingslib.R.string.guest_exit_guest);
@@ -447,6 +458,8 @@ public class UserDetailsSettings extends SettingsPreferenceFragment
                 mRemoveUserPref.setTitle(R.string.user_remove_user);
                 mRunInBackgroundPref.setChecked(!userRestrictions.isSet(
                         UserManager.DISALLOW_RUN_IN_BACKGROUND));
+                mAllowBlockCallsPref.setChecked(!userRestrictions.isSet(
+                        UserManager.DISALLOW_BLOCK_CALLS));
             }
 
             // Remove preference KEY_REMOVE_USER if DISALLOW_REMOVE_USER restriction is set
@@ -464,6 +477,7 @@ public class UserDetailsSettings extends SettingsPreferenceFragment
             mAppAndContentAccessPref.setOnPreferenceClickListener(this);
             mAppCopyingPref.setOnPreferenceClickListener(this);
             mRunInBackgroundPref.setOnPreferenceChangeListener(this);
+            mAllowBlockCallsPref.setOnPreferenceChangeListener(this);
         }
     }
 
