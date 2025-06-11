@@ -890,14 +890,6 @@ public class CredentialManagerPreferenceController extends BasePreferenceControl
     }
 
     protected int getUser() {
-        if (mIsPrivateSpace) {
-            UserHandle user = com.android.settings.privatespace.PrivateSpaceMaintainer
-                    .getInstance(mContext).getPrivateProfileHandle();
-            if (user != null) {
-                return user.getIdentifier();
-            }
-        }
-
         return UserUtils.getUser(mIsWorkProfile, mIsPrivateSpace, mContext);
     }
 
