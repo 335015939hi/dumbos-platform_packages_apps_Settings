@@ -13,7 +13,7 @@ import com.android.settingslib.utils.PowerUtil;
 // based on code from SettingsGoogle app
 public class BatterySettingsFeatureProviderGoogleImpl extends BatterySettingsFeatureProviderImpl {
 
-    @Override
+    // @Override
     public boolean isChargingOptimizationMode(@NonNull Context context) {
         return BatteryChargeLimit.isChargeLimitEnabled(context);
     }
