@@ -376,7 +376,7 @@ public class ChooseBiometricSecondFactorPin extends SettingsActivity {
                 return;
             }
 
-            final TextView sucTitleView = view.findViewById(R.id.suc_layout_title);
+            final TextView sucTitleView = view.findViewById(com.google.android.setupdesign.R.id.suc_layout_title);
             final ViewGroup.MarginLayoutParams titleLayoutParams =
                     (ViewGroup.MarginLayoutParams) sucTitleView.getLayoutParams();
             mPasswordRestrictionView = new RecyclerView(getActivity());
