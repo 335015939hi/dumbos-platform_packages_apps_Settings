@@ -74,8 +74,10 @@ import androidx.preference.Preference;
 import androidx.preference.PreferenceCategory;
 import androidx.preference.PreferenceScreen;
 
+import com.android.internal.widget.LockDomain;
 import com.android.internal.widget.LockPatternUtils;
 import com.android.internal.widget.LockscreenCredential;
+import com.android.internal.widget.WrappedLockPatternUtils;
 import com.android.settings.EventLogTags;
 import com.android.settings.R;
 import com.android.settings.SettingsActivity;
@@ -689,7 +691,7 @@ public class ChooseLockGeneric extends SettingsActivity {
             mUnlockSettingsControllers.add(new PatternVisiblePreferenceController(
                     getContext(), mUserId, mLockPatternUtils));
             mUnlockSettingsControllers.add(new PinPrivacyPreferenceController(
-                    getContext(), mUserId, mLockPatternUtils));
+                    getContext(), mUserId, new WrappedLockPatternUtils(mLockPatternUtils, LockDomain.Primary)));
             mUnlockSettingsControllers.add(new PowerButtonInstantLockPreferenceController(
                     getContext(), mUserId, mLockPatternUtils));
             mUnlockSettingsControllers.add(new LockAfterTimeoutPreferenceController(
