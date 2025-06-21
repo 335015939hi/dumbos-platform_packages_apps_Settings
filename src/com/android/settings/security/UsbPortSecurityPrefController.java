@@ -4,18 +4,9 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.ext.settings.UsbPortSecurity;
 import android.hardware.usb.UsbManager;
-import android.hardware.usb.ext.PortSecurityState;
-import android.os.Bundle;
-import android.os.ResultReceiver;
 
-import androidx.preference.Preference;
-
-import com.android.internal.infra.AndroidFuture;
 import com.android.settings.R;
 import com.android.settings.ext.IntSettingPrefController;
-
-import java.util.Objects;
-import java.util.concurrent.TimeUnit;
 
 import static java.util.Objects.requireNonNull;
 
@@ -80,57 +71,10 @@ public class UsbPortSecurityPrefController extends IntSettingPrefController {
                 UsbPortSecurity.MODE_ENABLED);
     }
 
-    private static void setSecurityStateForAllPortsSync(UsbManager usbManager, int state) {
-        var future = new AndroidFuture<>();
-        usbManager.setSecurityStateForAllPorts(state, new ResultReceiver(null) {
-            @Override
-            protected void onReceiveResult(int resultCode, Bundle resultData) {
-                if (resultCode != android.hardware.usb.ext.IUsbExt.NO_ERROR) {
-                    String msg = "setPortSecurityState failed, " +
-                            "resultCode: " + resultCode;
-                    if (resultData != null) {
-                        msg += ", resultData: " + resultData.toStringDeep();
-                    }
-                    throw new RuntimeException(msg);
-                }
-                future.complete(null);
-            }
-        });
-        try {
-            future.get(3, TimeUnit.SECONDS);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    private void setState(int prevSetting, @android.hardware.usb.ext.PortSecurityState int state) {
-        var usbManager = requireNonNull(mContext.getSystemService(UsbManager.class));
-        if (prevSetting == UsbPortSecurity.MODE_CHARGING_ONLY && state >= UsbPortSecurity.MODE_CHARGING_ONLY_WHEN_LOCKED) {
-            // Turn USB ports off first to trigger reconnection of devices that were connected
-            // in charging-only state. Simply enabling the data path is not enough in some
-            // advanced scenarios, e.g. when port alt mode or port role switching are used.
-            setSecurityStateForAllPortsSync(usbManager, PortSecurityState.DISABLED);
-        }
-        setSecurityStateForAllPortsSync(usbManager, state);
-    }
-
     @Override
     protected boolean setValue(int val) {
-        int prevSetting = getCurrentValue();
-        boolean res = super.setValue(val);
-        if (!res) {
-            return false;
-        }
-
-        int pss = switch (val) {
-            case UsbPortSecurity.MODE_DISABLED -> PortSecurityState.DISABLED;
-            case UsbPortSecurity.MODE_CHARGING_ONLY -> PortSecurityState.CHARGING_ONLY_IMMEDIATE;
-            case UsbPortSecurity.MODE_CHARGING_ONLY_WHEN_LOCKED -> PortSecurityState.ENABLED;
-            case UsbPortSecurity.MODE_CHARGING_ONLY_WHEN_LOCKED_AFU -> PortSecurityState.ENABLED;
-            case UsbPortSecurity.MODE_ENABLED -> PortSecurityState.ENABLED;
-            default -> throw new IllegalArgumentException(Integer.toString(val));
-        };
-        setState(prevSetting, pss);
+        var usbManager = requireNonNull(mContext.getSystemService(UsbManager.class));
+        usbManager.updatePortSecuritySetting(val);
         return true;
     }
 
