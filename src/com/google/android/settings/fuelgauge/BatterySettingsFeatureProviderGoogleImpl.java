@@ -15,10 +15,7 @@ public class BatterySettingsFeatureProviderGoogleImpl extends BatterySettingsFea
 
     @Override
     public boolean isChargingOptimizationMode(@NonNull Context context, boolean isLongLife) {
-        // TODO: Revisit. In current SettingsGoogle app, isLongLife is used like this:
-        //  isLongLife && BatteryChargeLimit.isChargeLimitEnabled(context)
-        //  Long life is tied to BatteryManager.CHARGING_POLICY_ADAPTIVE_LONGLIFE
-        return BatteryChargeLimit.isChargeLimitEnabled(context);
+        return isLongLife && BatteryChargeLimit.isChargeLimitEnabled(context);
     }
 
     @Nullable
