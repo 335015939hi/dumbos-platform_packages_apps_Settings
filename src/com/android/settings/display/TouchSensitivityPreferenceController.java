@@ -36,7 +36,7 @@ public class TouchSensitivityPreferenceController extends TogglePreferenceContro
 
     @Override
     public int getAvailabilityStatus() {
-        return mContext.getResources().getBoolean(com.android.internal.R.bool.config_supportGloveMode)
+        return mContext.getResources().getBoolean(R.bool.config_show_touch_sensitivity)
             ? AVAILABLE
             : UNSUPPORTED_ON_DEVICE;
     }

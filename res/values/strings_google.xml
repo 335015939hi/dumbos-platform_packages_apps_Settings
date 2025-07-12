@@ -5,6 +5,8 @@
     <string name="charging_optimization_reach_limit_charge_label"/>
     <string name="charging_optimization_reach_limit_remaining_time_label"/>
     <string name="charging_optimization_remaining_time_label"/>
+    <string name="touch_sensitivity_title"/>
+    <string name="touch_sensitivity_summary"/>
 
     <!-- SettingsIntelligenceGoogle -->
     <string name="charge_limit_indexing_keywords"/>
