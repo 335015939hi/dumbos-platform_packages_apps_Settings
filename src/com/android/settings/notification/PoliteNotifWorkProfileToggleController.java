@@ -111,7 +111,7 @@ public class PoliteNotifWorkProfileToggleController extends TogglePreferenceCont
             return false;
         }
         return Settings.System.getIntForUser(mContext.getContentResolver(),
-                Settings.System.NOTIFICATION_COOLDOWN_ENABLED, ON, mManagedProfileId) != OFF;
+                Settings.System.NOTIFICATION_COOLDOWN_ENABLED, OFF, mManagedProfileId) != OFF;
     }
 
     @Override
