@@ -2838,7 +2838,7 @@
     <!-- Summary for the Wi-Fi hotspot speed unavailable [CHAR LIMIT=NONE]-->
     <string name="wifi_hotspot_speed_summary_unavailable">Not available in your country or region</string>
     <!-- The footer message for switch screen resolution [CHAR LIMIT=NONE] -->
-    <string name="wifi_hotspot_speed_footer">If your preferred frequency isn\u0027t available, your hotspot may use a different one. Hotspot security settings may change if you change the frequency.</string>
+    <string name="wifi_hotspot_speed_footer">If your preferred frequency isn\u0027t available, your hotspot may use a different one. Hotspot security settings may change if you change the frequency.\n\nYou are fully responsible for compliance with any laws, regulations and rules that apply to the use of 5 GHz or 6 GHz hotspot capabilities. By continuing to use 5 GHz or 6 GHz hotspot functionality, you acknowledge that you fully read this and GrapheneOS will not be held liable in any way for any possible consequences should there be and due to your usage of those frequencies.</string>
     <!-- Summary for the Wi-Fi hotspot security unavailable [CHAR LIMIT=NONE] -->
     <string name="wifi_hotspot_security_summary_unavailable">Not available with 6 GHz</string>
     <!-- The footer message for Wi-Fi hotspot security settings [CHAR LIMIT=NONE] -->
