@@ -9,9 +9,11 @@ import android.util.Log
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.LifecycleOwner
+import androidx.preference.Preference
 import androidx.preference.PreferenceScreen
 import com.android.settings.R
 import com.android.settings.core.BasePreferenceController
+import com.android.settings.widget.TipCardPreference
 import com.android.settingslib.widget.BannerMessagePreference
 import com.google.android.settings.fuelgauge.Utils
 
@@ -34,7 +36,7 @@ class CycleCountTipPreferenceController(
     }
 
     private var batteryBroadcastReceiver: BroadcastReceiver? = null
-    private var cycleCountPreference: BannerMessagePreference? = null
+    private var cycleCountPreference: Preference? = null
 
     override fun getAvailabilityStatus(): Int {
         return if (Utils.isBarrelRequiredDevice(mContext)) {
@@ -46,9 +48,20 @@ class CycleCountTipPreferenceController(
 
     override fun displayPreference(screen: PreferenceScreen) {
         super.displayPreference(screen)
-        val preference = screen.findPreference<BannerMessagePreference>(preferenceKey) ?: return
+        // TODO: Remove the TipCardPreference branch (and change type parameter to
+        //  BannerMessagePreference) if 16QPR1 replaces TipCardPreference with
+        //  BannerMessagePreference. Do this by reverting the commit.
+        val preference = screen.findPreference<Preference>(preferenceKey) ?: return
+        when (preference) {
+            is BannerMessagePreference -> {
+                preference.setAttentionLevel(BannerMessagePreference.AttentionLevel.NORMAL)
+            }
+            is TipCardPreference -> {
+                preference.iconResId = R.drawable.ic_battery_charging_full
+            }
+            else -> return
+        }
         cycleCountPreference = preference
-        preference.setAttentionLevel(BannerMessagePreference.AttentionLevel.NORMAL)
         // set later in updatePreference
         preference.isVisible = false
     }
