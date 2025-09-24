@@ -10,9 +10,9 @@ import android.util.Log
 import androidx.preference.Preference
 import com.android.settings.R
 import com.android.settings.fuelgauge.batterytip.tips.BatteryTip
-import com.android.settings.widget.TipCardPreference
 import com.android.settingslib.HelpUtils
 import com.android.settingslib.core.instrumentation.MetricsFeatureProvider
+import com.android.settingslib.widget.BannerMessagePreference
 
 private const val TAG = "BatteryReplacementTip"
 
@@ -68,23 +68,23 @@ class BatteryReplacementTip : BatteryTip {
 
     override fun updatePreference(preference: Preference) {
         super.updatePreference(preference)
-        val tipCardPref = preference as? TipCardPreference ?: return
-        tipCardPref.iconResId = iconId
-        tipCardPref.onClick = onClick@ {
+        val tipCardPref = preference as? BannerMessagePreference ?: return
+        tipCardPref.isSelectable = true
+        tipCardPref.onPreferenceClickListener = Preference.OnPreferenceClickListener onClick@ { _ ->
             val context: Context = tipCardPref.context
             val helpIntent = HelpUtils.getHelpIntent(
                 context,
                 context.getString(R.string.help_url_battery_replacement),
                 ""
-            ) ?: return@onClick
+            ) ?: return@onClick true
 
             try {
                 context.startActivity(helpIntent)
             } catch (e: Exception) {
                 Log.e(TAG, "can't start action $helpIntent", e)
             }
+            true
         }
-        tipCardPref.buildContent()
     }
 
     companion object CREATOR : Parcelable.Creator<BatteryReplacementTip> {

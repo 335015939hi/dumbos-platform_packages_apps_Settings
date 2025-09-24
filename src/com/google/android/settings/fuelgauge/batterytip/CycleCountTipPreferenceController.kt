@@ -12,7 +12,7 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.preference.PreferenceScreen
 import com.android.settings.R
 import com.android.settings.core.BasePreferenceController
-import com.android.settings.widget.TipCardPreference
+import com.android.settingslib.widget.BannerMessagePreference
 import com.google.android.settings.fuelgauge.Utils
 
 class CycleCountTipPreferenceController(
@@ -34,7 +34,7 @@ class CycleCountTipPreferenceController(
     }
 
     private var batteryBroadcastReceiver: BroadcastReceiver? = null
-    private var cycleCountPreference: TipCardPreference? = null
+    private var cycleCountPreference: BannerMessagePreference? = null
 
     override fun getAvailabilityStatus(): Int {
         return if (Utils.isBarrelRequiredDevice(mContext)) {
@@ -46,9 +46,9 @@ class CycleCountTipPreferenceController(
 
     override fun displayPreference(screen: PreferenceScreen) {
         super.displayPreference(screen)
-        val preference = screen.findPreference<TipCardPreference>(preferenceKey) ?: return
-        preference.iconResId = R.drawable.ic_battery_charging_full
+        val preference = screen.findPreference<BannerMessagePreference>(preferenceKey) ?: return
         cycleCountPreference = preference
+        preference.setAttentionLevel(BannerMessagePreference.AttentionLevel.NORMAL)
         // set later in updatePreference
         preference.isVisible = false
     }
@@ -116,6 +116,8 @@ class CycleCountTipPreferenceController(
                 summary = convertCycleCountToString(cycleCount)
                 isVisible = true
             }
+        } else {
+            cycleCountPreference?.isVisible = false
         }
     }
 }
