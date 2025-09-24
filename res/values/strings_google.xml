@@ -7,6 +7,11 @@
     <string name="charging_optimization_remaining_time_label"/>
     <string name="touch_sensitivity_title"/>
     <string name="touch_sensitivity_summary"/>
+    <string name="charge_cycle_count"/>
+    <string name="battery_tip_early_replacement_summary"/>
+    <string name="help_url_battery_replacement"/>
+    <string name="battery_tip_replacement_title"/>
+    <string name="battery_tip_replacement_summary"/>
 
     <!-- SettingsIntelligenceGoogle -->
     <string name="charge_limit_indexing_keywords"/>
