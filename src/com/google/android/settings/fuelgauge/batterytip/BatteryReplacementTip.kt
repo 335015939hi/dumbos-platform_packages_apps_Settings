@@ -10,6 +10,7 @@ import android.util.Log
 import androidx.preference.Preference
 import com.android.settings.R
 import com.android.settings.fuelgauge.batterytip.tips.BatteryTip
+import com.android.settings.widget.TipCardPreference
 import com.android.settingslib.HelpUtils
 import com.android.settingslib.core.instrumentation.MetricsFeatureProvider
 import com.android.settingslib.widget.BannerMessagePreference
@@ -68,22 +69,32 @@ class BatteryReplacementTip : BatteryTip {
 
     override fun updatePreference(preference: Preference) {
         super.updatePreference(preference)
-        val tipCardPref = preference as? BannerMessagePreference ?: return
-        tipCardPref.isSelectable = true
-        tipCardPref.onPreferenceClickListener = Preference.OnPreferenceClickListener onClick@ { _ ->
-            val context: Context = tipCardPref.context
-            val helpIntent = HelpUtils.getHelpIntent(
-                context,
-                context.getString(R.string.help_url_battery_replacement),
-                ""
-            ) ?: return@onClick true
-
-            try {
-                context.startActivity(helpIntent)
-            } catch (e: Exception) {
-                Log.e(TAG, "can't start action $helpIntent", e)
+        // TODO: Remove the TipCardPreference branch if 16QPR1 replaces TipCardPreference with
+        //  BannerMessagePreference. Do this by reverting the commit.
+        if (preference is BannerMessagePreference) {
+            preference.isSelectable = true
+            preference.onPreferenceClickListener = Preference.OnPreferenceClickListener { _ ->
+                handlePreferenceClick(preference.context)
+                true
             }
-            true
+        } else if (preference is TipCardPreference) {
+            preference.iconResId = iconId
+            preference.onClick = { handlePreferenceClick(preference.context) }
+            preference.buildContent()
+        }
+    }
+
+    private fun handlePreferenceClick(context: Context) {
+        val helpIntent = HelpUtils.getHelpIntent(
+            context,
+            context.getString(R.string.help_url_battery_replacement),
+            ""
+        ) ?: return
+
+        try {
+            context.startActivity(helpIntent)
+        } catch (e: Exception) {
+            Log.e(TAG, "can't start action $helpIntent", e)
         }
     }
 
