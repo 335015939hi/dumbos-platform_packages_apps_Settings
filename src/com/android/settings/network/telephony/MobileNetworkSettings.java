@@ -311,6 +311,7 @@ public class MobileNetworkSettings extends AbstractMobileNetworkSettings impleme
 
         use(ApnPreferenceController.class).init(mSubId);
         use(CarrierPreferenceController.class).init(mSubId);
+        use(CarrierSettingsOverridesPreferenceController.class).init(mSubId);
         if (!isCatalystEnabled()) {
             use(DataUsagePreferenceController.class).init(mSubId);
             use(EnabledNetworkModePreferenceController.class)

@@ -206,6 +206,14 @@
             settings:controller="com.android.settings.network.telephony.CarrierSettingsVersionPreferenceController"
             settings:enableCopying="true"/>
 
+        <!-- Settings search is handled by CarrierSettingsOverridesSearchItem. -->
+        <Preference
+            android:key="carrier_settings_override_gos"
+            android:order="215"
+            android:title="@string/carrier_settings_override_gos_title"
+            settings:searchable="false"
+            settings:controller="com.android.settings.network.telephony.CarrierSettingsOverridesPreferenceController"/>
+
         <!-- IMEI -->
         <!-- order number synced -->
         <Preference
