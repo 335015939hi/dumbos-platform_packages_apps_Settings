@@ -134,6 +134,7 @@ open class SettingsSpaEnvironment(context: Context) : SpaEnvironment(context) {
             NetworkCellularGroupProvider(),
             WifiPrivacyPageProvider,
             PrintSettingsPageProvider,
+            com.android.settings.network.telephony.carriersettingsoverride.CarrierSettingsOverridesProvider,
         )
 
     override val logger =
