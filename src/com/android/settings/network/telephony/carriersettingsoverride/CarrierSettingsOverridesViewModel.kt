@@ -8,12 +8,14 @@ import android.os.RemoteException
 import android.telephony.CarrierConfigManager
 import android.telephony.SubscriptionManager
 import android.telephony.TelephonyFrameworkInitializer
+import android.util.ArrayMap
 import android.util.Log
 import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.application
 import androidx.lifecycle.viewModelScope
 import com.android.internal.telephony.ISub
+import com.android.internal.telephony.ICarrierConfigLoader
 import com.android.settings.R
 import com.android.settings.network.telephony.CarrierConfigRepository
 import kotlinx.coroutines.Dispatchers
@@ -49,6 +51,12 @@ class CarrierSettingsOverridesViewModel(application: Application) : AndroidViewM
         TelephonyFrameworkInitializer
             .getTelephonyServiceManager()
             .subscriptionServiceRegisterer
+            .get()
+    )
+
+    private val carrierConfigLoader = ICarrierConfigLoader.Stub.asInterface(
+        TelephonyFrameworkInitializer.getTelephonyServiceManager()
+            .carrierConfigServiceRegisterer
             .get()
     )
 
@@ -123,6 +131,9 @@ class CarrierSettingsOverridesViewModel(application: Application) : AndroidViewM
         }
     }
 
+    private val _unrecognizedOverrides = MutableStateFlow<ArrayMap<String, Any?>?>(null)
+    val unrecognizedOverrides: StateFlow<ArrayMap<String, Any?>?> = _unrecognizedOverrides
+
     private suspend fun setOverrideConfig(newOverrides: PersistableBundle?): Boolean {
         if (!subscriptionService.setExtOverrideConfigs(subId.value, newOverrides)) {
             return false
@@ -155,6 +166,28 @@ class CarrierSettingsOverridesViewModel(application: Application) : AndroidViewM
         }
         Log.d(TAG, "activeOverrides: $activeOverrides")
         _isAnOverrideActive.update { activeOverrides?.isEmpty == false }
+
+        // Display any overrides from AOSP. We expect these to not be set, because
+        // CarrierConfigLoader's overrideConfig is normally just a test API.
+        val overridesFromAosp: PersistableBundle = carrierConfigLoader
+            .getOverrideConfigForSubIdWithFeature(
+                subId.value,
+                application.opPackageName,
+                application.attributionTag
+            )
+        if (overridesFromAosp.isEmpty) {
+            _unrecognizedOverrides.update { null }
+        } else {
+            // every override from AOSP is unrecognized
+            val newUnrecognizedOverrides = ArrayMap<String, Any?>()
+            overridesFromAosp.keySet().forEach { key ->
+                newUnrecognizedOverrides[key] = overridesFromAosp.get(key)
+            }
+            Log.d(TAG, "found newUnrecognizedOverrides: $newUnrecognizedOverrides")
+            _unrecognizedOverrides.update {
+                newUnrecognizedOverrides.ifEmpty { null }
+            }
+        }
 
         // Construct states
         val configList = allowedUserChangeableCarrierConfigOptions.map { flagKey ->
@@ -258,6 +291,14 @@ class CarrierSettingsOverridesViewModel(application: Application) : AndroidViewM
                             )
                         }
                         false
+                    }
+                }
+
+                if (clearOverrides && !_unrecognizedOverrides.value.isNullOrEmpty()) {
+                    Log.d(TAG, "clearing all AOSP overrides")
+                    runThenAwaitCarrierConfigUpdateIfTrue {
+                        carrierConfigLoader.overrideConfig(subId.value, null, true)
+                        true
                     }
                 }
             } catch (e: RemoteException) {
