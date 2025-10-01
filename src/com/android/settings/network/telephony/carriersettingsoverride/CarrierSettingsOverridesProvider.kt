@@ -24,6 +24,7 @@ import androidx.compose.foundation.selection.selectableGroup
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Info
+import androidx.compose.material.icons.outlined.Warning
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.RadioButton
@@ -45,7 +46,6 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavType
 import androidx.navigation.navArgument
 import com.android.settings.R
-import com.android.settings.network.telephony.carriersettingsoverride.CarrierSettingsOverridesViewModel.MessageType
 import com.android.settings.spa.network.CollectAirplaneModeAndFinishIfOn
 import com.android.settingslib.spa.framework.common.SettingsPageProvider
 import com.android.settingslib.spa.framework.theme.SettingsDimension
@@ -64,6 +64,7 @@ import com.android.settingslib.spa.widget.ui.SettingsIcon
 import com.android.settingslib.spaprivileged.model.enterprise.Restrictions
 import com.android.settingslib.spaprivileged.template.preference.RestrictedMainSwitchPreference
 import com.android.settingslib.spaprivileged.template.preference.RestrictedPreference
+import com.android.settings.network.telephony.carriersettingsoverride.CarrierSettingsOverridesViewModel.MessageType
 
 private const val SUB_ID_FOR_OVERRIDE = "subId"
 
@@ -168,6 +169,50 @@ object CarrierSettingsOverridesProvider : SettingsPageProvider {
                         isOverrideInProgress,
                         isOverrideActive
                     )
+                }
+            }
+
+            val unrecognizedOverrides by viewModel.unrecognizedOverrides
+                .collectAsStateWithLifecycle()
+            if (!unrecognizedOverrides.isNullOrEmpty()) {
+                Category(stringResource(R.string.carrier_settings_override_unrecognized_category_title)) {
+                    CompositionLocalProvider(
+                        LocalContentColor provides MaterialTheme.colorScheme.error
+                    ) {
+                        Preference(
+                            model = object : PreferenceModel {
+                                override val title = stringResource(
+                                    R.string.carrier_settings_override_unrecognized_warning_title
+                                )
+                                override val summary: () -> String = {
+                                    context.getString(
+                                        R.string.carrier_settings_override_unrecognized_warning_summary
+                                    )
+                                }
+                                override val icon = @Composable {
+                                    SettingsIcon(imageVector = Icons.Outlined.Warning)
+                                }
+                            }
+                        )
+                    }
+
+                    unrecognizedOverrides?.forEachInline { key, value ->
+                        Preference(
+                            model = object : PreferenceModel {
+                                override val title = key
+                                override val summary: () -> String = {
+                                    if (value is Array<*>) {
+                                        value.asList().toString()
+                                    } else {
+                                        value.toString()
+                                    }
+                                }
+                                override val icon = @Composable {
+                                    SettingsIcon(imageVector = Icons.Outlined.Warning)
+                                }
+                            }
+                        )
+                    }
                 }
             }
 
