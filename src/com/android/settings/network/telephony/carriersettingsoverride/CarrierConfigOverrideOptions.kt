@@ -50,7 +50,7 @@ val allowedUserChangeableCarrierConfigOptions: List<ChangeableCarrierConfigOptio
                 if (state is ConfigState.Complex) {
                     val left = state.stateValues.size
                     val right = flag.keys.size
-                    require(left == right) {
+                    check(left == right) {
                         "key size for ${flag.javaClass.simpleName} mismatch ($left != $right)"
                     }
                 }
@@ -58,7 +58,7 @@ val allowedUserChangeableCarrierConfigOptions: List<ChangeableCarrierConfigOptio
         }
         val numTotalKeys = list.sumOf { it.keys.size }
         val max = 25
-        require(numTotalKeys <= max) {
+        check(numTotalKeys <= max) {
             "numTotalKeys $numTotalKeys exceeds max number of overrides $max"
         }
     }
