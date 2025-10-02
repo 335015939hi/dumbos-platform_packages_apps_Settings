@@ -1,21 +1,16 @@
 package com.android.settings.network.telephony.carriersettingsoverride
 
 import android.app.Application
-import android.net.Uri
-import android.os.Bundle
 import android.os.PersistableBundle
 import android.os.RemoteException
 import android.telephony.CarrierConfigManager
 import android.telephony.SubscriptionManager
-import android.telephony.TelephonyFrameworkInitializer
 import android.util.ArrayMap
 import android.util.Log
 import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.application
 import androidx.lifecycle.viewModelScope
-import com.android.internal.telephony.ISub
-import com.android.internal.telephony.ICarrierConfigLoader
 import com.android.settings.R
 import com.android.settings.network.telephony.CarrierConfigRepository
 import kotlinx.coroutines.Dispatchers
@@ -46,34 +41,12 @@ import kotlinx.coroutines.withTimeoutOrNull
 private const val TAG = "CarriSettOverridVM"
 
 class CarrierSettingsOverridesViewModel(application: Application) : AndroidViewModel(application) {
-
-    private val subscriptionService = ISub.Stub.asInterface(
-        TelephonyFrameworkInitializer
-            .getTelephonyServiceManager()
-            .subscriptionServiceRegisterer
-            .get()
-    )
-
-    private val carrierConfigLoader = ICarrierConfigLoader.Stub.asInterface(
-        TelephonyFrameworkInitializer.getTelephonyServiceManager()
-            .carrierConfigServiceRegisterer
-            .get()
-    )
-
     private val carrierConfigRepo = CarrierConfigRepository(application)
-    private val carrierConfigManager: CarrierConfigManager? =
-        application.getSystemService(CarrierConfigManager::class.java)
-
-    private val authority = Uri.parse(
-        "content://app.grapheneos.carrierconfig2.UpdateConfigProvider"
-    )
+    private val carrierConfigManager: CarrierConfigManager =
+        application.getSystemService(CarrierConfigManager::class.java)!!
 
     private fun carrierConfigChanges(subId: Int): Flow<Unit> = callbackFlow {
         val manager = carrierConfigManager
-        if (manager == null) {
-            close()
-            return@callbackFlow
-        }
 
         val executor = Dispatchers.Default.asExecutor()
         val listener = CarrierConfigManager.CarrierConfigChangeListener { _, subscriptionId, _, _ ->
@@ -134,47 +107,20 @@ class CarrierSettingsOverridesViewModel(application: Application) : AndroidViewM
     private val _unrecognizedOverrides = MutableStateFlow<ArrayMap<String, Any?>?>(null)
     val unrecognizedOverrides: StateFlow<ArrayMap<String, Any?>?> = _unrecognizedOverrides
 
-    private suspend fun setOverrideConfig(newOverrides: PersistableBundle?): Boolean {
-        if (!subscriptionService.setExtOverrideConfigs(subId.value, newOverrides)) {
-            return false
-        }
-
-        val extras = Bundle().apply { putInt("subId", subId.value) }
-        application.contentResolver.call(authority, "updateConfig", null, extras)
+    private fun setOverrideConfig(newOverrides: PersistableBundle?): Boolean {
+        carrierConfigManager.overrideConfig(subId.value, newOverrides, CarrierConfigManager.CONFIG_OVERRIDE_TYPE_GRAPHENEOS)
         return true
     }
 
-    private suspend fun getOverrideConfigForSubId(): PersistableBundle? {
-        return subscriptionService.getExtOverrideConfigs(subId.value)
-    }
-
     private suspend fun reloadFromCarrierConfig() {
-
-        val activeOverrides = try {
-            getOverrideConfigForSubId()
-        } catch (e: RemoteException) {
-            Log.e(TAG, "error getting activeOverrides", e)
-            _message.update {
-                MessageType.ErrorMessage(
-                    application.getString(
-                        R.string.carrier_settings_override_error_unable_to_connect_to_config__s,
-                        e.message
-                    )
-                )
-            }
-            null
-        }
+        val activeOverrides = carrierConfigManager.getConfigOverrides(subId.value, false)
         Log.d(TAG, "activeOverrides: $activeOverrides")
-        _isAnOverrideActive.update { activeOverrides?.isEmpty == false }
+        _isAnOverrideActive.update { !activeOverrides.isEmpty }
 
         // Display any overrides from AOSP. We expect these to not be set, because
         // CarrierConfigLoader's overrideConfig is normally just a test API.
-        val overridesFromAosp: PersistableBundle = carrierConfigLoader
-            .getOverrideConfigForSubIdWithFeature(
-                subId.value,
-                application.opPackageName,
-                application.attributionTag
-            )
+        val overridesFromAosp: PersistableBundle = carrierConfigManager.getConfigOverrides(subId.value, true)
+
         if (overridesFromAosp.isEmpty) {
             _unrecognizedOverrides.update { null }
         } else {
@@ -297,7 +243,7 @@ class CarrierSettingsOverridesViewModel(application: Application) : AndroidViewM
                 if (clearOverrides && !_unrecognizedOverrides.value.isNullOrEmpty()) {
                     Log.d(TAG, "clearing all AOSP overrides")
                     runThenAwaitCarrierConfigUpdateIfTrue {
-                        carrierConfigLoader.overrideConfig(subId.value, null, true)
+                        carrierConfigManager.overrideConfig(subId.value, null, CarrierConfigManager.CONFIG_OVERRIDE_TYPE_AOSP_PERSISTENT)
                         true
                     }
                 }
