@@ -64,7 +64,6 @@ import com.android.settingslib.spa.widget.ui.SettingsIcon
 import com.android.settingslib.spaprivileged.model.enterprise.Restrictions
 import com.android.settingslib.spaprivileged.template.preference.RestrictedMainSwitchPreference
 import com.android.settingslib.spaprivileged.template.preference.RestrictedPreference
-import com.android.settings.network.telephony.carriersettingsoverride.CarrierSettingsOverridesViewModel.MessageType
 
 private const val SUB_ID_FOR_OVERRIDE = "subId"
 
