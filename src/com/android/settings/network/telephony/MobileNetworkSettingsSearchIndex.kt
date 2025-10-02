@@ -36,6 +36,7 @@ import com.android.settings.spa.search.SpaSearchRepository.Companion.createSearc
 import com.android.settings.spa.search.SpaSearchRepository.Companion.searchIndexProviderOf
 import com.android.settingslib.search.SearchIndexableData
 import com.android.settingslib.search.SearchIndexableRaw
+import com.android.settingslib.spaprivileged.settingsprovider.settingsGlobalBoolean
 
 class MobileNetworkSettingsSearchIndex(
     private val searchItemsFactory: (context: Context) -> List<MobileNetworkSettingsSearchItem> =
