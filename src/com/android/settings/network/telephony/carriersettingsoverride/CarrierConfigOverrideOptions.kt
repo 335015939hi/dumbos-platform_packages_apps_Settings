@@ -18,8 +18,8 @@ import com.android.settings.network.telephony.CarrierConfigRepository.KeyType
  * 2. Add the new class to the allowedUserChangeableCarrierConfigFlags list below. This will allow
  *    the UI to detect the option and render it.
  *
- * 3. Consider bumping the value of OverrideConfigConstants.MAX_OVERRIDES in
- *    packages/apps/CarrierConfig2/overrideslibSrc if needed
+ * 3. Consider bumping the value of MAX_OVERRIDES in SubscriptionManagerService on
+ * frameworks/opt/telephony. TODO: Extract this into a constant that can be read from client code
  */
 
 private val simpleUniformBoolStates: List<ConfigState> = listOf(
