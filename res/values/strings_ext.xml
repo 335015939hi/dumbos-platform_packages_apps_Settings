@@ -297,6 +297,7 @@ May cause unreliable service. Use at your own risk.
     <string name="carrier_settings_override_bool_false">Force disabled</string>
     <string name="carrier_settings_override_default__s">Default (%1$s)</string>
     <string name="carrier_settings_override_volte_availability">VoLTE</string>
+    <string name="carrier_settings_override_volte_roaming">VoLTE (when roaming)</string>
     <string name="carrier_settings_override_vonr_enable">VoNR</string>
     <string name="carrier_settings_override_5g_title">5G capabilities</string>
     <string name="carrier_settings_override_5g_enabled_all_modes">Force NSA and SA</string>
@@ -307,4 +308,5 @@ May cause unreliable service. Use at your own risk.
     <string name="carrier_settings_override_5g_default_sa">SA</string>
     <string name="carrier_settings_override_5g_disabled">Force disabled</string>
     <string name="carrier_settings_default_5g_disabled">Disabled</string>
+    <string name="carrier_settings_override_backup_calling">Backup calling</string>
 </resources>

@@ -41,8 +41,10 @@ val allowedUserChangeableCarrierConfigOptions: List<ChangeableCarrierConfigOptio
     listOf(
 
         VoLTEAvailable,
+        VoLTEWhileRoaming,
         VoNREnabled,
         Enable5G,
+        BackupCalling,
 
     ).also { list ->
        list.onEach { flag ->
@@ -116,6 +118,17 @@ data object VoLTEAvailable : ChangeableCarrierConfigOption(
     )
 ) {
     override val titleStringRes = R.string.carrier_settings_override_volte_availability
+}
+
+data object VoLTEWhileRoaming : ChangeableCarrierConfigOption(
+    // The keys that will be edited in this option
+    keysWithType = listOf(
+        CarrierConfigManager.KEY_CARRIER_DEFAULT_WFC_IMS_ROAMING_ENABLED_BOOL to KeyType.BOOLEAN,
+    ),
+    // All possible values for the keys. Each of these can be an option that the user can select
+    allPossibleConfigStates = simpleUniformBoolStates,
+) {
+    override val titleStringRes = R.string.carrier_settings_override_volte_roaming
 }
 
 data object VoNREnabled : ChangeableCarrierConfigOption(
@@ -194,4 +207,36 @@ data object Enable5G : ChangeableCarrierConfigOption(
     )
 ) {
     override val titleStringRes = R.string.carrier_settings_override_5g_title
+}
+
+data object BackupCalling : ChangeableCarrierConfigOption(
+    keysWithType = listOf(
+        CarrierConfigManager.KEY_CARRIER_CROSS_SIM_IMS_AVAILABLE_BOOL to KeyType.BOOLEAN,
+        CarrierConfigManager.KEY_ENABLE_CROSS_SIM_CALLING_ON_OPPORTUNISTIC_DATA_BOOL to KeyType.BOOLEAN,
+    ),
+    // Use uniform booleans (true true, false false), then cover other states not exposed for user
+    // selection just so that we have a description for them
+    allPossibleConfigStates = simpleUniformBoolStates + listOf(
+        // Not exposed for user
+        ConfigState.Complex(
+            listOf(
+                CarrierConfigTypedValue.Bool(true),
+                CarrierConfigTypedValue.Bool(false),
+            ),
+            R.string.carrier_settings_override_bool_false,
+            R.string.carrier_settings_default_bool_false,
+            isUserSelectable = false,
+        ),
+        ConfigState.Complex(
+            listOf(
+                CarrierConfigTypedValue.Bool(false),
+                CarrierConfigTypedValue.Bool(true),
+            ),
+            R.string.carrier_settings_override_bool_false,
+            R.string.carrier_settings_default_bool_false,
+            isUserSelectable = false,
+        ),
+    )
+) {
+    override val titleStringRes = R.string.carrier_settings_override_backup_calling
 }
