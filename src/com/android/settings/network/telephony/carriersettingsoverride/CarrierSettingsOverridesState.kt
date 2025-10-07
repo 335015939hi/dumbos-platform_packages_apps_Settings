@@ -47,6 +47,7 @@ sealed class ConfigState {
     sealed class ActiveState : ConfigState() {
         @get:StringRes abstract val selectionStringRes: Int
         @get:StringRes abstract val existingValueStringRes: Int
+        @get:StringRes abstract val summaryStringRes: Int?
     }
 
     /**
@@ -59,6 +60,7 @@ sealed class ConfigState {
         val valueForAllKeys: CarrierConfigTypedValue,
         @get:StringRes override val selectionStringRes: Int,
         @get:StringRes override val existingValueStringRes: Int,
+        @get:StringRes override val summaryStringRes: Int? = null,
         override val isUserSelectable: Boolean = true
     ) : ActiveState() {
         override fun get(index: Int): CarrierConfigTypedValue = valueForAllKeys
@@ -86,6 +88,7 @@ sealed class ConfigState {
         val stateValues: List<CarrierConfigTypedValue>,
         @get:StringRes override val selectionStringRes: Int,
         @get:StringRes override val existingValueStringRes: Int,
+        @get:StringRes override val summaryStringRes: Int? = null,
         override val isUserSelectable: Boolean = true
     ) : ActiveState() {
         override fun get(index: Int): CarrierConfigTypedValue = stateValues[index]
