@@ -172,6 +172,9 @@ sealed class ChangeableCarrierConfigOption(
     @get:StringRes
     abstract val titleStringRes: Int
 
+    @get:StringRes
+    abstract val dialogDescriptionStringRes: Int?
+
     /**
      * List of all possible config states including disabled.
      */
