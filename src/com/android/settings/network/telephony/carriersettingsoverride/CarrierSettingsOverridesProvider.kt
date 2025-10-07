@@ -267,6 +267,9 @@ private fun CarrierSettingOverrideOptionPreference(
                     if (!possibleState.isUserSelectable) return@forEachIndexed
                     Radio(
                         text = getSelectionText(context, flagState, possibleState),
+                        summary = (possibleState as? ConfigState.ActiveState)
+                            ?.summaryStringRes
+                            ?.let(context::getString),
                         selected = index == selectedIndexForThisFlag,
                         enabled = !isOverrideInProgress && !isOverrideActive,
                         onSelected = {
