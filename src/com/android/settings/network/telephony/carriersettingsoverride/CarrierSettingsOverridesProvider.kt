@@ -28,6 +28,7 @@ import androidx.compose.material.icons.outlined.Warning
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.RadioButton
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
@@ -252,6 +253,15 @@ private fun CarrierSettingOverrideOptionPreference(
                     rememberScrollState()
                 )
             ) {
+                flagState.key.dialogDescriptionStringRes?.let { strRes ->
+                    Text(
+                        modifier = Modifier.fillMaxWidth()
+                            .padding(SettingsDimension.dialogItemPadding),
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        style = MaterialTheme.typography.bodyMedium,
+                        text = stringResource(strRes)
+                    )
+                }
                 val allStates = flagState.key.possibleConfigStates
                 allStates.forEachIndexed { index, possibleState ->
                     if (!possibleState.isUserSelectable) return@forEachIndexed
