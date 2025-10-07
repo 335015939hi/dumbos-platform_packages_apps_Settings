@@ -43,6 +43,7 @@ val allowedUserChangeableCarrierConfigOptions: List<ChangeableCarrierConfigOptio
         VoLTEAvailable,
         VoNREnabled,
         Enable5G,
+        WiFiCallingAvailable,
 
     ).also { list ->
        list.onEach { flag ->
@@ -206,4 +207,84 @@ data object Enable5G : ChangeableCarrierConfigOption(
 ) {
     override val titleStringRes = R.string.carrier_settings_override_5g_title
     override val dialogDescriptionStringRes = R.string.carrier_settings_override_5g_description
+}
+
+data object WiFiCallingAvailable : ChangeableCarrierConfigOption(
+    // The keys that will be edited in this option
+    keysWithType = listOf(
+        CarrierConfigManager.KEY_CARRIER_WFC_IMS_AVAILABLE_BOOL to KeyType.BOOLEAN,
+        CarrierConfigManager.KEY_EDITABLE_WFC_MODE_BOOL to KeyType.BOOLEAN,
+        CarrierConfigManager.KEY_CARRIER_DEFAULT_WFC_IMS_ROAMING_ENABLED_BOOL to KeyType.BOOLEAN,
+        CarrierConfigManager.KEY_EDITABLE_WFC_ROAMING_MODE_BOOL to KeyType.BOOLEAN,
+        CarrierConfigManager.KEY_CARRIER_WFC_SUPPORTS_WIFI_ONLY_BOOL to KeyType.BOOLEAN,
+    ),
+    allPossibleConfigStates = listOf(
+        // Enabled
+        ConfigState.Simple(
+            CarrierConfigTypedValue.Bool(true),
+            R.string.carrier_settings_override_bool_true,
+            R.string.carrier_settings_default_bool_true,
+            summaryStringRes = R.string.carrier_settings_override_wfc_availability_on_summary
+        ),
+        // Not exposed for user. All of these are used to match with original carrier config values
+        // Disabled
+        ConfigState.Simple(
+            CarrierConfigTypedValue.Bool(false),
+            R.string.carrier_settings_override_bool_false,
+            R.string.carrier_settings_default_bool_false,
+            isUserSelectable = false,
+        ),
+        ConfigState.Complex(
+            listOf(
+                CarrierConfigTypedValue.Bool(true), // KEY_CARRIER_WFC_IMS_AVAILABLE_BOOL
+                CarrierConfigTypedValue.Bool(true), // KEY_EDITABLE_WFC_MODE_BOOL
+                CarrierConfigTypedValue.AnyMatcher, // KEY_CARRIER_DEFAULT_WFC_IMS_ROAMING_ENABLED_BOOL
+                CarrierConfigTypedValue.Bool(false), // KEY_EDITABLE_WFC_ROAMING_MODE_BOOL
+                CarrierConfigTypedValue.AnyMatcher, // KEY_CARRIER_WFC_SUPPORTS_WIFI_ONLY_BOOL
+            ),
+            R.string.carrier_settings_override_wfc_availability_enabled_roaming_not_editable,
+            R.string.carrier_settings_override_wfc_availability_enabled_roaming_not_editable,
+            isUserSelectable = false,
+        ),
+        ConfigState.Complex(
+            listOf(
+                CarrierConfigTypedValue.Bool(true), // KEY_CARRIER_WFC_IMS_AVAILABLE_BOOL
+                CarrierConfigTypedValue.Bool(true), // KEY_EDITABLE_WFC_MODE_BOOL
+                CarrierConfigTypedValue.AnyMatcher, // KEY_CARRIER_DEFAULT_WFC_IMS_ROAMING_ENABLED_BOOL
+                CarrierConfigTypedValue.AnyMatcher, // KEY_EDITABLE_WFC_ROAMING_MODE_BOOL
+                CarrierConfigTypedValue.AnyMatcher, // KEY_CARRIER_WFC_SUPPORTS_WIFI_ONLY_BOOL
+            ),
+            R.string.carrier_settings_override_bool_true,
+            R.string.carrier_settings_default_bool_true,
+            isUserSelectable = false,
+        ),
+        ConfigState.Complex(
+            listOf(
+                CarrierConfigTypedValue.Bool(true), // KEY_CARRIER_WFC_IMS_AVAILABLE_BOOL
+                CarrierConfigTypedValue.Bool(false), // KEY_EDITABLE_WFC_MODE_BOOL
+                CarrierConfigTypedValue.AnyMatcher, // KEY_CARRIER_DEFAULT_WFC_IMS_ROAMING_ENABLED_BOOL
+                CarrierConfigTypedValue.AnyMatcher, // KEY_EDITABLE_WFC_ROAMING_MODE_BOOL
+                CarrierConfigTypedValue.AnyMatcher, // KEY_CARRIER_WFC_SUPPORTS_WIFI_ONLY_BOOL
+            ),
+            R.string.carrier_settings_override_wfc_availability_enabled_not_editable,
+            R.string.carrier_settings_override_wfc_availability_enabled_not_editable,
+            isUserSelectable = false,
+        ),
+        ConfigState.Complex(
+            listOf(
+                CarrierConfigTypedValue.Bool(false), // KEY_CARRIER_WFC_IMS_AVAILABLE_BOOL
+                CarrierConfigTypedValue.AnyMatcher, // KEY_EDITABLE_WFC_MODE_BOOL
+                CarrierConfigTypedValue.AnyMatcher, // KEY_CARRIER_DEFAULT_WFC_IMS_ROAMING_ENABLED_BOOL
+                CarrierConfigTypedValue.AnyMatcher, // KEY_EDITABLE_WFC_ROAMING_MODE_BOOL
+                CarrierConfigTypedValue.AnyMatcher, // KEY_CARRIER_WFC_SUPPORTS_WIFI_ONLY_BOOL
+            ),
+            R.string.carrier_settings_override_bool_false,
+            R.string.carrier_settings_default_bool_false,
+            isUserSelectable = false,
+        ),
+    )
+) {
+    override val titleStringRes = R.string.carrier_settings_override_wfc_availability
+    override val dialogDescriptionStringRes =
+        R.string.carrier_settings_override_wfc_availability_description
 }
