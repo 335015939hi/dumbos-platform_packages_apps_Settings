@@ -310,4 +310,9 @@ May cause unreliable service. Use at your own risk.
     <string name="carrier_settings_override_5g_default_sa">SA</string>
     <string name="carrier_settings_override_5g_disabled">Force disabled</string>
     <string name="carrier_settings_default_5g_disabled">Disabled</string>
+    <string name="carrier_settings_override_wfc_availability">Wi-Fi calling availability</string>
+    <string name="carrier_settings_override_wfc_availability_description">Depends on carrier provisioning, availability etc. VoLTE / Vo4G should be set to available to use this.</string>
+    <string name="carrier_settings_override_wfc_availability_on_summary">Includes Wi-Fi calling while roaming</string>
+    <string name="carrier_settings_override_wfc_availability_enabled_not_editable">Enabled but state uneditable</string>
+    <string name="carrier_settings_override_wfc_availability_enabled_roaming_not_editable">Enabled, but roaming not editable</string>
 </resources>
