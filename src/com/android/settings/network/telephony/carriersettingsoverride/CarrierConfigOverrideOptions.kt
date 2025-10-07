@@ -53,7 +53,14 @@ val allowedUserChangeableCarrierConfigOptions: List<ChangeableCarrierConfigOptio
                     check(left == right) {
                         "key size for ${flag.javaClass.simpleName} mismatch ($left != $right)"
                     }
+
+                    if (state.stateValues.any { it is CarrierConfigTypedValue.AnyMatcher }) {
+                        check(!state.isUserSelectable) {
+                            "States with AnyMatcher should not be selectable"
+                        }
+                    }
                 }
+
             }
         }
         val numTotalKeys = list.sumOf { it.keys.size }
