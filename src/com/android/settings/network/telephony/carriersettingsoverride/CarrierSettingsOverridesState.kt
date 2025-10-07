@@ -152,6 +152,7 @@ sealed class ConfigState {
                 stateVal.currentValue?.let { bundle.putIntArray(key, it.toIntArray()) }
             is CarrierConfigTypedValue.Str ->
                 stateVal.currentValue?.let { bundle.putString(key, it) }
+            CarrierConfigTypedValue.AnyMatcher -> {}
         }
     }
 }
@@ -234,6 +235,16 @@ sealed class CarrierConfigTypedValue {
     ) : CarrierConfigTypedValue() {
         override fun matchesValueInner(key: String, bundle: PersistableBundle) =
             bundle.getBoolean(key) == currentValue
+    }
+
+    /**
+     * Used in non-selectable states to match against any value from the original carrier config.
+     */
+    data object AnyMatcher : CarrierConfigTypedValue() {
+        override val currentValue: Boolean?
+            get() = null
+
+        override fun matchesValueInner(key: String, bundle: PersistableBundle) = true
     }
     data class Str(
         override val currentValue: String?,
