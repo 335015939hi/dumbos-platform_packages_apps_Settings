@@ -23,12 +23,12 @@ import com.android.settings.network.telephony.CarrierConfigRepository.KeyType
  */
 
 private val simpleUniformBoolStates: List<ConfigState> = listOf(
-    ConfigState.Simple(
+    ConfigState.Uniform(
         CarrierConfigTypedValue.Bool(true),
         R.string.carrier_settings_override_bool_true,
         R.string.carrier_settings_default_bool_true,
     ),
-    ConfigState.Simple(
+    ConfigState.Uniform(
         CarrierConfigTypedValue.Bool(false),
         R.string.carrier_settings_override_bool_false,
         R.string.carrier_settings_default_bool_false,
@@ -48,7 +48,7 @@ val allowedUserChangeableCarrierConfigOptions: List<ChangeableCarrierConfigOptio
     ).also { list ->
        list.onEach { flag ->
             flag.possibleConfigStates.forEach { state ->
-                if (state is ConfigState.Complex) {
+                if (state is ConfigState.NonUniform) {
                     val left = state.stateValues.size
                     val right = flag.keys.size
                     check(left == right) {
@@ -81,7 +81,7 @@ data object VoLTEAvailable : ChangeableCarrierConfigOption(
     // All possible values for the keys. Each of these can be an option that the user can select
     allPossibleConfigStates = listOf(
         // Enabled
-        ConfigState.Complex(
+        ConfigState.NonUniform(
             listOf(
                 CarrierConfigTypedValue.Bool(true), // KEY_CARRIER_VOLTE_AVAILABLE_BOOL
                 CarrierConfigTypedValue.Bool(false), // KEY_HIDE_ENHANCED_4G_LTE_BOOL
@@ -90,7 +90,7 @@ data object VoLTEAvailable : ChangeableCarrierConfigOption(
             R.string.carrier_settings_default_bool_true,
         ),
         // Disabled
-        ConfigState.Complex(
+        ConfigState.NonUniform(
             listOf(
                 CarrierConfigTypedValue.Bool(false),
                 CarrierConfigTypedValue.Bool(true),
@@ -102,7 +102,7 @@ data object VoLTEAvailable : ChangeableCarrierConfigOption(
 
         // Other states not exposed for user selection just so that we have a description for them
         // Disabled
-        ConfigState.Complex(
+        ConfigState.NonUniform(
             listOf(
                 CarrierConfigTypedValue.Bool(false),
                 CarrierConfigTypedValue.Bool(false),
@@ -112,7 +112,7 @@ data object VoLTEAvailable : ChangeableCarrierConfigOption(
             isUserSelectable = false,
         ),
         // Disabled
-        ConfigState.Complex(
+        ConfigState.NonUniform(
             listOf(
                 CarrierConfigTypedValue.Bool(true),
                 CarrierConfigTypedValue.Bool(true),
@@ -137,7 +137,7 @@ data object VoNREnabled : ChangeableCarrierConfigOption(
     // selection just so that we have a description for them
     allPossibleConfigStates = simpleUniformBoolStates + listOf(
         // Not exposed for user
-        ConfigState.Complex(
+        ConfigState.NonUniform(
             listOf(
                 CarrierConfigTypedValue.Bool(true),
                 CarrierConfigTypedValue.Bool(false),
@@ -146,7 +146,7 @@ data object VoNREnabled : ChangeableCarrierConfigOption(
             R.string.carrier_settings_default_bool_false,
             isUserSelectable = false,
         ),
-        ConfigState.Complex(
+        ConfigState.NonUniform(
             listOf(
                 CarrierConfigTypedValue.Bool(false),
                 CarrierConfigTypedValue.Bool(true),
@@ -168,7 +168,7 @@ data object Enable5G : ChangeableCarrierConfigOption(
     ),
     allPossibleConfigStates = listOf(
         // Enabled (i.e. all the 5G NR capabilities)
-        ConfigState.Simple(
+        ConfigState.Uniform(
             CarrierConfigTypedValue.IntegerArray(
                 listOf(
                     CarrierConfigManager.CARRIER_NR_AVAILABILITY_NSA,
@@ -179,7 +179,7 @@ data object Enable5G : ChangeableCarrierConfigOption(
             R.string.carrier_settings_override_5g_default_all_modes,
         ),
         // Only NSA
-        ConfigState.Simple(
+        ConfigState.Uniform(
             CarrierConfigTypedValue.IntegerArray(
                 listOf(CarrierConfigManager.CARRIER_NR_AVAILABILITY_NSA)
             ),
@@ -188,7 +188,7 @@ data object Enable5G : ChangeableCarrierConfigOption(
             isUserSelectable = false,
         ),
         // Only SA
-        ConfigState.Simple(
+        ConfigState.Uniform(
             CarrierConfigTypedValue.IntegerArray(
                 listOf(CarrierConfigManager.CARRIER_NR_AVAILABILITY_SA)
             ),
@@ -197,7 +197,7 @@ data object Enable5G : ChangeableCarrierConfigOption(
             isUserSelectable = false,
         ),
         // Disabled (i.e. no 5G NR capabilities)
-        ConfigState.Simple(
+        ConfigState.Uniform(
             CarrierConfigTypedValue.IntegerArray(emptyList()),
             R.string.carrier_settings_override_5g_disabled,
             R.string.carrier_settings_default_5g_disabled,
@@ -220,7 +220,7 @@ data object WiFiCallingAvailable : ChangeableCarrierConfigOption(
     ),
     allPossibleConfigStates = listOf(
         // Enabled
-        ConfigState.Simple(
+        ConfigState.Uniform(
             CarrierConfigTypedValue.Bool(true),
             R.string.carrier_settings_override_bool_true,
             R.string.carrier_settings_default_bool_true,
@@ -228,13 +228,13 @@ data object WiFiCallingAvailable : ChangeableCarrierConfigOption(
         ),
         // Not exposed for user. All of these are used to match with original carrier config values
         // Disabled
-        ConfigState.Simple(
+        ConfigState.Uniform(
             CarrierConfigTypedValue.Bool(false),
             R.string.carrier_settings_override_bool_false,
             R.string.carrier_settings_default_bool_false,
             isUserSelectable = false,
         ),
-        ConfigState.Complex(
+        ConfigState.NonUniform(
             listOf(
                 CarrierConfigTypedValue.Bool(true), // KEY_CARRIER_WFC_IMS_AVAILABLE_BOOL
                 CarrierConfigTypedValue.Bool(true), // KEY_EDITABLE_WFC_MODE_BOOL
@@ -246,7 +246,7 @@ data object WiFiCallingAvailable : ChangeableCarrierConfigOption(
             R.string.carrier_settings_override_wfc_availability_enabled_roaming_not_editable,
             isUserSelectable = false,
         ),
-        ConfigState.Complex(
+        ConfigState.NonUniform(
             listOf(
                 CarrierConfigTypedValue.Bool(true), // KEY_CARRIER_WFC_IMS_AVAILABLE_BOOL
                 CarrierConfigTypedValue.Bool(true), // KEY_EDITABLE_WFC_MODE_BOOL
@@ -258,7 +258,7 @@ data object WiFiCallingAvailable : ChangeableCarrierConfigOption(
             R.string.carrier_settings_default_bool_true,
             isUserSelectable = false,
         ),
-        ConfigState.Complex(
+        ConfigState.NonUniform(
             listOf(
                 CarrierConfigTypedValue.Bool(true), // KEY_CARRIER_WFC_IMS_AVAILABLE_BOOL
                 CarrierConfigTypedValue.Bool(false), // KEY_EDITABLE_WFC_MODE_BOOL
@@ -270,7 +270,7 @@ data object WiFiCallingAvailable : ChangeableCarrierConfigOption(
             R.string.carrier_settings_override_wfc_availability_enabled_not_editable,
             isUserSelectable = false,
         ),
-        ConfigState.Complex(
+        ConfigState.NonUniform(
             listOf(
                 CarrierConfigTypedValue.Bool(false), // KEY_CARRIER_WFC_IMS_AVAILABLE_BOOL
                 CarrierConfigTypedValue.AnyMatcher, // KEY_EDITABLE_WFC_MODE_BOOL

@@ -56,7 +56,7 @@ sealed class ConfigState {
      */
     abstract val isUserSelectable: Boolean
 
-    data class Simple(
+    data class Uniform(
         val valueForAllKeys: CarrierConfigTypedValue,
         @get:StringRes override val selectionStringRes: Int,
         @get:StringRes override val existingValueStringRes: Int,
@@ -84,7 +84,7 @@ sealed class ConfigState {
      *  For when a set of flags have different values per setting. size of [stateValues] is
      *  expected to be the same as the size of the keys list.
      */
-    data class Complex(
+    data class NonUniform(
         val stateValues: List<CarrierConfigTypedValue>,
         @get:StringRes override val selectionStringRes: Int,
         @get:StringRes override val existingValueStringRes: Int,
