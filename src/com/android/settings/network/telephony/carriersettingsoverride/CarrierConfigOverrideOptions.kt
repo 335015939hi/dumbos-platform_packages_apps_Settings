@@ -116,6 +116,8 @@ data object VoLTEAvailable : ChangeableCarrierConfigOption(
     )
 ) {
     override val titleStringRes = R.string.carrier_settings_override_volte_availability
+    override val dialogDescriptionStringRes =
+        R.string.carrier_settings_override_volte_availability_description
 }
 
 data object VoNREnabled : ChangeableCarrierConfigOption(
@@ -148,6 +150,8 @@ data object VoNREnabled : ChangeableCarrierConfigOption(
     )
 ) {
     override val titleStringRes = R.string.carrier_settings_override_vonr_enable
+    override val dialogDescriptionStringRes =
+        R.string.carrier_settings_override_vonr_enable_description
 }
 
 data object Enable5G : ChangeableCarrierConfigOption(
@@ -194,4 +198,5 @@ data object Enable5G : ChangeableCarrierConfigOption(
     )
 ) {
     override val titleStringRes = R.string.carrier_settings_override_5g_title
+    override val dialogDescriptionStringRes = R.string.carrier_settings_override_5g_description
 }
