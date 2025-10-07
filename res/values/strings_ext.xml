@@ -297,8 +297,11 @@ May cause unreliable service. Use at your own risk.
     <string name="carrier_settings_override_bool_false">Force disabled</string>
     <string name="carrier_settings_override_default__s">No override (Default: %1$s)</string>
     <string name="carrier_settings_override_volte_availability">VoLTE / Vo4G availability</string>
+    <string name="carrier_settings_override_volte_availability_description">Depends on carrier provisioning, availability, etc.</string>
     <string name="carrier_settings_override_vonr_enable">VoNR / Vo5G availability</string>
+    <string name="carrier_settings_override_vonr_enable_description">Depends on carrier provisioning, availability, etc.</string>
     <string name="carrier_settings_override_5g_title">5G capabilities</string>
+    <string name="carrier_settings_override_5g_description">Override carrier 5G NR availability for the non-standalone (NSA) and the standalone (SA) modes of 5G NR</string>
     <string name="carrier_settings_override_5g_enabled_all_modes">Force NSA and SA</string>
     <string name="carrier_settings_override_5g_default_all_modes">NSA and SA</string>
     <string name="carrier_settings_override_5g_enabled_nsa">Force NSA</string>
