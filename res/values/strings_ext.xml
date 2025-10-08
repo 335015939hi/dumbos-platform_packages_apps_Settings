@@ -290,11 +290,11 @@ May cause unreliable service. Use at your own risk.
     <string name="carrier_settings_override_active_summary">Disable overrides to make changes</string>
     <string name="carrier_settings_override_apply_button">Apply carrier config override</string>
     <string name="carrier_settings_override_clear_button">Clear all carrier config overrides</string>
-    <string name="carrier_settings_default_bool_true">Enabled</string>
-    <string name="carrier_settings_default_bool_false">Disabled</string>
+    <string name="carrier_settings_default_bool_true">Available</string>
+    <string name="carrier_settings_default_bool_false">Unavailable</string>
     <string name="carrier_settings_default_unknown">Unknown</string>
-    <string name="carrier_settings_override_bool_true">Force enabled</string>
-    <string name="carrier_settings_override_bool_false">Force disabled</string>
+    <string name="carrier_settings_override_bool_true">Forced available</string>
+    <string name="carrier_settings_override_bool_false">Forced unavailable</string>
     <string name="carrier_settings_override_default__s">No override (Default: %1$s)</string>
     <string name="carrier_settings_override_volte_availability">VoLTE / Vo4G availability</string>
     <string name="carrier_settings_override_volte_availability_description">Depends on carrier provisioning, availability, etc.</string>
@@ -313,6 +313,6 @@ May cause unreliable service. Use at your own risk.
     <string name="carrier_settings_override_wfc_availability">Wi-Fi calling availability</string>
     <string name="carrier_settings_override_wfc_availability_description">Depends on carrier provisioning, availability etc. VoLTE / Vo4G should be set to available to use this.</string>
     <string name="carrier_settings_override_wfc_availability_on_summary">Includes Wi-Fi calling while roaming</string>
-    <string name="carrier_settings_override_wfc_availability_enabled_not_editable">Enabled but state uneditable</string>
-    <string name="carrier_settings_override_wfc_availability_enabled_roaming_not_editable">Enabled, but roaming not editable</string>
+    <string name="carrier_settings_override_wfc_availability_enabled_not_editable">Available but state uneditable</string>
+    <string name="carrier_settings_override_wfc_availability_enabled_roaming_not_editable">Available but roaming not editable</string>
 </resources>
