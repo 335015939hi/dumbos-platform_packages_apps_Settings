@@ -16,6 +16,7 @@
 
 package com.android.settings.biometrics.fingerprint;
 
+import static android.provider.Settings.Secure.BIOMETRIC_KEYGUARD_ENABLED;
 import static android.provider.Settings.Secure.FINGERPRINT_KEYGUARD_ENABLED;
 
 import android.app.settings.SettingsEnums;
@@ -35,6 +36,7 @@ import com.android.settingslib.RestrictedLockUtils;
 public class FingerprintSettingsKeyguardUnlockPreferenceController
         extends FingerprintSettingsPreferenceController {
 
+    private static final int NOT_SET = -1;
     private static final int ON = 1;
     private static final int OFF = 0;
     private static final int DEFAULT = ON;
@@ -47,6 +49,17 @@ public class FingerprintSettingsKeyguardUnlockPreferenceController
         super(context, key);
         mFingerprintManager = Utils.getFingerprintManagerOrNull(context);
         mUserManager = context.getSystemService(UserManager.class);
+
+        // For OTA case: if FINGERPRINT_KEYGUARD_ENABLED is not set and BIOMETRIC_KEYGUARD_ENABLED
+        // is set, set the default value of the former to that of the latter.
+        final int defValue = Settings.Secure.getIntForUser(mContext.getContentResolver(),
+                FINGERPRINT_KEYGUARD_ENABLED, NOT_SET, getUserId());
+        final int oldDefValue = Settings.Secure.getIntForUser(mContext.getContentResolver(),
+                BIOMETRIC_KEYGUARD_ENABLED, NOT_SET, getUserId());
+        if (defValue == NOT_SET && oldDefValue != NOT_SET) {
+            Settings.Secure.putIntForUser(mContext.getContentResolver(),
+                    FINGERPRINT_KEYGUARD_ENABLED, oldDefValue, getUserId());
+        }
     }
 
     @Override
