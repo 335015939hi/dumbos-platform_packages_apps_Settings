@@ -744,6 +744,7 @@ public class DeviceAdminAdd extends CollapsingToolbarBaseActivity {
                     () -> getString(R.string.add_device_admin_msg)));
             mActionButton.setText(mDPM.getResources().getString(ACTIVATE_THIS_DEVICE_ADMIN_APP,
                     () -> getString(R.string.add_device_admin)));
+            delayActivationButton(mActionButton);
             if (isAdminUninstallable()) {
                 mUninstallButton.setVisibility(View.VISIBLE);
             }
@@ -808,6 +809,19 @@ public class DeviceAdminAdd extends CollapsingToolbarBaseActivity {
             }
             mAdminPoliciesInitialized = true;
         }
+    }
+
+    private void delayActivationButton(Button button) {
+        button.setEnabled(false);
+        button.setAlpha(0.5f);
+        Runnable action = new Runnable() {
+            @Override
+            public void run() {
+                button.setEnabled(true);
+                button.setAlpha(1f);
+            }
+        };
+        button.postDelayed(action, 1000);
     }
 
     /**
