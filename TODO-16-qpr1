@@ -1,0 +1,9 @@
+Skipped commits:
+[temporary] bluejay-battery: handle both 16QPR1 and pre-16QPR1 UI
+bluejay-battery: switch battery tips to BannerMessagePreference for 16QPR1
+bluejay-battery: add battery replacement tip from stock OS
+"set distinct UI name for override_desktop_mode_features toggle": not clear if needed
+
+Potential issues:
+Wi-Fi randomization
+"don't send device name" in Wi-Fi settings
