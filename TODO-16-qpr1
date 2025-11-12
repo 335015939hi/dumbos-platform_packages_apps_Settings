@@ -1,0 +1,6 @@
+Skipped commits:
+"set distinct UI name for override_desktop_mode_features toggle": not clear if needed
+
+Potential issues:
+Wi-Fi randomization
+"don't send device name" in Wi-Fi settings
