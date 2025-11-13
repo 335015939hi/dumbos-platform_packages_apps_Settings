@@ -26,10 +26,12 @@ import android.os.UserManager;
 import android.provider.Settings;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.preference.Preference;
 
 import com.android.settings.Utils;
 import com.android.settings.biometrics.activeunlock.ActiveUnlockStatusUtils;
+import com.android.settingslib.RestrictedLockUtils;
 
 public class FingerprintSettingsKeyguardUnlockPreferenceController
         extends FingerprintSettingsPreferenceController {
@@ -62,8 +64,12 @@ public class FingerprintSettingsKeyguardUnlockPreferenceController
 
     @Override
     public boolean isChecked() {
-        return Settings.Secure.getIntForUser(mContext.getContentResolver(),
-                FINGERPRINT_KEYGUARD_ENABLED, DEFAULT, getUserId()) == ON;
+        return isChecked(mContext, getUserId());
+    }
+
+    public static boolean isChecked(Context context, int userId) {
+        return Settings.Secure.getIntForUser(context.getContentResolver(),
+                FINGERPRINT_KEYGUARD_ENABLED, DEFAULT, userId) == ON;
     }
 
     @Override
@@ -90,18 +96,23 @@ public class FingerprintSettingsKeyguardUnlockPreferenceController
 
     @Override
     public int getAvailabilityStatus() {
-        if (mUserManager.isManagedProfile(getUserId()) || !Utils.hasFingerprintHardware(mContext)) {
+        return getAvailabilityStatus(mContext, mUserManager, getRestrictingAdmin(), getUserId());
+    }
+
+    public static int getAvailabilityStatus(Context context, UserManager userManager,
+            @Nullable RestrictedLockUtils.EnforcedAdmin restrictingAdmin, int userId) {
+        if (userManager.isManagedProfile(userId) || !Utils.hasFingerprintHardware(context)) {
             return UNSUPPORTED_ON_DEVICE;
         }
         final ActiveUnlockStatusUtils activeUnlockStatusUtils =
-                new ActiveUnlockStatusUtils(mContext);
+                new ActiveUnlockStatusUtils(context);
         if (activeUnlockStatusUtils.isAvailable()) {
-            return getAvailabilityFromRestrictingAdmin();
+            return getAvailabilityFromRestrictingAdmin(restrictingAdmin);
         }
-        return getAvailabilityFromRestrictingAdmin();
+        return getAvailabilityFromRestrictingAdmin(restrictingAdmin);
     }
 
-    private int getAvailabilityFromRestrictingAdmin() {
-        return getRestrictingAdmin() != null ? DISABLED_FOR_USER : AVAILABLE;
+    private static int getAvailabilityFromRestrictingAdmin(@Nullable RestrictedLockUtils.EnforcedAdmin restrictingAdmin) {
+        return restrictingAdmin != null ? DISABLED_FOR_USER : AVAILABLE;
     }
 }

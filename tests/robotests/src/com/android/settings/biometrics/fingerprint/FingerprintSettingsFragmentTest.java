@@ -78,6 +78,7 @@ import androidx.preference.Preference;
 import androidx.test.core.app.ApplicationProvider;
 
 import com.android.settings.biometrics.fingerprint.feature.FingerprintExtPreferencesProvider;
+import com.android.internal.widget.LockPatternUtils;
 import com.android.settings.biometrics.fingerprint.feature.PrimarySwitchIntentPreference;
 import com.android.settings.msds.MSDLPlayerWrapper;
 import com.android.settings.password.ChooseLockSettingsHelper;
@@ -163,6 +164,10 @@ public class FingerprintSettingsFragmentTest {
     private FingerprintAuthenticateSidecar mFingerprintAuthenticateSidecar;
     private FingerprintRemoveSidecar mFingerprintRemoveSidecar;
 
+    private FakeFeatureFactory mFeatureFactory;
+    @Mock
+    private LockPatternUtils mLockPatternUtils;
+
     @Before
     public void setUp() {
         ShadowUtils.setFingerprintManager(mFingerprintManager);
@@ -187,6 +192,11 @@ public class FingerprintSettingsFragmentTest {
                 .getExtPreferenceProvider(mContext))
                 .thenReturn(mExtPreferencesProvider);
         when(mExtPreferencesProvider.getSize()).thenReturn(0);
+
+        when(mFakeFeatureFactory.securityFeatureProvider.getLockPatternUtils(mContext))
+                .thenReturn(mLockPatternUtils);
+
+        when(mLockPatternUtils.checkUserSupportsBiometricSecondFactor(anyInt())).thenReturn(true);
         MSDLPlayerWrapper.INSTANCE.setPlayer(mMSDLPlayer);
     }
 
