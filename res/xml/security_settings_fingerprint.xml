@@ -63,8 +63,7 @@
     <PreferenceCategory
         android:key="security_settings_fingerprint_unlock_category"
         android:title="@string/security_settings_fingerprint_settings_preferences_category"
-        settings:controller="com.android.settings.biometrics.fingerprint.FingerprintUnlockCategoryController"
-        settings:isPreferenceVisible="false">
+        settings:controller="com.android.settings.biometrics.fingerprint.FingerprintUnlockCategoryController">
 
         <com.android.settingslib.RestrictedSwitchPreference
             android:key="@string/security_settings_require_screen_on_to_auth_key"
@@ -81,6 +80,11 @@
             settings:keywords="@string/security_settings_screen_off_unlock_udfps_keywords"
             settings:controller="com.android.settings.biometrics.fingerprint.FingerprintSettingsScreenOffUnlockUdfpsPreferenceController"
             settings:isPreferenceVisible="false"/>
+
+        <androidx.preference.Preference
+            android:key="biometric_second_factor_pin"
+            android:title="@string/biometric_second_factor_pin_title" />
+
     </PreferenceCategory>
 
     <PreferenceCategory
