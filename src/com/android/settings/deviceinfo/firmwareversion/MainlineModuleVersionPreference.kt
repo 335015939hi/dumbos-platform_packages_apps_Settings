@@ -104,7 +104,7 @@ class MainlineModuleVersionPreference :
 
     override fun getAvailabilityStability() = PreconditionStability.STABLE_UNTIL_APK_UPDATE
 
-    override fun isAvailable(context: Context) = getModuleVersion(context).isNotEmpty()
+    override fun isAvailable(context: Context) = false
 
     override fun bind(preference: Preference, metadata: PreferenceMetadata) {
         super.bind(preference, metadata)
