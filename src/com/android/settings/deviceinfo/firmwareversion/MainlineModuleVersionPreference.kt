@@ -90,7 +90,7 @@ class MainlineModuleVersionPreference :
         return MODULE_UPDATE_ACTION_V2.resolveIntent() ?: MODULE_UPDATE_ACTION.resolveIntent()
     }
 
-    override fun isAvailable(context: Context) = getModuleVersion(context).isNotEmpty()
+    override fun isAvailable(context: Context) = false
 
     override fun bind(preference: Preference, metadata: PreferenceMetadata) {
         super.bind(preference, metadata)
