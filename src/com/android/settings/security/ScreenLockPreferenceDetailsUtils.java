@@ -178,9 +178,7 @@ public class ScreenLockPreferenceDetailsUtils {
         if (!mLockPatternUtils.isSecure(userId)) {
             if (userId == mProfileChallengeUserId
                     || mLockPatternUtils.isLockScreenDisabled(userId)) {
-                return com.android.settings.flags.Flags.biometricsOnboardingEducation()
-                        ? R.string.unlock_set_unlock_mode_off_new
-                        : R.string.unlock_set_unlock_mode_off;
+                return R.string.unlock_set_unlock_mode_off;
             } else {
                 return R.string.unlock_set_unlock_mode_none;
             }
