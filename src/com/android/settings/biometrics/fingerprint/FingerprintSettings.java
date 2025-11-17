@@ -499,7 +499,9 @@ public class FingerprintSettings extends SubSettings {
          */
         public void setupExtFingerprintPreferences() {
             mBiometricSecondFactorPin = findPreference(KEY_BIOMETRIC_SECOND_FACTOR_PIN);
-            mBiometricSecondFactorPinPreferenceController.updateState(mBiometricSecondFactorPin);
+            if (mBiometricSecondFactorPinPreferenceController != null) {
+                mBiometricSecondFactorPinPreferenceController.updateState(mBiometricSecondFactorPin);
+            }
 
             FingerprintExtPreferencesProvider preferencesProvider = getExtPreferenceProvider(
                     requireContext());
