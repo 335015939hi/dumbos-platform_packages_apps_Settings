@@ -73,6 +73,10 @@ public class BiometricSecondFactorPinPreferenceController extends BasePreference
 
     @Override
     public CharSequence getSummary() {
+        if (!isAvailable()) {
+            return null;
+        }
+
         if (mLockPatternUtils.isSecure(mUserId, Secondary)) {
             return mContext.getResources().getString(
                     R.string.biometric_second_factor_pin_empty_summary);
