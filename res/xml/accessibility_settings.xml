@@ -72,6 +72,14 @@
             settings:keywords="@string/keywords_magnification"
             settings:controller="com.android.settings.accessibility.MagnificationPreferenceController"/>
 
+        <SwitchPreferenceCompat
+            android:key="high_emission_frequency"
+            android:icon="@drawable/ic_high_emission_frequency"
+            android:persistent="false"
+            android:title="@string/emission_frequency_title"
+            android:summary="@string/emission_frequency_summary"
+            settings:controller="com.google.android.settings.display.HighEmissionFrequencyController"/>
+
     </PreferenceCategory>
 
     <PreferenceCategory
