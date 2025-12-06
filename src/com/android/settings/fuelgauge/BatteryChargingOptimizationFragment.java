@@ -2,18 +2,14 @@ package com.android.settings.fuelgauge;
 
 import android.ext.power.BatteryChargeLimit;
 import android.ext.settings.BoolSetting;
-import android.icu.text.MessageFormat;
-import android.os.IBinder;
+import android.icu.text.NumberFormat;
 import android.os.RemoteException;
-import android.os.ServiceManager;
 import android.util.Log;
 
 import com.android.settings.R;
 import com.android.settings.ext.BoolSettingFragment;
 import com.android.settingslib.widget.FooterPreference;
 import com.google.android.settings.fuelgauge.GoogleBattery;
-
-import java.util.Map;
 
 import vendor.google.google_battery.IGoogleBattery;
 
@@ -57,9 +53,9 @@ public class BatteryChargingOptimizationFragment extends BoolSettingFragment {
 
     @Override
     protected CharSequence getMainSwitchTitle() {
-        return MessageFormat.format(
-                requireContext().getString(R.string.charging_optimization_entry_summary_charge_limit),
-                Map.of("batteryLimitLevel", Integer.valueOf(BatteryChargeLimit.CHARGE_LEVEL)));
+        return requireContext().getString(
+                R.string.charging_optimization_entry_summary_charge_limit,
+                NumberFormat.getPercentInstance().format(BatteryChargeLimit.CHARGE_LEVEL / 100f));
     }
 
     @Override
@@ -71,9 +67,10 @@ public class BatteryChargingOptimizationFragment extends BoolSettingFragment {
 
     @Override
     protected FooterPreference makeFooterPref(FooterPreference.Builder builder) {
-        String text = MessageFormat.format(
-                requireContext().getString(R.string.charging_optimization_footer_message_charge_limit),
-                Map.of("batteryLimitLevel", Integer.valueOf(BatteryChargeLimit.CHARGE_LEVEL)));
+        String text = requireContext().getString(
+                R.string.charging_optimization_footer_message_charge_limit,
+                NumberFormat.getPercentInstance().format(BatteryChargeLimit.CHARGE_LEVEL / 100f),
+                NumberFormat.getPercentInstance().format(1f));
 
         builder.setTitle(text);
 

@@ -1,22 +1,12 @@
 package com.android.settings.fuelgauge;
 
-import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.Intent;
 import android.ext.power.BatteryChargeLimit;
-import android.icu.text.MessageFormat;
-import android.os.IBinder;
-import android.os.RemoteException;
-import android.os.ServiceManager;
-import android.util.Log;
+import android.icu.text.NumberFormat;
 
 import com.android.settings.R;
 import com.android.settings.ext.BoolSettingFragmentPrefController;
 import com.android.settings.ext.ExtSettingControllerHelper;
-
-import java.util.Map;
-
-import vendor.google.google_battery.IGoogleBattery;
 
 public class BatteryChargingOptimizationPrefController extends BoolSettingFragmentPrefController {
     private static final String TAG = "BatteryChargeLimitPrefController";
@@ -27,9 +17,8 @@ public class BatteryChargingOptimizationPrefController extends BoolSettingFragme
 
     @Override
     protected CharSequence getSummaryOn() {
-        return MessageFormat.format(
-                mContext.getString(R.string.charging_optimization_entry_summary_charge_limit),
-                Map.of("batteryLimitLevel", Integer.valueOf(BatteryChargeLimit.CHARGE_LEVEL)));
+        return mContext.getString(R.string.charging_optimization_entry_summary_charge_limit,
+                        NumberFormat.getPercentInstance().format(BatteryChargeLimit.CHARGE_LEVEL / 100f));
     }
 
     @Override
