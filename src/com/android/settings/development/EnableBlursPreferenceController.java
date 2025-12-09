@@ -68,7 +68,7 @@ public final class EnableBlursPreferenceController extends DeveloperOptionsPrefe
     @Override
     public void updateState(Preference preference) {
         boolean isEnabled = Settings.Global.getInt(mContext.getContentResolver(),
-                    Settings.Global.DISABLE_WINDOW_BLURS, 0) == 0;
+                    Settings.Global.DISABLE_WINDOW_BLURS, 1) == 0;
         ((TwoStatePreference) mPreference).setChecked(isEnabled);
     }
 
