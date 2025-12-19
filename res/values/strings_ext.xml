@@ -315,4 +315,6 @@ May cause unreliable service. Use at your own risk.
     <string name="carrier_settings_override_wfc_availability_on_summary">Includes Wi-Fi calling while roaming</string>
     <string name="carrier_settings_override_wfc_availability_enabled_not_editable">Available but state uneditable</string>
     <string name="carrier_settings_override_wfc_availability_enabled_roaming_not_editable">Available but roaming not editable</string>
+
+    <string name="user_settings_show_end_session_on_lock_screen">Show end session button on lock screen</string>
 </resources>

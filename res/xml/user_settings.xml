@@ -123,4 +123,9 @@
             android:summary="@string/user_settings_send_censored_notifications_to_current_summary"
             android:order="108"/>
 
+    <SwitchPreferenceCompat
+        android:key="user_settings_show_end_session_on_lock_screen"
+        android:title="@string/user_settings_show_end_session_on_lock_screen"
+        android:order="109"/>
+
 </PreferenceScreen>
