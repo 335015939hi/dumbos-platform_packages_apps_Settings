@@ -112,10 +112,15 @@
         android:fragment="com.android.settings.users.TimeoutToDockUserSettings"
         settings:controller="com.android.settings.users.TimeoutToDockUserPreferenceController"/>
 
+    <PreferenceCategory
+        android:key="lockscreen_settings_u_category"
+        android:title="@string/lockscreen_settings_title"
+        android:order="107"/>
+
     <SwitchPreferenceCompat
             android:key="user_settings_send_censored_notifications_to_current"
             android:title="@string/user_settings_send_censored_notifications_to_current"
             android:summary="@string/user_settings_send_censored_notifications_to_current_summary"
-            android:order="106"/>
+            android:order="108"/>
 
 </PreferenceScreen>
