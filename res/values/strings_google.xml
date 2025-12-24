@@ -12,6 +12,7 @@
     <string name="help_url_battery_replacement"/>
     <string name="battery_tip_replacement_title"/>
     <string name="battery_tip_replacement_summary"/>
+    <string name="enable_glanceable_hub_toggle_summary"/>
 
     <!-- SettingsIntelligenceGoogle -->
     <string name="charge_limit_indexing_keywords"/>

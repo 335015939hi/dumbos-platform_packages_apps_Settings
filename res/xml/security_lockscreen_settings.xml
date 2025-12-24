@@ -29,6 +29,13 @@
             android:summary="@string/summary_placeholder"
             settings:keywords="@string/keywords_lock_screen_notif"/>
 
+        <com.android.settingslib.PrimarySwitchPreference
+            android:title="@string/widgets_on_lockscreen_title"
+            android:key="widgets_on_lockscreen"
+            android:summary="@string/enable_glanceable_hub_toggle_summary"
+            android:fragment="com.android.settings.communal.WidgetsOnLockscreenFragment"
+            settings:controller="com.android.settings.display.WidgetsOnLockscreenPreferenceController"/>
+
         <Preference
             android:key="security_lock_screen_notifications_page"
             android:title="@string/lock_screen_notifs_title"
