@@ -23,8 +23,7 @@ import com.android.settings.development.DeveloperOptionAwareMixin;
 import com.android.settings.development.linuxterminal.LinuxTerminalDashboardFragment;
 
 /** Linux terminal preferences at developers option for personal/managed profile. */
-public class ProfileSelectLinuxTerminalFragment extends ProfileSelectFragment
-        implements DeveloperOptionAwareMixin {
+public class ProfileSelectLinuxTerminalFragment extends ProfileSelectFragment {
 
     private static final String TAG = "ProfileSelLinuxTerminalFrag";
 
