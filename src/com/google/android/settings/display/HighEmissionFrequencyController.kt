@@ -14,8 +14,9 @@ class HighEmissionFrequencyController(context: Context, prefKey: String) :
         // reason we can't just use the static identifier.
         val options = mContext.resources.getIntArray(com.android.internal.R.array.config_availableEMValueOptions)
 
-        // This differs slightly from SettingsGoogle, which checks if the array is exactly [0, 1].
-        return if (1 in options) {
+        // This matches PixelDisplayService's check. Note that SettingsGoogle has a different
+        // conditional, which checks if the array is exactly [0, 1].
+        return if (options.size >= 2) {
             AVAILABLE
         } else {
             UNSUPPORTED_ON_DEVICE
