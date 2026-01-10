@@ -1,6 +1,7 @@
 package com.google.android.settings.display
 
 import android.content.Context
+import android.os.Build
 import android.os.UserHandle
 import android.provider.Settings
 import com.android.settings.R
@@ -16,7 +17,7 @@ class HighEmissionFrequencyController(context: Context, prefKey: String) :
 
         // This matches PixelDisplayService's check. Note that SettingsGoogle has a different
         // conditional, which checks if the array is exactly [0, 1].
-        return if (options.size >= 2) {
+        return if ("Google".equals(Build.MANUFACTURER) && options.size >= 2) {
             AVAILABLE
         } else {
             UNSUPPORTED_ON_DEVICE
