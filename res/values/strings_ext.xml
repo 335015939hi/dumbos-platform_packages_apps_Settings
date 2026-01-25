@@ -39,13 +39,13 @@
     <string name="supl_disabled">Off</string>
     <string name="supl_disabled_summary">Will make acquiring location lock significantly slower, especially if PSDS is turned off too</string>
 
-    <string name="g_euicc_lpa_title">eSIM support</string>
+    <string name="g_euicc_lpa_title">eSIM management</string>
     <string name="g_euicc_lpa_enable_dialog_msg">
 A device restart is required to enable this setting.
     </string>
     <string name="g_euicc_lpa_disable_dialog_title">Warning</string>
     <string name="g_euicc_lpa_disable_dialog_msg">
-"Turning off eSIM support will break the following functionality:
+"Turning off eSIM management will break the following functionality:
 
 • adding new eSIMs
 • turning existing eSIMs on or off
