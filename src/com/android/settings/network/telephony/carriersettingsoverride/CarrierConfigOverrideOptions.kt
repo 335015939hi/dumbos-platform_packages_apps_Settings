@@ -299,7 +299,7 @@ data object CrossSIMAvailable : ChangeableCarrierConfigOption(
     // selection just so that we have a description for them
     allPossibleConfigStates = simpleUniformBoolStates + listOf(
         // Not exposed for user
-        ConfigState.Complex(
+        ConfigState.NonUniform(
             listOf(
                 CarrierConfigTypedValue.Bool(false),
                 CarrierConfigTypedValue.AnyMatcher,
