@@ -44,6 +44,7 @@ val allowedUserChangeableCarrierConfigOptions: List<ChangeableCarrierConfigOptio
         VoNREnabled,
         Enable5G,
         WiFiCallingAvailable,
+        CrossSIMAvailable
 
     ).also { list ->
        list.onEach { flag ->
@@ -287,4 +288,38 @@ data object WiFiCallingAvailable : ChangeableCarrierConfigOption(
     override val titleStringRes = R.string.carrier_settings_override_wfc_availability
     override val dialogDescriptionStringRes =
         R.string.carrier_settings_override_wfc_availability_description
+}
+
+data object CrossSIMAvailable : ChangeableCarrierConfigOption(
+    keysWithType = listOf(
+        CarrierConfigManager.KEY_CARRIER_CROSS_SIM_IMS_AVAILABLE_BOOL to KeyType.BOOLEAN,
+        CarrierConfigManager.KEY_ENABLE_CROSS_SIM_CALLING_ON_OPPORTUNISTIC_DATA_BOOL to KeyType.BOOLEAN,
+    ),
+    // Use uniform booleans (true true, false false), then cover other states not exposed for user
+    // selection just so that we have a description for them
+    allPossibleConfigStates = simpleUniformBoolStates + listOf(
+        // Not exposed for user
+        ConfigState.NonUniform(
+            listOf(
+                CarrierConfigTypedValue.Bool(false),
+                CarrierConfigTypedValue.AnyMatcher,
+            ),
+            R.string.carrier_settings_override_bool_false,
+            R.string.carrier_settings_default_bool_false,
+            isUserSelectable = false,
+        ),
+        ConfigState.NonUniform(
+            listOf(
+                CarrierConfigTypedValue.Bool(true),
+                CarrierConfigTypedValue.AnyMatcher,
+            ),
+            R.string.carrier_settings_override_bool_true,
+            R.string.carrier_settings_default_bool_true,
+            isUserSelectable = false,
+        ),
+    )
+) {
+    override val titleStringRes = R.string.carrier_settings_override_cross_sim
+    override val dialogDescriptionStringRes: Int
+        get() = R.string.carrier_settings_override_cross_sim_description
 }
