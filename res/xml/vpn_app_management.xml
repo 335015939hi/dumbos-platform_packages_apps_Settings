@@ -36,6 +36,7 @@
                 android:key="lockdown_vpn"
                 android:title="@string/vpn_require_connection"
                 android:defaultValue="false"
+                android:summary="@string/vpn_require_connection_summary"             
                 android:dependency="always_on_vpn"
                 settings:userRestriction="no_config_vpn"
                 settings:useAdditionalSummary="true"
