@@ -22,4 +22,7 @@
     <string name="charging_optimization_entry_summary_charge_limit"/>
     <string name="charging_optimization_summary_off"/>
     <string name="charging_optimization_title"/>
+    <!-- SettingsIntelligenceGoogle: Used in stallion-BD6A.251031.001.A4 -->
+    <string name="charging_optimization_footer_charge_limit"/>
+    <string name="charging_optimization_summary_charge_limit"/>
 </resources>
