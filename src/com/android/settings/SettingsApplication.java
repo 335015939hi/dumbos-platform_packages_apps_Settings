@@ -107,6 +107,7 @@ public class SettingsApplication extends Application {
         }
 
         if (getUserId() == android.os.UserHandle.USER_SYSTEM) {
+            com.android.settings.users.UserRestrictions.fixupPrivateSpaceRestrictions(this);
             com.android.settingslib.utils.ThreadUtils.postOnBackgroundThread(() -> {
                 VanadiumLibraryCleanup.run(this);
             });
