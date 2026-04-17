@@ -79,6 +79,7 @@ public class SettingsApplication extends Application {
 
         if (getUserId() == android.os.UserHandle.USER_SYSTEM) {
             com.android.settingslib.utils.ThreadUtils.postOnBackgroundThread(() -> {
+                com.android.settings.users.UserRestrictions.fixupPrivateSpaceRestrictions(this);
                 VanadiumLibraryCleanup.run(this);
             });
         }
