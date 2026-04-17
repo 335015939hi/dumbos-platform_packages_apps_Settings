@@ -77,7 +77,11 @@ public class SettingsApplication extends Application {
     public void onCreate() {
         super.onCreate();
 
-        VanadiumLibraryCleanup.maybeRun(this);
+        if (getUserId() == android.os.UserHandle.USER_SYSTEM) {
+            com.android.settingslib.utils.ThreadUtils.postOnBackgroundThread(() -> {
+                VanadiumLibraryCleanup.run(this);
+            });
+        }
 
         if (Flags.catalyst()) {
             PreferenceScreenRegistry.INSTANCE.setPreferenceScreenMetadataFactories(

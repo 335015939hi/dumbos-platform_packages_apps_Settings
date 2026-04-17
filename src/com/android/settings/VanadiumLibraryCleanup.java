@@ -26,22 +26,16 @@ public class VanadiumLibraryCleanup {
 
     private static final String MARKER_FILE_NAME = "vanadium_trichrome_library_cleanup_done2";
 
-    public static void maybeRun(Context ctx) {
-        if (ctx.getUserId() != UserHandle.USER_SYSTEM) {
-            return;
+    public static void run(Context ctx) {
+        try {
+            runInner(ctx);
+        } catch (Throwable e) {
+            // don't crash, removing these leftovers is not that important
+            Log.e(TAG, "", e);
         }
-
-        ThreadUtils.postOnBackgroundThread(() -> {
-            try {
-                run(ctx);
-            } catch (Throwable e) {
-                // don't crash, removing these leftovers is not that important
-                Log.e(TAG, "", e);
-            }
-        });
     }
 
-    private static void run(Context ctx) {
+    private static void runInner(Context ctx) {
         File markerFile = new File(ctx.getFilesDir(), MARKER_FILE_NAME);
         if (markerFile.isFile()) {
             return;
