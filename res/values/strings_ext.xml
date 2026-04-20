@@ -230,6 +230,16 @@ Duress PIN works the same way duress password does."</string>
     <string name="app_play_integrity_api_not_blocked">Not blocked</string>
     <string name="app_play_integrity_see_all_apps">Show apps that used the Play Integrity API</string>
 
+    <string name="app_hide_carrier_info_title">Hide carrier/SIM info</string>
+    <string name="app_hide_carrier_info_short">Carrier/SIM info</string>
+    <string name="app_hide_carrier_info_hidden">Hidden</string>
+    <string name="app_hide_carrier_info_visible">Visible</string>
+    <string name="app_hide_carrier_info_footer">When enabled, the app will be unable to read the SIM or mobile network country, operator, and state. The telephony APIs and system properties return the documented empty/absent values, identical to a device with no SIM(s). Additionally, country detection service falls back to last known location or locale. Apps that rely on the SIM country for auto-filling a phone number prefix (e.g. messengers during initial setup) may ask for manual input instead.</string>
+    <string name="app_hide_carrier_info_dvr_is_system_app">This is a system app and always has access to carrier/SIM info</string>
+    <string name="app_hide_carrier_info_default_summary_hidden">Hidden from third-party apps by default</string>
+    <string name="app_hide_carrier_info_default_summary_visible">Visible to third-party apps by default</string>
+    <string name="app_hide_carrier_info_default_main_switch">Hide carrier/SIM info from third-party apps</string>
+
     <string name="network_location_title">Network location</string>
     <string name="network_location_footer">
 "Network location is a method of determining your device’s location by using various nearby signals, such as Wi-Fi networks, Bluetooth devices, and cell towers. Your device scans for these signals and sends their identifiers to a server, which then provides positioning data that your device uses to estimate its location. Currently, Wi-Fi networks and cell towers are used.

@@ -171,6 +171,7 @@ private fun AppInfoSettings(packageInfoPresenter: PackageInfoPresenter) {
 
         Category(title = stringResource(R.string.advanced_apps)) {
             com.android.settings.applications.AppManagePlayIntegrityApiPreference(app)
+            com.android.settings.applications.AppHideCarrierInfoPreference(app)
             UserAspectRatioAppPreference(app)
             DisplayOverOtherAppsAppListProvider.InfoPageEntryItem(app)
             ModifySystemSettingsAppListProvider.InfoPageEntryItem(app)

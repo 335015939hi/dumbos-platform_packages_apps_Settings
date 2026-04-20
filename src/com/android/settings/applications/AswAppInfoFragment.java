@@ -149,6 +149,8 @@ public abstract class AswAppInfoFragment<T extends AppSwitch>
         switch (category) {
             case ExploitProtection:
                 return getSettingPath(R.string.safety_center_title, R.string.exploit_protection_settings);
+            case MoreSecurityAndPrivacy:
+                return getSettingPath(R.string.safety_center_title, R.string.more_security_privacy_settings);
             default:
                 throw new IllegalArgumentException(category.toString());
         }

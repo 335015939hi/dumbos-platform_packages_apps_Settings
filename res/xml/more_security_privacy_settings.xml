@@ -142,6 +142,12 @@
             android:fragment="com.android.settings.network.telephony.CellularSecuritySettingsFragment"
             settings:controller="com.android.settings.network.CellularSecurityPreferenceController"
             settings:searchable="false"/>
+
+        <Preference
+            android:key="hide_carrier_info_page"
+            android:title="@string/app_hide_carrier_info_title"
+            android:fragment="com.android.settings.applications.AppDefaultHideCarrierInfoFragment"
+            settings:controller="com.android.settings.applications.AppDefaultHideCarrierInfoPrefController" />
     </PreferenceCategory>
 
     <!-- Security section. -->
