@@ -19,6 +19,7 @@ import static com.android.settings.network.SatelliteWarningDialogActivity.EXTRA_
 import static com.android.settings.network.SatelliteWarningDialogActivity.TYPE_IS_AIRPLANE_MODE;
 
 import android.app.Activity;
+import android.app.settings.SettingsEnums;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
@@ -38,7 +39,10 @@ import com.android.settings.AirplaneModeEnabler;
 import com.android.settings.R;
 import com.android.settings.Utils;
 import com.android.settings.contract.SettingsContractKt;
+import com.android.settings.core.SubSettingLauncher;
 import com.android.settings.core.TogglePreferenceController;
+import com.android.settingslib.PrimarySwitchPreference;
+import com.android.settingslib.RestrictedSwitchPreference;
 import com.android.settingslib.core.lifecycle.LifecycleObserver;
 import com.android.settingslib.core.lifecycle.events.OnDestroy;
 import com.android.settingslib.core.lifecycle.events.OnResume;
@@ -70,7 +74,7 @@ public class AirplaneModePreferenceController extends TogglePreferenceController
 
     private Fragment mFragment;
     private AirplaneModeEnabler mAirplaneModeEnabler;
-    private TwoStatePreference mAirplaneModePreference;
+    private Preference mAirplaneModePreference;
     private SatelliteRepository mSatelliteRepository;
     @VisibleForTesting
     AtomicBoolean mIsSatelliteOn = new AtomicBoolean(false);
@@ -190,7 +194,7 @@ public class AirplaneModePreferenceController extends TogglePreferenceController
             final boolean isChoiceYes = (resultCode == Activity.RESULT_OK);
             // Set Airplane mode based on the return value and checkbox state
             mAirplaneModeEnabler.setAirplaneModeInECM(isChoiceYes,
-                    mAirplaneModePreference.isChecked());
+                    getPreferenceCheckedState());
         }
     }
 
@@ -212,8 +216,25 @@ public class AirplaneModePreferenceController extends TogglePreferenceController
 
     @Override
     public void onAirplaneModeChanged(boolean isAirplaneModeOn) {
-        if (mAirplaneModePreference != null) {
-            mAirplaneModePreference.setChecked(isAirplaneModeOn);
+        setPreferenceCheckedState(isAirplaneModeOn);
+    }
+
+    private boolean getPreferenceCheckedState() {
+        if (mAirplaneModePreference instanceof PrimarySwitchPreference) {
+            return ((PrimarySwitchPreference) mAirplaneModePreference).isChecked();
+        } else if (mAirplaneModePreference instanceof TwoStatePreference) {
+            return ((TwoStatePreference) mAirplaneModePreference).isChecked();
+        }
+        return isChecked();
+    }
+
+    private void setPreferenceCheckedState(boolean isAirplaneModeOn) {
+        if (mAirplaneModePreference instanceof PrimarySwitchPreference) {
+            ((PrimarySwitchPreference) mAirplaneModePreference).setChecked(isAirplaneModeOn);
+        } else if (mAirplaneModePreference instanceof RestrictedSwitchPreference) {
+            ((RestrictedSwitchPreference) mAirplaneModePreference).setChecked(isAirplaneModeOn);
+        } else if (mAirplaneModePreference instanceof TwoStatePreference) {
+            ((TwoStatePreference) mAirplaneModePreference).setChecked(isAirplaneModeOn);
         }
     }
 }

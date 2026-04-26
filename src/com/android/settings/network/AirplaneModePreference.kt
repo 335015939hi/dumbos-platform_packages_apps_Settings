@@ -34,7 +34,6 @@ import com.android.settings.contract.KEY_AIRPLANE_MODE
 import com.android.settings.metrics.PreferenceActionMetricsProvider
 import com.android.settings.network.SatelliteRepository.Companion.isSatelliteOn
 import com.android.settings.restriction.PreferenceRestrictionMixin
-import com.android.settingslib.RestrictedSwitchPreference
 import com.android.settingslib.datastore.KeyValueStore
 import com.android.settingslib.datastore.KeyValueStoreDelegate
 import com.android.settingslib.datastore.SettingsGlobalStore
@@ -89,7 +88,7 @@ class AirplaneModePreference :
     override fun storage(context: Context) = createDataStore(context)
 
     override fun onCreate(context: PreferenceLifecycleContext) {
-        context.requirePreference<RestrictedSwitchPreference>(KEY).onPreferenceChangeListener =
+       context.requirePreference<Preference>(KEY).onPreferenceChangeListener =
             Preference.OnPreferenceChangeListener { _: Preference, _: Any ->
                 if (isInEcmMode(context)) {
                     showEcmDialog(context)

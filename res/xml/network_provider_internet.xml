@@ -64,11 +64,12 @@
         settings:controller="com.android.settings.network.GoogleEuiccLpaController"
         settings:userRestriction="no_config_mobile_networks"/>
 
-    <com.android.settingslib.RestrictedSwitchPreference
+    <com.android.settingslib.PrimarySwitchPreference
         android:key="airplane_mode_on"
         android:title="@string/airplane_mode"
         android:icon="@drawable/ic_airplanemode_active"
         android:order="-5"
+        android:fragment="com.android.settings.network.AirplaneModeSettings"
         settings:controller="com.android.settings.network.AirplaneModePreferenceController"
         settings:userRestriction="no_airplane_mode"/>
 
@@ -138,7 +139,7 @@
         android:title="@string/remote_provisioning_title"
         android:order="35"
         settings:controller="com.android.settings.network.RemoteProvisioningPrefController" />
-    
+
     <Preference
         android:key="widevine_provisioning_settings"
         android:title="@string/widevine_provisioning_title"

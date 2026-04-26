@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (C) 2026 The Android Open Source Project
+
+     Licensed under the Apache License, Version 2.0 (the "License");
+     you may not use this file except in compliance with the License.
+     You may obtain a copy of the License at
+
+          http://www.apache.org/licenses/LICENSE-2.0
+
+     Unless required by applicable law or agreed to in writing, software
+     distributed under the License is distributed on an "AS IS" BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     See the License for the specific language governing permissions and
+     limitations under the License.
+-->
+
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:settings="http://schemas.android.com/apk/res-auto"
+    android:key="airplane_mode_settings_screen"
+    android:title="@string/airplane_mode">
+
+    <com.android.settingslib.RestrictedSwitchPreference
+        android:key="airplane_mode_on"
+        android:title="@string/airplane_mode"
+        android:icon="@drawable/ic_airplanemode_active"
+        settings:controller="com.android.settings.network.AirplaneModePreferenceController"
+        settings:userRestriction="no_airplane_mode" />
+
+    <com.android.settingslib.RestrictedSwitchPreference
+        android:key="airplane_mode_on_boot"
+        android:title="@string/airplane_mode_on_boot_title"
+        android:summary="@string/airplane_mode_on_boot_summary"
+        settings:controller="com.android.settings.network.AirplaneModeOnBootPreferenceController"
+        settings:userRestriction="no_airplane_mode" />
+
+</PreferenceScreen>
