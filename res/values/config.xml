@@ -768,7 +768,7 @@
     <bool name="config_show_glanceable_hub_toggle_setting">false</bool>
 
     <!-- Whether to show the "glanceable hub" settings on mobile. -->
-    <bool name="config_show_glanceable_hub_toggle_setting_mobile">false</bool>
+    <bool name="config_show_glanceable_hub_toggle_setting_mobile">true</bool>
 
 
 
