@@ -111,6 +111,9 @@ There are HTTP, HTTPS, DNS, DNS-over-TLS and DNS-over-HTTPS connectivity checks.
 "If there are no connected devices, Bluetooth will turn off after the selected timeout."
     </string>
 
+    <string name="bluetooth_ble_only_title">Allow BLE only</string>
+    <string name="bluetooth_ble_only_summary">Allow BLE (Bluetooth Low Energy) mode only. Improves security by sacrificing compatibility.</string>
+
     <string name="exec_spawning_title">Secure app spawning</string>
     <string name="exec_spawning_title_inner">Use secure app spawning</string>
     <string name="exec_spawning_reboot_dialog">A device restart is required to change this setting.</string>
