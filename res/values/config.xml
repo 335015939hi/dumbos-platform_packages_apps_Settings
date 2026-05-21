@@ -1025,7 +1025,7 @@
     <!-- Whether to hide the pattern lock screen option from Settings and Setup Wizard.
          This will prevent users from setting a new pattern lock, but does not affect
          existing pattern locks. -->
-    <bool name="config_hide_pattern_security_option">false</bool>
+    <bool name="config_hide_pattern_security_option">true</bool>
 
     <!-- Whether to disable the option for setting the remote lockscreen credential as the
          local screen lock during remote validation (Smart Setup/Quick Start) -->
