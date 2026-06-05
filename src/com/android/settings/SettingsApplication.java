@@ -111,6 +111,7 @@ public class SettingsApplication extends Application {
             com.android.settingslib.utils.ThreadUtils.postOnBackgroundThread(() -> {
                 VanadiumLibraryCleanup.run(this);
             });
+            com.android.settings.development.TetheringHardwareAccelFixup.run(this);
         }
 
         // Set Spa environment.
