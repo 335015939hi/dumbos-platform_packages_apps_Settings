@@ -81,6 +81,7 @@ public class SettingsApplication extends Application {
             com.android.settingslib.utils.ThreadUtils.postOnBackgroundThread(() -> {
                 com.android.settings.users.UserRestrictions.fixupPrivateSpaceRestrictions(this);
                 VanadiumLibraryCleanup.run(this);
+                com.android.settings.development.TetheringHardwareAccelFixup.run(this);
             });
         }
 
