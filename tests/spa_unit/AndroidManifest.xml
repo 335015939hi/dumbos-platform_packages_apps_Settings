@@ -27,6 +27,12 @@
     <uses-permission android:name="com.android.settings.BATTERY_DATA" />
 
     <application android:debuggable="true">
+        <!-- Settings-core manifest contributes this provider with a fixed authority
+             Remove it from the test APK to avoid install conflict with Settings app -->
+        <provider
+                android:name="com.android.settings.sudconfig.SudConfigProvider"
+                tools:node="remove"/>
+
         <provider android:name="com.android.settings.slices.SettingsSliceProvider"
                   android:authorities="${applicationId}.slices"
                   tools:replace="android:authorities"/>
