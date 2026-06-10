@@ -18,6 +18,7 @@ public class ConnectivityChecksPrefController extends IntSettingPrefController {
     @Override
     protected void getEntries(Entries entries) {
         entries.add(R.string.conn_checks_grapheneos_server, ConnChecksSetting.VAL_GRAPHENEOS);
+        entries.add(R.string.conn_checks_apple_server, ConnChecksSetting.VAL_APPLE);
         entries.add(R.string.conn_checks_google_server, ConnChecksSetting.VAL_STANDARD);
         entries.add(R.string.conn_checks_disabled, ConnChecksSetting.VAL_DISABLED);
     }
