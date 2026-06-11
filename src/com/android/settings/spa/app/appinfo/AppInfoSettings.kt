@@ -163,6 +163,7 @@ private fun AppInfoSettings(packageInfoPresenter: PackageInfoPresenter) {
             AppOpenByDefaultPreference(app)
             DefaultAppShortcuts(app)
             AppLogcatPreference(app)
+            com.android.settings.applications.AppVpnDisguisePreference(app)
         }
 
         Category(title = stringResource(R.string.unused_apps_category)) {

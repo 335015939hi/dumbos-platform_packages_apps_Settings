@@ -322,4 +322,10 @@ May cause unreliable service. Use at your own risk.
     <string name="carrier_settings_override_wfc_availability_enabled_roaming_not_editable">Available but roaming not editable</string>
     <string name="carrier_settings_override_cross_sim">Cross SIM calling / backup calling availability</string>
     <string name="carrier_settings_override_cross_sim_description">Only for dual SIM setups. If enabled, then when the SIM is roaming or out of service and Wi‑Fi isn\’t available, calls can be made over another SIM’s data connection. Wi-Fi calling should be set to available to use this.</string>
+
+    <string name="vpn_disguise">Disguise VPN as a Wi-Fi or mobile network</string>
+    <string name="vpn_disguise_enabled">VPN disguised</string>
+    <string name="vpn_disguise_enabled_for_nonsystem">VPN disguised for non-system apps</string>
+    <string name="vpn_disguise_disabled">VPN not disguised</string>
+    <string name="vpn_disguise_footer">VPN can be reported to the apps as a normal network</string>
 </resources>
