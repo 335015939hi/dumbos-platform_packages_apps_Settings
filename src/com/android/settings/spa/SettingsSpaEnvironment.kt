@@ -109,6 +109,7 @@ open class SettingsSpaEnvironment(context: Context) : SpaEnvironment(context) {
             com.android.settings.applications.AswAdapterMemoryDynCodeLoading.makeAppListPageProvider(),
             com.android.settings.applications.AswAdapterStorageDynCodeLoading.makeAppListPageProvider(),
             com.android.settings.applications.AswAdapterManagePlayIntegrityApi.makeAppListPageProvider(),
+            com.android.settings.applications.AswAdapterUseExecSpawning.makeAppListPageProvider(),
             com.android.settings.network.telephony.carriersettingsoverride.CarrierSettingsOverridesProvider,
             AllAppListPageProvider,
             AppInfoSettingsProvider,
