@@ -17,10 +17,6 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:settings="http://schemas.android.com/apk/res-auto"
     android:title="@string/device_unlock_subpage_title">
-    <com.android.settingslib.widget.IllustrationPreference
-        android:key="device_unlock_illustration"
-        android:order="10"
-        android:selectable="false" />
 
     <com.android.settingslib.widget.BannerMessagePreferenceGroup
         android:key="device_unlock_issues_banner_group"

@@ -95,8 +95,6 @@ object SafetyCenterSubpageRegistry {
                     titleResId = R.string.device_unlock_subpage_title,
                     defaultSummaryResId = R.string.safety_center_device_unlock_summary,
                     subpageFragmentClassName = DeviceUnlockSubpageFragment::class.qualifiedName!!,
-                    illustrationPrefKey = DEVICE_UNLOCK_ILLUSTRATION_KEY,
-                    illustrationResId = R.drawable.safety_center_device_unlock_subpage_illustration,
                     issuesBannerGroupPrefKey = DEVICE_UNLOCK_ISSUES_KEY,
                 ),
             ACCOUNT_SECURITY_SUBPAGE_KEY to
