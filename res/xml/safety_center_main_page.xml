@@ -90,6 +90,11 @@
             settings:safetySource="AndroidWorkPolicyInfo"
             settings:profile="personal_profile" />
         <Preference
+            android:key="safety_center_exploit_protection"
+            android:title="@string/exploit_protection_title"
+            android:summary="@string/exploit_protection_summary"
+            settings:controller="com.android.settings.safetycenter.ui.ExploitProtectionPrefController"/>
+        <Preference
             android:key="safety_center_more_security_privacy"
             android:summary="@string/more_security_privacy_summary"
             android:title="@string/more_security_privacy_settings"
