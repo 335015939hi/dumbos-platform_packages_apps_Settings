@@ -322,4 +322,8 @@ May cause unreliable service. Use at your own risk.
     <string name="carrier_settings_override_wfc_availability_enabled_roaming_not_editable">Available but roaming not editable</string>
     <string name="carrier_settings_override_cross_sim">Cross SIM calling / backup calling availability</string>
     <string name="carrier_settings_override_cross_sim_description">Only for dual SIM setups. If enabled, then when the SIM is roaming or out of service and Wi‑Fi isn\’t available, calls can be made over another SIM’s data connection. Wi-Fi calling should be set to available to use this.</string>
+    <string name="carrier_settings_override_inflate_signal">Inflate cell signal</string>
+    <string name="carrier_settings_override_inflate_signal_description">When inflated, the status bar displays signal out of 5 bars instead of 4</string>
+    <string name="carrier_settings_override_inflate_true">Display 5 bars</string>
+    <string name="carrier_settings_override_inflate_false">Display 4 bars</string>
 </resources>

@@ -44,7 +44,8 @@ val allowedUserChangeableCarrierConfigOptions: List<ChangeableCarrierConfigOptio
         VoNREnabled,
         Enable5G,
         WiFiCallingAvailable,
-        CrossSIMAvailable
+        CrossSIMAvailable,
+        InflateSignal
 
     ).also { list ->
        list.onEach { flag ->
@@ -322,4 +323,25 @@ data object CrossSIMAvailable : ChangeableCarrierConfigOption(
     override val titleStringRes = R.string.carrier_settings_override_cross_sim
     override val dialogDescriptionStringRes: Int
         get() = R.string.carrier_settings_override_cross_sim_description
+}
+
+data object InflateSignal : ChangeableCarrierConfigOption(
+    keysWithType = listOf(
+        CarrierConfigManager.KEY_INFLATE_SIGNAL_STRENGTH_BOOL to KeyType.BOOLEAN,
+    ),
+    allPossibleConfigStates = listOf(
+        ConfigState.Uniform(
+            CarrierConfigTypedValue.Bool(true),
+            R.string.carrier_settings_override_inflate_true,
+            R.string.carrier_settings_override_inflate_true,
+        ),
+        ConfigState.Uniform(
+            CarrierConfigTypedValue.Bool(false),
+            R.string.carrier_settings_override_inflate_false,
+            R.string.carrier_settings_override_inflate_false,
+        ),
+    )
+) {
+    override val titleStringRes = R.string.carrier_settings_override_inflate_signal
+    override val dialogDescriptionStringRes = R.string.carrier_settings_override_inflate_signal_description
 }
