@@ -146,6 +146,7 @@ import com.android.settings.localepicker.SystemLocalePickerFragment;
 import com.android.settings.location.LocationServices;
 import com.android.settings.location.LocationSettings;
 import com.android.settings.location.WifiScanningFragment;
+import com.android.settings.network.AirplaneModeSettings;
 import com.android.settings.network.MobileNetworkListFragment;
 import com.android.settings.network.NetworkDashboardFragment;
 import com.android.settings.network.NetworkProviderSettings;
@@ -240,6 +241,7 @@ public class SettingsGateway {
             CreateShortcut.class.getName(),
             BluetoothPairingDetail.class.getName(),
             BluetoothDashboardFragment.class.getName(),
+            AirplaneModeSettings.class.getName(),
             WifiNetworkDetailsFragment.class.getName(),
             ConfigureWifiSettings.class.getName(),
             SavedAccessPointsWifiSettings2.class.getName(),

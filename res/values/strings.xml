@@ -707,6 +707,10 @@
     <string name="settings_shortcut">Settings shortcut</string>
     <!-- Wireless controls settings screen, setting check box label -->
     <string name="airplane_mode">Airplane mode</string>
+    <!-- Title for setting that turns on airplane mode when the device starts [CHAR LIMIT=NONE] -->
+    <string name="airplane_mode_on_boot_title">Turn on airplane mode on boot</string>
+    <!-- Summary for setting that turns on airplane mode when the device starts [CHAR LIMIT=NONE] -->
+    <string name="airplane_mode_on_boot_summary">Enables airplane mode when the device is booting up regardless of previous airplane mode state</string>
     <!-- Wireless Settings screen title for things like Wi-Fi, bluetooth, airplane mode. -->
     <string name="wireless_networks_settings_title">Wireless &amp; networks</string>
 
