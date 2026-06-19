@@ -1726,6 +1726,24 @@
         </activity>
 
         <activity
+            android:name="Settings$ComfortViewSettingsActivity"
+            android:label="@string/comfort_filters_settings_page_main_title"
+            android:enabled="@*android:bool/config_cv_available"
+            android:exported="true"
+            android:icon="@drawable/ic_homepage_night_display">
+            <intent-filter>
+                <action android:name="android.settings.COMFORT_FILTERS_SETTINGS" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+            <meta-data android:name="com.android.settings.FRAGMENT_CLASS"
+                android:value="com.android.settings.display.ComfortViewSettings" />
+            <meta-data android:name="com.android.settings.HIGHLIGHT_MENU_KEY"
+                       android:value="@string/menu_key_display"/>
+            <meta-data android:name="com.android.settings.PRIMARY_PROFILE_CONTROLLED"
+                android:value="true" />
+        </activity>
+
+        <activity
             android:name="Settings$NightDisplaySettingsActivity"
             android:label="@string/night_display_title"
             android:enabled="@*android:bool/config_nightDisplayAvailable"
