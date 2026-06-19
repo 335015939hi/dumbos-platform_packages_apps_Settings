@@ -108,6 +108,7 @@ import com.android.settings.deviceinfo.firmwareversion.FirmwareVersionSettings;
 import com.android.settings.deviceinfo.legal.ModuleLicensesDashboard;
 import com.android.settings.display.AutoBrightnessSettings;
 import com.android.settings.display.ColorContrastFragment;
+import com.android.settings.display.ComfortViewSettings;
 import com.android.settings.display.NightDisplaySettings;
 import com.android.settings.display.ScreenTimeoutSettings;
 import com.android.settings.display.SmartAutoRotatePreferenceFragment;
@@ -366,6 +367,7 @@ public class SettingsGateway {
             MainClear.class.getName(),
             MainClearConfirm.class.getName(),
             ResetDashboardFragment.class.getName(),
+            ComfortViewSettings.class.getName(),
             NightDisplaySettings.class.getName(),
             ManageDomainUrls.class.getName(),
             AutomaticStorageManagerSettings.class.getName(),

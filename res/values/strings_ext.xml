@@ -7,6 +7,19 @@
     <string name="bool_setting_enabled">Enabled</string>
     <string name="bool_setting_disabled">Disabled</string>
 
+    <string name="keywords_comfort_filters"/>
+    <string name="comfort_filters_settings_page_main_title"/>
+    <string name="comfort_filters_settings_page_main_summary"/>
+    <string name="comfort_filters_entry_title"/>
+    <string name="comfort_filters_all_modes_off_summary"/>
+    <string name="comfort_filters_comfort_view_on_night_light_on_summary"/>
+    <string name="comfort_filters_comfort_view_on_summary"/>
+    <string name="comfort_filters_night_light_on_summary"/>
+    <string name="comfort_view_main_switch_title"/>
+    <string name="comfort_view_ambient_adaptive_switch_title"/>
+    <string name="comfort_view_ambient_adaptive_switch_summary"/>
+    <string name="comfort_view_intensity_title"/>
+
     <string name="exploit_protection_settings">Exploit protection</string>
 
     <string name="app_exploit_protection_category">App exploit protection</string>

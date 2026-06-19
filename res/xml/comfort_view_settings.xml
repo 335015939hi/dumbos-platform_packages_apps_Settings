@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:settings="http://schemas.android.com/apk/res-auto"
+    android:key="comfort_view"
+    android:title="@string/comfort_filters_settings_page_main_title"
+    settings:keywords="@string/keywords_comfort_filters">
+
+    <com.android.settingslib.widget.TopIntroPreference
+        android:key="comfort_filters_details"
+        android:title="@string/comfort_filters_settings_page_main_summary"
+        settings:searchable="false"/>
+
+    <com.android.settingslib.widget.LayoutPreference
+        android:key="comfort_view_preview"
+        android:layout="@layout/color_mode_preview"
+        android:selectable="false"
+        settings:searchable="false"/>
+
+    <com.android.settingslib.widget.MainSwitchPreference
+        android:key="comfort_view_main_switch"
+        android:title="@string/comfort_view_main_switch_title"
+        settings:controller="com.android.settings.display.ComfortViewMainSwitchPreferenceController"/>
+
+    <CheckBoxPreference
+        android:key="comfort_view_dynamic"
+        android:title="@string/comfort_view_ambient_adaptive_switch_title"
+        android:summary="@string/comfort_view_ambient_adaptive_switch_summary"
+        settings:controller="com.android.settings.display.ComfortViewDynamicPreferenceController"/>
+
+    <com.android.settingslib.widget.SliderPreference
+        android:key="comfort_view_intensity"
+        android:title="@string/comfort_view_intensity_title"
+        settings:controller="com.android.settings.display.ComfortViewIntensityPreferenceController"/>
+
+</PreferenceScreen>
