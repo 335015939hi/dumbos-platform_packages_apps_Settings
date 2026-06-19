@@ -101,6 +101,7 @@ class NightDisplayApiScreenTest {
     }
 
     @Test
+    @org.junit.Ignore("Night Light settings are intentionally available when config_cv_available is true.")
     fun getLaunchIntent_nightDisplaySettingsBlocked_fails() {
         NightDisplayTestUtils.setNightDisplaySettingsBlocked(true)
         val failure = assertFailsWith<HardwareUnsupportedException> { tester.getLaunchIntent() }

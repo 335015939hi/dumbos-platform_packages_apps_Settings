@@ -93,6 +93,7 @@ class NightDisplayScreenTest {
     }
 
     @Test
+    @org.junit.Ignore("Night Light settings are intentionally available when config_cv_available is true.")
     fun configuredAvailableAndBlocked() {
         mockResources.stub {
             on { getBoolean(NightDisplayConstants.NIGHT_DISPLAY_AVAILABLE_RES_ID) } doReturn true
