@@ -27,10 +27,7 @@ val Context.isNightDisplaySettingsAvailable: Boolean
 val Context.nightDisplayAvailabilityStatus: Int
     get() {
         val nightDisplayAvailable =
-            ColorDisplayManager.isNightDisplayAvailable(this) &&
-                !resources.getBoolean(
-                    NightDisplayConstants.NIGHT_DISPLAY_SETTINGS_PAGE_BLOCKER_RES_ID
-                )
+            ColorDisplayManager.isNightDisplayAvailable(this)
         return if (nightDisplayAvailable) {
             try {
                 // These settings are not available if shown on an external display.
