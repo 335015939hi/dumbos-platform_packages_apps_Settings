@@ -24,25 +24,23 @@ import android.content.pm.PackageManager;
 import android.nfc.NfcAdapter;
 import android.os.UserManager;
 
+import androidx.lifecycle.DefaultLifecycleObserver;
+import androidx.lifecycle.LifecycleOwner;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceScreen;
 
 import com.android.settings.R;
 import com.android.settings.core.BasePreferenceController;
-import com.android.settingslib.core.lifecycle.LifecycleObserver;
-import com.android.settingslib.core.lifecycle.events.OnResume;
-import com.android.settingslib.core.lifecycle.events.OnStop;
 
 /**
  * Controller that used to show NFC and payment features
  */
 // LINT.IfChange
 public class NfcAndPaymentFragmentController extends BasePreferenceController
-        implements LifecycleObserver, OnResume, OnStop {
+        implements DefaultLifecycleObserver {
     private final NfcAdapter mNfcAdapter;
     private final PackageManager mPackageManager;
     private final UserManager mUserManager;
-    private final IntentFilter mIntentFilter;
     private Preference mPreference;
 
     private final BroadcastReceiver mReceiver = new BroadcastReceiver() {
@@ -65,9 +63,6 @@ public class NfcAndPaymentFragmentController extends BasePreferenceController
         mPackageManager = context.getPackageManager();
         mUserManager = context.getSystemService(UserManager.class);
         mNfcAdapter = NfcAdapter.getDefaultAdapter(context);
-
-        mIntentFilter = isNfcAvailable()
-                ? new IntentFilter(NfcAdapter.ACTION_ADAPTER_STATE_CHANGED) : null;
     }
 
     @Override
@@ -99,7 +94,7 @@ public class NfcAndPaymentFragmentController extends BasePreferenceController
     }
 
     @Override
-    public void onStop() {
+    public void onStop(LifecycleOwner owner) {
         if (!isNfcAvailable()) {
             return;
         }
@@ -108,12 +103,13 @@ public class NfcAndPaymentFragmentController extends BasePreferenceController
     }
 
     @Override
-    public void onResume() {
+    public void onStart(LifecycleOwner owner) {
         if (!isNfcAvailable()) {
             return;
         }
 
-        mContext.registerReceiver(mReceiver, mIntentFilter);
+        mContext.registerReceiver(mReceiver,
+                new IntentFilter(NfcAdapter.ACTION_ADAPTER_STATE_CHANGED));
     }
 
     private boolean isNfcAvailable() {
