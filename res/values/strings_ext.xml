@@ -338,4 +338,12 @@ May cause unreliable service. Use at your own risk.
     
     <string name="exploit_protection_title">Exploit protection</string>
     <string name="exploit_protection_summary">Device and app security improvements</string>
+
+    <string name="cert_transparency_dl_title">Certificate Transparency downloads</string>
+    <string name="cert_transparency_dl_grapheneos_server">GrapheneOS server</string>
+    <string name="cert_transparency_dl_standard_server">Standard (Google) server</string>
+    <string name="cert_transparency_dl_off">Off</string>
+    <string name="cert_transparency_dl_footer">"Certificate Transparency (CT) is an Internet standard designed to enhance the security of digital certificates. It requires Certificate Authorities (CAs) to submit all issued certificates to a public log that records them, increasing transparency and accountability in the certificate issuance process.
+
+By maintaining a verifiable record of all certificates, CT makes it significantly harder for malicious actors to forge certificates or for CAs to mistakenly issue them. This helps protect apps from man-in-the-middle attacks and other security threats."</string>
 </resources>
