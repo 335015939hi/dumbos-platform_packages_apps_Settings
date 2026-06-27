@@ -134,6 +134,12 @@
         settings:controller="com.android.settings.network.ConnectivityChecksPrefController"/>
 
     <Preference
+        android:key="cert_transparency_dl"
+        android:title="@string/cert_transparency_dl_title"
+        android:order="31"
+        settings:controller="com.android.settings.network.CertTransparencyDownloaderPrefController"/>
+
+    <Preference
         android:key="remote_provisioning_settings"
         android:title="@string/remote_provisioning_title"
         android:order="35"
