@@ -266,6 +266,8 @@ public class WifiUtils extends com.android.settingslib.wifi.WifiUtils {
      * @return true if Wi-Fi hotspot settings can be displayed
      */
     public static boolean checkShowWifiHotspot(Context context) {
+      return false;
+      /*
         if (context == null) return false;
 
         boolean showWifiHotspotSettings =
@@ -292,6 +294,7 @@ public class WifiUtils extends com.android.settingslib.wifi.WifiUtils {
             return false;
         }
         return true;
+        */
     }
 
     /**
@@ -301,10 +304,12 @@ public class WifiUtils extends com.android.settingslib.wifi.WifiUtils {
      * @return true if Wi-Fi hotspot settings can be displayed
      */
     public static boolean canShowWifiHotspot(Context context) {
+      return false;
+      /*
         if (sCanShowWifiHotspotCached == null) {
             sCanShowWifiHotspotCached = checkShowWifiHotspot(context);
         }
-        return sCanShowWifiHotspotCached;
+        return sCanShowWifiHotspotCached;*/
     }
 
     /**
