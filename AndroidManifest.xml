@@ -3517,7 +3517,7 @@
                        android:value="@string/menu_key_network"/>
         </activity>
 
-        <activity
+        <!--activity
             android:name="Settings$DevelopmentSettingsActivity"
             android:label="@string/development_settings_title"
             android:icon="@drawable/ic_settings_development"
@@ -3534,7 +3534,7 @@
                        android:value="@string/menu_key_system"/>
             <meta-data android:name="com.android.settings.PRIMARY_PROFILE_CONTROLLED"
                        android:value="true" />
-        </activity>
+        </activity-->
 
         <activity
             android:name="Settings$PrintSettingsActivity"
