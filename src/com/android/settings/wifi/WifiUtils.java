@@ -266,35 +266,7 @@ public class WifiUtils extends com.android.settingslib.wifi.WifiUtils {
      * @return true if Wi-Fi hotspot settings can be displayed
      */
     public static boolean checkShowWifiHotspot(Context context) {
-      return false;
-      /*
-        if (context == null) return false;
-
-        boolean showWifiHotspotSettings =
-                context.getResources().getBoolean(R.bool.config_show_wifi_hotspot_settings);
-        if (!showWifiHotspotSettings) {
-            Log.w(TAG, "config_show_wifi_hotspot_settings:false");
-            return false;
-        }
-
-        WifiManager wifiManager = context.getSystemService(WifiManager.class);
-        if (wifiManager == null) {
-            Log.e(TAG, "WifiManager is null");
-            return false;
-        }
-
-        TetheringManager tetheringManager = context.getSystemService(TetheringManager.class);
-        if (tetheringManager == null) {
-            Log.e(TAG, "TetheringManager is null");
-            return false;
-        }
-        String[] wifiRegexs = tetheringManager.getTetherableWifiRegexs();
-        if (wifiRegexs == null || wifiRegexs.length == 0) {
-            Log.w(TAG, "TetherableWifiRegexs is empty");
-            return false;
-        }
-        return true;
-        */
+        return false;
     }
 
     /**
@@ -304,12 +276,7 @@ public class WifiUtils extends com.android.settingslib.wifi.WifiUtils {
      * @return true if Wi-Fi hotspot settings can be displayed
      */
     public static boolean canShowWifiHotspot(Context context) {
-      return false;
-      /*
-        if (sCanShowWifiHotspotCached == null) {
-            sCanShowWifiHotspotCached = checkShowWifiHotspot(context);
-        }
-        return sCanShowWifiHotspotCached;*/
+        return false;
     }
 
     /**
