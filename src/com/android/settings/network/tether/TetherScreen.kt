@@ -61,7 +61,7 @@ open class TetherScreen :
             context.getText(Utils.getTetheringLabel(tetheringManager))
         }
 
-    override fun isAvailable(context: Context) = TetherUtil.isTetherAvailable(context)
+    override fun isAvailable(context: Context) = false
 
     override fun isEnabled(context: Context) = super<PreferenceRestrictionMixin>.isEnabled(context)
 
