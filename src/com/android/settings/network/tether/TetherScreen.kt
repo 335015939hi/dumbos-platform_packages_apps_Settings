@@ -73,7 +73,7 @@ open class TetherScreen :
 
     override fun getAvailabilityStability() = PreconditionStability.STABLE_UNTIL_APK_UPDATE
 
-    override fun isAvailable(context: Context) = TetherUtil.isTetherAvailable(context)
+    override fun isAvailable(context: Context) = false
 
     override fun isEnabled(context: Context) = super<PreferenceRestrictionMixin>.isEnabled(context)
 

@@ -65,7 +65,7 @@ constructor(
      * - Actual UI visibility is handled in [onViewCreated].
      * - Search visibility is handled in [updateNonIndexableKeys].
      */
-    override fun getAvailabilityStatus() = AVAILABLE
+    override fun getAvailabilityStatus() = CONDITIONALLY_UNAVAILABLE
 
     override fun displayPreference(screen: PreferenceScreen) {
         super.displayPreference(screen)

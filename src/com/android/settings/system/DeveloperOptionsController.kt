@@ -56,7 +56,7 @@ constructor(
     // Initialize as unavailable to prevent ANR; the status will be updated asynchronously.
     private var availabilityStatus = CONDITIONALLY_UNAVAILABLE
 
-    override fun getAvailabilityStatus() = availabilityStatus
+    override fun getAvailabilityStatus() = CONDITIONALLY_UNAVAILABLE
 
     override fun onViewCreated(viewLifecycleOwner: LifecycleOwner) {
         isDevelopmentSettingsEnabledFlow.collectLatestWithLifecycle(viewLifecycleOwner) {
